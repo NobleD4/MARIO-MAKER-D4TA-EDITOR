@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MakerUtilidades
+namespace SMM_D4TA_EDITOR
 {
     class CustomStringWriter : System.IO.StringWriter
     {

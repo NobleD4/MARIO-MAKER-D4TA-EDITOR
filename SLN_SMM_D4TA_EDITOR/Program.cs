@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MakerUtilidades
+namespace SMM_D4TA_EDITOR
 {
     internal static class Program
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
-namespace MakerUtilidades
+namespace SMM_D4TA_EDITOR
 {
     class BymlConverter
     {

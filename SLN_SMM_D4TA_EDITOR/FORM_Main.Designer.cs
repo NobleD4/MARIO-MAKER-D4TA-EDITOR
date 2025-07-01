@@ -1,4 +1,4 @@
-﻿namespace MakerUtilidades
+﻿namespace SMM_D4TA_EDITOR
 {
     partial class FORM_Main
     {
@@ -44,7 +44,19 @@
             this.BUTTON_SaveFile = new System.Windows.Forms.Button();
             this.BUTTON_Cancel = new System.Windows.Forms.Button();
             this.CHECK_UploadReady = new System.Windows.Forms.CheckBox();
+            this.NUMERIC_CourseTimer = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.CHECK_OldPhysics = new System.Windows.Forms.CheckBox();
+            this.GroupBox_Scroll_Settings = new System.Windows.Forms.GroupBox();
+            this.RADIO_Scroll_Lock = new System.Windows.Forms.RadioButton();
+            this.RADIO_Scroll_Cheetah = new System.Windows.Forms.RadioButton();
+            this.RADIO_Scroll_Rabbit = new System.Windows.Forms.RadioButton();
+            this.RADIO_Scroll_Turtle = new System.Windows.Forms.RadioButton();
+            this.RADIO_Scroll_None = new System.Windows.Forms.RadioButton();
+            this.LABEL_LastItemPlaced = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
+            this.GroupBox_Scroll_Settings.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -69,15 +81,15 @@
             // ToolStripMenuItem_BYML_To_XML
             // 
             this.ToolStripMenuItem_BYML_To_XML.Name = "ToolStripMenuItem_BYML_To_XML";
-            this.ToolStripMenuItem_BYML_To_XML.Size = new System.Drawing.Size(84, 20);
-            this.ToolStripMenuItem_BYML_To_XML.Text = "byml -> xml";
+            this.ToolStripMenuItem_BYML_To_XML.Size = new System.Drawing.Size(81, 20);
+            this.ToolStripMenuItem_BYML_To_XML.Text = "byml → xml";
             this.ToolStripMenuItem_BYML_To_XML.Click += new System.EventHandler(this.ToolStripMenuItem_BYML_To_XML_Click);
             // 
             // ToolStripMenuItem_XML_To_BYML
             // 
             this.ToolStripMenuItem_XML_To_BYML.Name = "ToolStripMenuItem_XML_To_BYML";
-            this.ToolStripMenuItem_XML_To_BYML.Size = new System.Drawing.Size(84, 20);
-            this.ToolStripMenuItem_XML_To_BYML.Text = "xml -> byml";
+            this.ToolStripMenuItem_XML_To_BYML.Size = new System.Drawing.Size(81, 20);
+            this.ToolStripMenuItem_XML_To_BYML.Text = "xml → byml";
             this.ToolStripMenuItem_XML_To_BYML.Click += new System.EventHandler(this.ToolStripMenuItem_XML_To_BYML_Click);
             // 
             // SaveFileDialog_BYML_To_XML
@@ -125,20 +137,20 @@
             // 
             this.CHECK_RemoveFlags.AutoSize = true;
             this.CHECK_RemoveFlags.Enabled = false;
-            this.CHECK_RemoveFlags.Location = new System.Drawing.Point(15, 53);
+            this.CHECK_RemoveFlags.Location = new System.Drawing.Point(15, 79);
             this.CHECK_RemoveFlags.Name = "CHECK_RemoveFlags";
             this.CHECK_RemoveFlags.Size = new System.Drawing.Size(191, 17);
-            this.CHECK_RemoveFlags.TabIndex = 1;
+            this.CHECK_RemoveFlags.TabIndex = 2;
             this.CHECK_RemoveFlags.Text = "Remove Downloaded/Deleted flag";
             this.CHECK_RemoveFlags.UseVisualStyleBackColor = true;
             // 
             // BUTTON_SaveFile
             // 
             this.BUTTON_SaveFile.Enabled = false;
-            this.BUTTON_SaveFile.Location = new System.Drawing.Point(227, 76);
+            this.BUTTON_SaveFile.Location = new System.Drawing.Point(227, 176);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_SaveFile.TabIndex = 4;
+            this.BUTTON_SaveFile.TabIndex = 11;
             this.BUTTON_SaveFile.Text = "Save course";
             this.BUTTON_SaveFile.UseVisualStyleBackColor = true;
             this.BUTTON_SaveFile.Click += new System.EventHandler(this.BUTTON_SaveFile_Click);
@@ -146,10 +158,10 @@
             // BUTTON_Cancel
             // 
             this.BUTTON_Cancel.Enabled = false;
-            this.BUTTON_Cancel.Location = new System.Drawing.Point(146, 76);
+            this.BUTTON_Cancel.Location = new System.Drawing.Point(146, 176);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_Cancel.TabIndex = 3;
+            this.BUTTON_Cancel.TabIndex = 10;
             this.BUTTON_Cancel.Text = "Cancel";
             this.BUTTON_Cancel.UseVisualStyleBackColor = true;
             this.BUTTON_Cancel.Click += new System.EventHandler(this.BUTTON_Cancel_Click);
@@ -158,19 +170,141 @@
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(211, 53);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(211, 79);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(89, 17);
-            this.CHECK_UploadReady.TabIndex = 2;
+            this.CHECK_UploadReady.TabIndex = 3;
             this.CHECK_UploadReady.Text = "Upload ready";
             this.CHECK_UploadReady.UseVisualStyleBackColor = true;
             this.CHECK_UploadReady.Visible = false;
+            // 
+            // NUMERIC_CourseTimer
+            // 
+            this.NUMERIC_CourseTimer.Enabled = false;
+            this.NUMERIC_CourseTimer.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(54, 53);
+            this.NUMERIC_CourseTimer.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.NUMERIC_CourseTimer.Name = "NUMERIC_CourseTimer";
+            this.NUMERIC_CourseTimer.Size = new System.Drawing.Size(60, 20);
+            this.NUMERIC_CourseTimer.TabIndex = 1;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(36, 13);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Timer:";
+            // 
+            // CHECK_OldPhysics
+            // 
+            this.CHECK_OldPhysics.AutoSize = true;
+            this.CHECK_OldPhysics.Enabled = false;
+            this.CHECK_OldPhysics.Location = new System.Drawing.Point(15, 102);
+            this.CHECK_OldPhysics.Name = "CHECK_OldPhysics";
+            this.CHECK_OldPhysics.Size = new System.Drawing.Size(91, 17);
+            this.CHECK_OldPhysics.TabIndex = 4;
+            this.CHECK_OldPhysics.Text = "v1.00 physics";
+            this.CHECK_OldPhysics.UseVisualStyleBackColor = true;
+            // 
+            // GroupBox_Scroll_Settings
+            // 
+            this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_Lock);
+            this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_Cheetah);
+            this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_Rabbit);
+            this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_Turtle);
+            this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_None);
+            this.GroupBox_Scroll_Settings.Enabled = false;
+            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(108, 102);
+            this.GroupBox_Scroll_Settings.Name = "GroupBox_Scroll_Settings";
+            this.GroupBox_Scroll_Settings.Size = new System.Drawing.Size(194, 68);
+            this.GroupBox_Scroll_Settings.TabIndex = 5;
+            this.GroupBox_Scroll_Settings.TabStop = false;
+            this.GroupBox_Scroll_Settings.Text = "Autoscroll settings";
+            // 
+            // RADIO_Scroll_Lock
+            // 
+            this.RADIO_Scroll_Lock.AutoSize = true;
+            this.RADIO_Scroll_Lock.Location = new System.Drawing.Point(64, 19);
+            this.RADIO_Scroll_Lock.Name = "RADIO_Scroll_Lock";
+            this.RADIO_Scroll_Lock.Size = new System.Drawing.Size(74, 17);
+            this.RADIO_Scroll_Lock.TabIndex = 6;
+            this.RADIO_Scroll_Lock.TabStop = true;
+            this.RADIO_Scroll_Lock.Text = "Scroll lock";
+            this.RADIO_Scroll_Lock.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Scroll_Cheetah
+            // 
+            this.RADIO_Scroll_Cheetah.AutoSize = true;
+            this.RADIO_Scroll_Cheetah.Location = new System.Drawing.Point(126, 45);
+            this.RADIO_Scroll_Cheetah.Name = "RADIO_Scroll_Cheetah";
+            this.RADIO_Scroll_Cheetah.Size = new System.Drawing.Size(65, 17);
+            this.RADIO_Scroll_Cheetah.TabIndex = 9;
+            this.RADIO_Scroll_Cheetah.TabStop = true;
+            this.RADIO_Scroll_Cheetah.Text = "Cheetah";
+            this.RADIO_Scroll_Cheetah.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Scroll_Rabbit
+            // 
+            this.RADIO_Scroll_Rabbit.AutoSize = true;
+            this.RADIO_Scroll_Rabbit.Location = new System.Drawing.Point(64, 45);
+            this.RADIO_Scroll_Rabbit.Name = "RADIO_Scroll_Rabbit";
+            this.RADIO_Scroll_Rabbit.Size = new System.Drawing.Size(56, 17);
+            this.RADIO_Scroll_Rabbit.TabIndex = 8;
+            this.RADIO_Scroll_Rabbit.TabStop = true;
+            this.RADIO_Scroll_Rabbit.Text = "Rabbit";
+            this.RADIO_Scroll_Rabbit.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Scroll_Turtle
+            // 
+            this.RADIO_Scroll_Turtle.AutoSize = true;
+            this.RADIO_Scroll_Turtle.Location = new System.Drawing.Point(6, 45);
+            this.RADIO_Scroll_Turtle.Name = "RADIO_Scroll_Turtle";
+            this.RADIO_Scroll_Turtle.Size = new System.Drawing.Size(52, 17);
+            this.RADIO_Scroll_Turtle.TabIndex = 7;
+            this.RADIO_Scroll_Turtle.TabStop = true;
+            this.RADIO_Scroll_Turtle.Text = "Turtle";
+            this.RADIO_Scroll_Turtle.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Scroll_None
+            // 
+            this.RADIO_Scroll_None.AutoSize = true;
+            this.RADIO_Scroll_None.Location = new System.Drawing.Point(6, 19);
+            this.RADIO_Scroll_None.Name = "RADIO_Scroll_None";
+            this.RADIO_Scroll_None.Size = new System.Drawing.Size(51, 17);
+            this.RADIO_Scroll_None.TabIndex = 5;
+            this.RADIO_Scroll_None.TabStop = true;
+            this.RADIO_Scroll_None.Text = "None";
+            this.RADIO_Scroll_None.UseVisualStyleBackColor = true;
+            // 
+            // LABEL_LastItemPlaced
+            // 
+            this.LABEL_LastItemPlaced.AutoSize = true;
+            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(120, 55);
+            this.LABEL_LastItemPlaced.Name = "LABEL_LastItemPlaced";
+            this.LABEL_LastItemPlaced.Size = new System.Drawing.Size(132, 13);
+            this.LABEL_LastItemPlaced.TabIndex = 12;
+            this.LABEL_LastItemPlaced.Text = "Last item placed (memory):";
             // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 111);
+            this.ClientSize = new System.Drawing.Size(314, 211);
+            this.Controls.Add(this.LABEL_LastItemPlaced);
+            this.Controls.Add(this.GroupBox_Scroll_Settings);
+            this.Controls.Add(this.CHECK_OldPhysics);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.NUMERIC_CourseTimer);
             this.Controls.Add(this.CHECK_UploadReady);
             this.Controls.Add(this.BUTTON_Cancel);
             this.Controls.Add(this.BUTTON_SaveFile);
@@ -182,9 +316,12 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FORM_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "v0.0.1 D4TA EDITOR";
+            this.Text = "v0.0.2 D4TA EDITOR";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
+            this.GroupBox_Scroll_Settings.ResumeLayout(false);
+            this.GroupBox_Scroll_Settings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,6 +344,16 @@
         private System.Windows.Forms.Button BUTTON_SaveFile;
         private System.Windows.Forms.Button BUTTON_Cancel;
         private System.Windows.Forms.CheckBox CHECK_UploadReady;
+        private System.Windows.Forms.NumericUpDown NUMERIC_CourseTimer;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox CHECK_OldPhysics;
+        private System.Windows.Forms.GroupBox GroupBox_Scroll_Settings;
+        private System.Windows.Forms.RadioButton RADIO_Scroll_Cheetah;
+        private System.Windows.Forms.RadioButton RADIO_Scroll_Rabbit;
+        private System.Windows.Forms.RadioButton RADIO_Scroll_Turtle;
+        private System.Windows.Forms.RadioButton RADIO_Scroll_None;
+        private System.Windows.Forms.RadioButton RADIO_Scroll_Lock;
+        private System.Windows.Forms.Label LABEL_LastItemPlaced;
     }
 }
 

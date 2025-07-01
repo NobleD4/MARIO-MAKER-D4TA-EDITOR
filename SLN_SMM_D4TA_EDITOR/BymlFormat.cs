@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace MakerUtilidades
+namespace SMM_D4TA_EDITOR
 {
     public class BymlFile
     {

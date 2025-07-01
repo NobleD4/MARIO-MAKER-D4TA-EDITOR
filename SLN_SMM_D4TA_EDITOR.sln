@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SLN_SMM_D4TA_EDITOR", "SLN_SMM_D4TA_EDITOR\SLN_SMM_D4TA_EDITOR.csproj", "{C80C6E9B-F569-420A-BEC3-9DAA1A00E7FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMM_D4TA_EDITOR", "SLN_SMM_D4TA_EDITOR\SMM_D4TA_EDITOR.csproj", "{C80C6E9B-F569-420A-BEC3-9DAA1A00E7FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
