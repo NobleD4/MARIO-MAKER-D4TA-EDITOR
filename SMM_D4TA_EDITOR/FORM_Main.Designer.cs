@@ -67,7 +67,7 @@
             this.ToolStripMenuItem_XML_To_BYML});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(314, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(384, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -147,7 +147,7 @@
             // BUTTON_SaveFile
             // 
             this.BUTTON_SaveFile.Enabled = false;
-            this.BUTTON_SaveFile.Location = new System.Drawing.Point(227, 176);
+            this.BUTTON_SaveFile.Location = new System.Drawing.Point(297, 176);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_SaveFile.TabIndex = 11;
@@ -158,7 +158,7 @@
             // BUTTON_Cancel
             // 
             this.BUTTON_Cancel.Enabled = false;
-            this.BUTTON_Cancel.Location = new System.Drawing.Point(146, 176);
+            this.BUTTON_Cancel.Location = new System.Drawing.Point(216, 176);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_Cancel.TabIndex = 10;
@@ -224,7 +224,7 @@
             this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_Turtle);
             this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_None);
             this.GroupBox_Scroll_Settings.Enabled = false;
-            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(108, 102);
+            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(178, 102);
             this.GroupBox_Scroll_Settings.Name = "GroupBox_Scroll_Settings";
             this.GroupBox_Scroll_Settings.Size = new System.Drawing.Size(194, 68);
             this.GroupBox_Scroll_Settings.TabIndex = 5;
@@ -299,7 +299,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 211);
+            this.ClientSize = new System.Drawing.Size(384, 211);
             this.Controls.Add(this.LABEL_LastItemPlaced);
             this.Controls.Add(this.GroupBox_Scroll_Settings);
             this.Controls.Add(this.CHECK_OldPhysics);
