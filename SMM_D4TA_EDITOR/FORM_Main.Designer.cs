@@ -54,9 +54,19 @@
             this.RADIO_Scroll_Turtle = new System.Windows.Forms.RadioButton();
             this.RADIO_Scroll_None = new System.Windows.Forms.RadioButton();
             this.LABEL_LastItemPlaced = new System.Windows.Forms.Label();
+            this.GroupBox_Physics_Settings = new System.Windows.Forms.GroupBox();
+            this.RADIO_Physics00 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Physics01 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Physics02 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Physics03 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Physics04 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Physics05 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Physics06 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Physics07 = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             this.GroupBox_Scroll_Settings.SuspendLayout();
+            this.GroupBox_Physics_Settings.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -67,7 +77,7 @@
             this.ToolStripMenuItem_XML_To_BYML});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(384, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(550, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -137,7 +147,7 @@
             // 
             this.CHECK_RemoveFlags.AutoSize = true;
             this.CHECK_RemoveFlags.Enabled = false;
-            this.CHECK_RemoveFlags.Location = new System.Drawing.Point(15, 79);
+            this.CHECK_RemoveFlags.Location = new System.Drawing.Point(201, 145);
             this.CHECK_RemoveFlags.Name = "CHECK_RemoveFlags";
             this.CHECK_RemoveFlags.Size = new System.Drawing.Size(191, 17);
             this.CHECK_RemoveFlags.TabIndex = 2;
@@ -147,7 +157,7 @@
             // BUTTON_SaveFile
             // 
             this.BUTTON_SaveFile.Enabled = false;
-            this.BUTTON_SaveFile.Location = new System.Drawing.Point(297, 176);
+            this.BUTTON_SaveFile.Location = new System.Drawing.Point(363, 265);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_SaveFile.TabIndex = 11;
@@ -158,7 +168,7 @@
             // BUTTON_Cancel
             // 
             this.BUTTON_Cancel.Enabled = false;
-            this.BUTTON_Cancel.Location = new System.Drawing.Point(216, 176);
+            this.BUTTON_Cancel.Location = new System.Drawing.Point(282, 265);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_Cancel.TabIndex = 10;
@@ -209,7 +219,7 @@
             // 
             this.CHECK_OldPhysics.AutoSize = true;
             this.CHECK_OldPhysics.Enabled = false;
-            this.CHECK_OldPhysics.Location = new System.Drawing.Point(15, 102);
+            this.CHECK_OldPhysics.Location = new System.Drawing.Point(398, 144);
             this.CHECK_OldPhysics.Name = "CHECK_OldPhysics";
             this.CHECK_OldPhysics.Size = new System.Drawing.Size(91, 17);
             this.CHECK_OldPhysics.TabIndex = 4;
@@ -224,7 +234,7 @@
             this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_Turtle);
             this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_None);
             this.GroupBox_Scroll_Settings.Enabled = false;
-            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(178, 102);
+            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(319, 185);
             this.GroupBox_Scroll_Settings.Name = "GroupBox_Scroll_Settings";
             this.GroupBox_Scroll_Settings.Size = new System.Drawing.Size(194, 68);
             this.GroupBox_Scroll_Settings.TabIndex = 5;
@@ -295,11 +305,119 @@
             this.LABEL_LastItemPlaced.TabIndex = 12;
             this.LABEL_LastItemPlaced.Text = "Last item placed (memory):";
             // 
+            // GroupBox_Physics_Settings
+            // 
+            this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics07);
+            this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics06);
+            this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics05);
+            this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics04);
+            this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics03);
+            this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics02);
+            this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics01);
+            this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics00);
+            this.GroupBox_Physics_Settings.Enabled = false;
+            this.GroupBox_Physics_Settings.Location = new System.Drawing.Point(15, 79);
+            this.GroupBox_Physics_Settings.Name = "GroupBox_Physics_Settings";
+            this.GroupBox_Physics_Settings.Size = new System.Drawing.Size(100, 210);
+            this.GroupBox_Physics_Settings.TabIndex = 13;
+            this.GroupBox_Physics_Settings.TabStop = false;
+            this.GroupBox_Physics_Settings.Text = "Physics settings";
+            // 
+            // RADIO_Physics00
+            // 
+            this.RADIO_Physics00.AutoSize = true;
+            this.RADIO_Physics00.Location = new System.Drawing.Point(6, 19);
+            this.RADIO_Physics00.Name = "RADIO_Physics00";
+            this.RADIO_Physics00.Size = new System.Drawing.Size(84, 17);
+            this.RADIO_Physics00.TabIndex = 14;
+            this.RADIO_Physics00.TabStop = true;
+            this.RADIO_Physics00.Text = "Version 1.00";
+            this.RADIO_Physics00.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Physics01
+            // 
+            this.RADIO_Physics01.AutoSize = true;
+            this.RADIO_Physics01.Location = new System.Drawing.Point(6, 42);
+            this.RADIO_Physics01.Name = "RADIO_Physics01";
+            this.RADIO_Physics01.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics01.TabIndex = 15;
+            this.RADIO_Physics01.TabStop = true;
+            this.RADIO_Physics01.Text = "Version 1.XX";
+            this.RADIO_Physics01.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Physics02
+            // 
+            this.RADIO_Physics02.AutoSize = true;
+            this.RADIO_Physics02.Location = new System.Drawing.Point(6, 65);
+            this.RADIO_Physics02.Name = "RADIO_Physics02";
+            this.RADIO_Physics02.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics02.TabIndex = 16;
+            this.RADIO_Physics02.TabStop = true;
+            this.RADIO_Physics02.Text = "Version 1.XX";
+            this.RADIO_Physics02.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Physics03
+            // 
+            this.RADIO_Physics03.AutoSize = true;
+            this.RADIO_Physics03.Location = new System.Drawing.Point(6, 88);
+            this.RADIO_Physics03.Name = "RADIO_Physics03";
+            this.RADIO_Physics03.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics03.TabIndex = 17;
+            this.RADIO_Physics03.TabStop = true;
+            this.RADIO_Physics03.Text = "Version 1.XX";
+            this.RADIO_Physics03.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Physics04
+            // 
+            this.RADIO_Physics04.AutoSize = true;
+            this.RADIO_Physics04.Location = new System.Drawing.Point(6, 111);
+            this.RADIO_Physics04.Name = "RADIO_Physics04";
+            this.RADIO_Physics04.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics04.TabIndex = 18;
+            this.RADIO_Physics04.TabStop = true;
+            this.RADIO_Physics04.Text = "Version 1.XX";
+            this.RADIO_Physics04.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Physics05
+            // 
+            this.RADIO_Physics05.AutoSize = true;
+            this.RADIO_Physics05.Location = new System.Drawing.Point(6, 134);
+            this.RADIO_Physics05.Name = "RADIO_Physics05";
+            this.RADIO_Physics05.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics05.TabIndex = 19;
+            this.RADIO_Physics05.TabStop = true;
+            this.RADIO_Physics05.Text = "Version 1.XX";
+            this.RADIO_Physics05.UseVisualStyleBackColor = true;
+            this.RADIO_Physics05.CheckedChanged += new System.EventHandler(this.radioButton6_CheckedChanged);
+            // 
+            // RADIO_Physics06
+            // 
+            this.RADIO_Physics06.AutoSize = true;
+            this.RADIO_Physics06.Location = new System.Drawing.Point(6, 157);
+            this.RADIO_Physics06.Name = "RADIO_Physics06";
+            this.RADIO_Physics06.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics06.TabIndex = 20;
+            this.RADIO_Physics06.TabStop = true;
+            this.RADIO_Physics06.Text = "Version 1.XX";
+            this.RADIO_Physics06.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Physics07
+            // 
+            this.RADIO_Physics07.AutoSize = true;
+            this.RADIO_Physics07.Location = new System.Drawing.Point(6, 180);
+            this.RADIO_Physics07.Name = "RADIO_Physics07";
+            this.RADIO_Physics07.Size = new System.Drawing.Size(84, 17);
+            this.RADIO_Physics07.TabIndex = 21;
+            this.RADIO_Physics07.TabStop = true;
+            this.RADIO_Physics07.Text = "Version 1.47";
+            this.RADIO_Physics07.UseVisualStyleBackColor = true;
+            // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 211);
+            this.ClientSize = new System.Drawing.Size(550, 396);
+            this.Controls.Add(this.GroupBox_Physics_Settings);
             this.Controls.Add(this.LABEL_LastItemPlaced);
             this.Controls.Add(this.GroupBox_Scroll_Settings);
             this.Controls.Add(this.CHECK_OldPhysics);
@@ -322,6 +440,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
             this.GroupBox_Scroll_Settings.ResumeLayout(false);
             this.GroupBox_Scroll_Settings.PerformLayout();
+            this.GroupBox_Physics_Settings.ResumeLayout(false);
+            this.GroupBox_Physics_Settings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,6 +474,15 @@
         private System.Windows.Forms.RadioButton RADIO_Scroll_None;
         private System.Windows.Forms.RadioButton RADIO_Scroll_Lock;
         private System.Windows.Forms.Label LABEL_LastItemPlaced;
+        private System.Windows.Forms.GroupBox GroupBox_Physics_Settings;
+        private System.Windows.Forms.RadioButton RADIO_Physics00;
+        private System.Windows.Forms.RadioButton RADIO_Physics07;
+        private System.Windows.Forms.RadioButton RADIO_Physics06;
+        private System.Windows.Forms.RadioButton RADIO_Physics05;
+        private System.Windows.Forms.RadioButton RADIO_Physics04;
+        private System.Windows.Forms.RadioButton RADIO_Physics03;
+        private System.Windows.Forms.RadioButton RADIO_Physics02;
+        private System.Windows.Forms.RadioButton RADIO_Physics01;
     }
 }
 

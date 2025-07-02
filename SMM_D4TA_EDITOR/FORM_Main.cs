@@ -24,7 +24,7 @@ namespace SMM_D4TA_EDITOR
         int CourseNameStartOffset = 0x29;
         int CourseNameEndOffset = 0x68;
 
-        int CourseUpdatePhysics = 0x27;
+        int CourseUpdatePhysicsOffset = 0x27; //There are physics from 00 to 07
 
         int CourseTimerStartOffset = 0x70;
         int CourseTimerEndOffset = 0x71;
@@ -86,6 +86,11 @@ namespace SMM_D4TA_EDITOR
                 Array.Copy(fileBytes, CourseScrollSettingsOffset, CourseScrollByte, 0, 1);
                 int CourseScroll = Convert.ToInt32(CourseScrollByte[0]);
 
+                //Extract course autoscroll setting byte (offset 0x27)
+                byte[] CourseUpdatePhysicsByte = new byte[1];
+                Array.Copy(fileBytes, CourseUpdatePhysicsOffset, CourseUpdatePhysicsByte, 0, 1);
+                int CourseUpdatePhysics = Convert.ToInt32(CourseUpdatePhysicsByte[0]);
+
                 int Jump0x20 = 0x20;  //Basically because there's a 0x20 sized space between each item placed
                 int lastItemOffset = -1; //Will throw a -1 if this value doesn't change
                 int itemID = -1;
@@ -106,7 +111,7 @@ namespace SMM_D4TA_EDITOR
 
                     //Stop if there's an empty block
                     if (isEmpty) break;
-                    
+
                     //Update if isn't empty
                     itemID = fileBytes[offset];
                     lastItemOffset = offset;
@@ -120,22 +125,29 @@ namespace SMM_D4TA_EDITOR
                 TB_CourseName.Enabled = true;
                 NUMERIC_CourseTimer.Enabled = true;
                 GroupBox_Scroll_Settings.Enabled = true;
+                GroupBox_Physics_Settings.Enabled = true;
                 CHECK_OldPhysics.Enabled = true;
                 CHECK_RemoveFlags.Enabled = true;
                 CHECK_UploadReady.Enabled = true;
                 BUTTON_Cancel.Enabled = true;
                 BUTTON_SaveFile.Enabled = true;
 
-                if(CourseScroll == 0) RADIO_Scroll_None.Checked = true;
-                
-                else if(CourseScroll == 1) RADIO_Scroll_Turtle.Checked = true;
-                
-                else if(CourseScroll == 2) RADIO_Scroll_Rabbit.Checked = true;
-                
-                else if(CourseScroll == 3) RADIO_Scroll_Cheetah.Checked = true;
-                
-                else if(CourseScroll == 4) RADIO_Scroll_Lock.Checked = true;
+                if (CourseScroll == 0) RADIO_Scroll_None.Checked = true;
+                else if (CourseScroll == 1) RADIO_Scroll_Turtle.Checked = true;
+                else if (CourseScroll == 2) RADIO_Scroll_Rabbit.Checked = true;
+                else if (CourseScroll == 3) RADIO_Scroll_Cheetah.Checked = true;
+                else if (CourseScroll == 4) RADIO_Scroll_Lock.Checked = true;
                 else CourseScroll = 0;
+
+                if (CourseUpdatePhysics == 0) RADIO_Physics00.Checked = true;
+                else if (CourseUpdatePhysics == 1) RADIO_Physics01.Checked = true;
+                else if (CourseUpdatePhysics == 2) RADIO_Physics02.Checked = true;
+                else if (CourseUpdatePhysics == 3) RADIO_Physics02.Checked = true;
+                else if (CourseUpdatePhysics == 4) RADIO_Physics03.Checked = true;
+                else if (CourseUpdatePhysics == 5) RADIO_Physics04.Checked = true;
+                else if (CourseUpdatePhysics == 6) RADIO_Physics06.Checked = true;
+                else if (CourseUpdatePhysics == 7) RADIO_Physics07.Checked = true;
+                else CourseUpdatePhysics = 0;
 
                 TB_CourseName.Text = CourseName;
                 NUMERIC_CourseTimer.Value = CourseTimer;
@@ -150,10 +162,7 @@ namespace SMM_D4TA_EDITOR
 
         private void BUTTON_SaveFile_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(currentFilePath))
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(currentFilePath)) return;
 
             //Set file path and read data
             byte[] fileBytes = File.ReadAllBytes(currentFilePath);
@@ -188,11 +197,25 @@ namespace SMM_D4TA_EDITOR
                 fileBytes[ClearCheckOffset] = 0x01;
             }
 
-            //There are physics from 00 to 07 (offset 0x27)
+
             if (CHECK_OldPhysics.Checked)
             {
-                fileBytes[CourseUpdatePhysics] = 0x00;
+
             }
+
+            byte physicsValue = 0;
+            if (RADIO_Physics00.Checked) physicsValue = 0;
+            else if (RADIO_Physics01.Checked) physicsValue = 1;
+            else if (RADIO_Physics02.Checked) physicsValue = 2;
+            else if (RADIO_Physics02.Checked) physicsValue = 3;
+            else if (RADIO_Physics03.Checked) physicsValue = 4;
+            else if (RADIO_Physics04.Checked) physicsValue = 5;
+            else if (RADIO_Physics06.Checked) physicsValue = 6;
+            else if (RADIO_Physics07.Checked) physicsValue = 7;
+            else physicsValue = 0;
+
+            //Insert physics byte value to the file
+            fileBytes[CourseUpdatePhysicsOffset] = physicsValue;
 
             byte scrollValue = 0;
             if (RADIO_Scroll_Turtle.Checked) scrollValue = 1;
@@ -225,6 +248,7 @@ namespace SMM_D4TA_EDITOR
             CHECK_UploadReady.Enabled = false;
             CHECK_OldPhysics.Enabled = false;
             GroupBox_Scroll_Settings.Enabled = false;
+            GroupBox_Physics_Settings.Enabled = false;
             BUTTON_Cancel.Enabled = false;
             BUTTON_SaveFile.Enabled = false;
 
@@ -234,6 +258,11 @@ namespace SMM_D4TA_EDITOR
             CHECK_RemoveFlags.Checked = false;
             CHECK_UploadReady.Checked = false;
             CHECK_OldPhysics.Checked = false;
+        }
+
+        private void radioButton6_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
