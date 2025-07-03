@@ -68,11 +68,19 @@
             this.RADIO_CourseStatusDownloaded = new System.Windows.Forms.RadioButton();
             this.RADIO_CourseStatusNone = new System.Windows.Forms.RadioButton();
             this.BUTTON_CourseStatusNone = new System.Windows.Forms.Button();
+            this.BUTTON_TimerMaximum = new System.Windows.Forms.Button();
+            this.BUTTON_TimerMinimum = new System.Windows.Forms.Button();
+            this.GroupBox_Style = new System.Windows.Forms.GroupBox();
+            this.RADIO_M1 = new System.Windows.Forms.RadioButton();
+            this.RADIO_M3 = new System.Windows.Forms.RadioButton();
+            this.RADIO_MW = new System.Windows.Forms.RadioButton();
+            this.RADIO_WU = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             this.GroupBox_Scroll_Settings.SuspendLayout();
             this.GroupBox_Physics_Settings.SuspendLayout();
             this.GroupBox_CourseStatus.SuspendLayout();
+            this.GroupBox_Style.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -172,7 +180,7 @@
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(229, 79);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(212, 55);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(89, 17);
             this.CHECK_UploadReady.TabIndex = 3;
@@ -215,7 +223,7 @@
             this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_Turtle);
             this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_None);
             this.GroupBox_Scroll_Settings.Enabled = false;
-            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(123, 221);
+            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(123, 232);
             this.GroupBox_Scroll_Settings.Name = "GroupBox_Scroll_Settings";
             this.GroupBox_Scroll_Settings.Size = new System.Drawing.Size(194, 68);
             this.GroupBox_Scroll_Settings.TabIndex = 5;
@@ -280,7 +288,7 @@
             // LABEL_LastItemPlaced
             // 
             this.LABEL_LastItemPlaced.AutoSize = true;
-            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(120, 55);
+            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(12, 76);
             this.LABEL_LastItemPlaced.Name = "LABEL_LastItemPlaced";
             this.LABEL_LastItemPlaced.Size = new System.Drawing.Size(132, 13);
             this.LABEL_LastItemPlaced.TabIndex = 12;
@@ -297,9 +305,9 @@
             this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics01);
             this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics00);
             this.GroupBox_Physics_Settings.Enabled = false;
-            this.GroupBox_Physics_Settings.Location = new System.Drawing.Point(15, 79);
+            this.GroupBox_Physics_Settings.Location = new System.Drawing.Point(14, 92);
             this.GroupBox_Physics_Settings.Name = "GroupBox_Physics_Settings";
-            this.GroupBox_Physics_Settings.Size = new System.Drawing.Size(100, 210);
+            this.GroupBox_Physics_Settings.Size = new System.Drawing.Size(100, 208);
             this.GroupBox_Physics_Settings.TabIndex = 13;
             this.GroupBox_Physics_Settings.TabStop = false;
             this.GroupBox_Physics_Settings.Text = "Physics settings";
@@ -309,10 +317,10 @@
             this.RADIO_Physics07.AutoSize = true;
             this.RADIO_Physics07.Location = new System.Drawing.Point(6, 180);
             this.RADIO_Physics07.Name = "RADIO_Physics07";
-            this.RADIO_Physics07.Size = new System.Drawing.Size(84, 17);
+            this.RADIO_Physics07.Size = new System.Drawing.Size(90, 17);
             this.RADIO_Physics07.TabIndex = 21;
             this.RADIO_Physics07.TabStop = true;
-            this.RADIO_Physics07.Text = "Version 1.47";
+            this.RADIO_Physics07.Text = "Version 1.46?";
             this.RADIO_Physics07.UseVisualStyleBackColor = true;
             // 
             // RADIO_Physics06
@@ -408,7 +416,7 @@
             this.GroupBox_CourseStatus.Controls.Add(this.RADIO_CourseStatusDownloaded);
             this.GroupBox_CourseStatus.Controls.Add(this.RADIO_CourseStatusNone);
             this.GroupBox_CourseStatus.Enabled = false;
-            this.GroupBox_CourseStatus.Location = new System.Drawing.Point(123, 79);
+            this.GroupBox_CourseStatus.Location = new System.Drawing.Point(123, 92);
             this.GroupBox_CourseStatus.Name = "GroupBox_CourseStatus";
             this.GroupBox_CourseStatus.Size = new System.Drawing.Size(100, 110);
             this.GroupBox_CourseStatus.TabIndex = 15;
@@ -462,7 +470,7 @@
             // BUTTON_CourseStatusNone
             // 
             this.BUTTON_CourseStatusNone.Enabled = false;
-            this.BUTTON_CourseStatusNone.Location = new System.Drawing.Point(123, 193);
+            this.BUTTON_CourseStatusNone.Location = new System.Drawing.Point(123, 203);
             this.BUTTON_CourseStatusNone.Name = "BUTTON_CourseStatusNone";
             this.BUTTON_CourseStatusNone.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_CourseStatusNone.TabIndex = 16;
@@ -470,11 +478,94 @@
             this.BUTTON_CourseStatusNone.UseVisualStyleBackColor = true;
             this.BUTTON_CourseStatusNone.Click += new System.EventHandler(this.BUTTON_CourseStatusNone_Click);
             // 
+            // BUTTON_TimerMaximum
+            // 
+            this.BUTTON_TimerMaximum.Enabled = false;
+            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(166, 51);
+            this.BUTTON_TimerMaximum.Name = "BUTTON_TimerMaximum";
+            this.BUTTON_TimerMaximum.Size = new System.Drawing.Size(40, 23);
+            this.BUTTON_TimerMaximum.TabIndex = 17;
+            this.BUTTON_TimerMaximum.Text = "Max";
+            this.BUTTON_TimerMaximum.UseVisualStyleBackColor = true;
+            this.BUTTON_TimerMaximum.Click += new System.EventHandler(this.BUTTON_TimerMaximum_Click);
+            // 
+            // BUTTON_TimerMinimum
+            // 
+            this.BUTTON_TimerMinimum.Enabled = false;
+            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(120, 51);
+            this.BUTTON_TimerMinimum.Name = "BUTTON_TimerMinimum";
+            this.BUTTON_TimerMinimum.Size = new System.Drawing.Size(40, 23);
+            this.BUTTON_TimerMinimum.TabIndex = 18;
+            this.BUTTON_TimerMinimum.Text = "Min";
+            this.BUTTON_TimerMinimum.UseVisualStyleBackColor = true;
+            this.BUTTON_TimerMinimum.Click += new System.EventHandler(this.BUTTON_TimerMinimum_Click);
+            // 
+            // GroupBox_Style
+            // 
+            this.GroupBox_Style.Controls.Add(this.RADIO_WU);
+            this.GroupBox_Style.Controls.Add(this.RADIO_MW);
+            this.GroupBox_Style.Controls.Add(this.RADIO_M3);
+            this.GroupBox_Style.Controls.Add(this.RADIO_M1);
+            this.GroupBox_Style.Enabled = false;
+            this.GroupBox_Style.Location = new System.Drawing.Point(229, 92);
+            this.GroupBox_Style.Name = "GroupBox_Style";
+            this.GroupBox_Style.Size = new System.Drawing.Size(75, 110);
+            this.GroupBox_Style.TabIndex = 19;
+            this.GroupBox_Style.TabStop = false;
+            this.GroupBox_Style.Text = "Style";
+            // 
+            // RADIO_M1
+            // 
+            this.RADIO_M1.AutoSize = true;
+            this.RADIO_M1.Location = new System.Drawing.Point(6, 19);
+            this.RADIO_M1.Name = "RADIO_M1";
+            this.RADIO_M1.Size = new System.Drawing.Size(54, 17);
+            this.RADIO_M1.TabIndex = 0;
+            this.RADIO_M1.TabStop = true;
+            this.RADIO_M1.Text = "SMB1";
+            this.RADIO_M1.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_M3
+            // 
+            this.RADIO_M3.AutoSize = true;
+            this.RADIO_M3.Location = new System.Drawing.Point(6, 42);
+            this.RADIO_M3.Name = "RADIO_M3";
+            this.RADIO_M3.Size = new System.Drawing.Size(54, 17);
+            this.RADIO_M3.TabIndex = 1;
+            this.RADIO_M3.TabStop = true;
+            this.RADIO_M3.Text = "SMB3";
+            this.RADIO_M3.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_MW
+            // 
+            this.RADIO_MW.AutoSize = true;
+            this.RADIO_MW.Location = new System.Drawing.Point(6, 65);
+            this.RADIO_MW.Name = "RADIO_MW";
+            this.RADIO_MW.Size = new System.Drawing.Size(52, 17);
+            this.RADIO_MW.TabIndex = 2;
+            this.RADIO_MW.TabStop = true;
+            this.RADIO_MW.Text = "SMW";
+            this.RADIO_MW.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_WU
+            // 
+            this.RADIO_WU.AutoSize = true;
+            this.RADIO_WU.Location = new System.Drawing.Point(6, 88);
+            this.RADIO_WU.Name = "RADIO_WU";
+            this.RADIO_WU.Size = new System.Drawing.Size(64, 17);
+            this.RADIO_WU.TabIndex = 3;
+            this.RADIO_WU.TabStop = true;
+            this.RADIO_WU.Text = "NSMBU";
+            this.RADIO_WU.UseVisualStyleBackColor = true;
+            // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 341);
+            this.Controls.Add(this.GroupBox_Style);
+            this.Controls.Add(this.BUTTON_TimerMinimum);
+            this.Controls.Add(this.BUTTON_TimerMaximum);
             this.Controls.Add(this.BUTTON_CourseStatusNone);
             this.Controls.Add(this.GroupBox_CourseStatus);
             this.Controls.Add(this.LABEL_ClearCheckStatus);
@@ -503,6 +594,8 @@
             this.GroupBox_Physics_Settings.PerformLayout();
             this.GroupBox_CourseStatus.ResumeLayout(false);
             this.GroupBox_CourseStatus.PerformLayout();
+            this.GroupBox_Style.ResumeLayout(false);
+            this.GroupBox_Style.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -549,6 +642,13 @@
         private System.Windows.Forms.RadioButton RADIO_CourseStatusRemoved;
         private System.Windows.Forms.RadioButton RADIO_CourseStatusUploaded;
         private System.Windows.Forms.Button BUTTON_CourseStatusNone;
+        private System.Windows.Forms.Button BUTTON_TimerMaximum;
+        private System.Windows.Forms.Button BUTTON_TimerMinimum;
+        private System.Windows.Forms.GroupBox GroupBox_Style;
+        private System.Windows.Forms.RadioButton RADIO_WU;
+        private System.Windows.Forms.RadioButton RADIO_MW;
+        private System.Windows.Forms.RadioButton RADIO_M3;
+        private System.Windows.Forms.RadioButton RADIO_M1;
     }
 }
 

@@ -26,6 +26,10 @@ namespace SMM_D4TA_EDITOR
 
         int CourseUpdatePhysicsOffset = 0x27; //There are physics from 00 to 07
 
+        //VALUES: [4D 31 = M1] [4D 33 = M3] [4D 57 = MW] [57 55 = WU]
+        int CourseStyleStartOffset = 0x6A;
+        int CourseStyleEndOffset = 0x6B;
+
         int CourseTimerStartOffset = 0x70;
         int CourseTimerEndOffset = 0x71;
 
@@ -59,6 +63,16 @@ namespace SMM_D4TA_EDITOR
             }
         }
 
+        private void BUTTON_TimerMinimum_Click(object sender, EventArgs e)
+        {
+            NUMERIC_CourseTimer.Value = 0;
+        }
+
+        private void BUTTON_TimerMaximum_Click(object sender, EventArgs e)
+        {
+            NUMERIC_CourseTimer.Value = 65535;
+        }
+
         private void ToolStripMenuItem_SelectFile_Click(object sender, EventArgs e)
         {
             if (OpenFileDialog_cdtFile.ShowDialog() == DialogResult.OK)
@@ -71,7 +85,6 @@ namespace SMM_D4TA_EDITOR
                 int CourseNameBytesLength = CourseNameEndOffset - CourseNameStartOffset + 1;
                 byte[] CourseNameBytes = new byte[CourseNameBytesLength];
                 Array.Copy(fileBytes, CourseNameStartOffset, CourseNameBytes, 0, CourseNameBytesLength);
-
                 //Convert bytes to string using UTF-16LE encode
                 string CourseName = Encoding.Unicode.GetString(CourseNameBytes).TrimEnd('\0');
 
@@ -86,10 +99,17 @@ namespace SMM_D4TA_EDITOR
                 Array.Copy(fileBytes, CourseScrollSettingsOffset, CourseScrollByte, 0, 1);
                 int CourseScroll = Convert.ToInt32(CourseScrollByte[0]);
 
-                //Extract course autoscroll setting byte (offset 0x27)
+                //Extract course physics setting byte (offset 0x27)
                 byte[] CourseUpdatePhysicsByte = new byte[1];
                 Array.Copy(fileBytes, CourseUpdatePhysicsOffset, CourseUpdatePhysicsByte, 0, 1);
                 int CourseUpdatePhysics = Convert.ToInt32(CourseUpdatePhysicsByte[0]);
+
+                //Extract course style bytes (from offset 0x6A to 0x6B)
+                int CourseStyleBytesLength = CourseStyleEndOffset - CourseStyleStartOffset + 1;
+                byte[] CourseStyleBytes = new byte[CourseStyleBytesLength];
+                Array.Copy(fileBytes, CourseStyleStartOffset, CourseStyleBytes, 0, CourseStyleBytesLength);
+                //Convert bytes to string using ASCII encode
+                string CourseStyle = Encoding.ASCII.GetString(CourseStyleBytes);
 
                 int Jump0x20 = 0x20;  //Basically because there's a 0x20 sized space between each item placed
                 int lastItemOffset = -1; //Will throw a -1 if this value doesn't change
@@ -126,6 +146,9 @@ namespace SMM_D4TA_EDITOR
                 NUMERIC_CourseTimer.Enabled = true;
                 GroupBox_Scroll_Settings.Enabled = true;
                 GroupBox_Physics_Settings.Enabled = true;
+                GroupBox_Style.Enabled = true;
+                BUTTON_TimerMinimum.Enabled = true;
+                BUTTON_TimerMaximum.Enabled = true;
                 BUTTON_CourseStatusNone.Enabled = true;
                 CHECK_UploadReady.Enabled = true;
                 BUTTON_Cancel.Enabled = true;
@@ -147,6 +170,12 @@ namespace SMM_D4TA_EDITOR
                 else if (CourseUpdatePhysics == 6) RADIO_Physics06.Checked = true;
                 else if (CourseUpdatePhysics == 7) RADIO_Physics07.Checked = true;
                 else CourseUpdatePhysics = 0;
+
+                if (CourseStyle == "M1") RADIO_M1.Checked = true;
+                else if (CourseStyle == "M3") RADIO_M3.Checked = true;
+                else if (CourseStyle == "MW") RADIO_MW.Checked = true;
+                else if (CourseStyle == "WU") RADIO_WU.Checked = true;
+                else CourseStyle = "M1";
 
                 if (fileBytes[ClearCheckOffset] == 0x01) LABEL_ClearCheckStatus.Text = "Cleared";
                 else LABEL_ClearCheckStatus.Text = "Uncleared";
@@ -220,6 +249,18 @@ namespace SMM_D4TA_EDITOR
             //Insert scroll byte value to the file
             fileBytes[CourseScrollSettingsOffset] = scrollValue;
 
+            string styleValue;
+            if (RADIO_M1.Checked) styleValue = "M1";
+            else if (RADIO_M3.Checked) styleValue = "M3";
+            else if (RADIO_MW.Checked) styleValue = "MW";
+            else if (RADIO_WU.Checked) styleValue = "WU";
+            else styleValue = "M1";
+
+            //Insert style byte value to the file
+            byte[] styleBytes = Encoding.ASCII.GetBytes(styleValue);
+            fileBytes[CourseStyleStartOffset] = styleBytes[0];
+            fileBytes[CourseStyleEndOffset] = styleBytes[1];
+
             //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
             Crc32 crc32 = new Crc32();
             byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
@@ -244,6 +285,8 @@ namespace SMM_D4TA_EDITOR
 
             LABEL_ClearCheckStatus.Text = "Uncleared";
             RADIO_CourseStatusNone.Checked = true;
+
+            File.WriteAllBytes(currentFilePath, fileBytes);
         }
 
         private void CleanUI()
@@ -253,6 +296,9 @@ namespace SMM_D4TA_EDITOR
             CHECK_UploadReady.Enabled = false;
             GroupBox_Scroll_Settings.Enabled = false;
             GroupBox_Physics_Settings.Enabled = false;
+            GroupBox_Style.Enabled = false;
+            BUTTON_TimerMinimum.Enabled = false;
+            BUTTON_TimerMaximum.Enabled = false;
             BUTTON_CourseStatusNone.Enabled = false;
             BUTTON_Cancel.Enabled = false;
             BUTTON_SaveFile.Enabled = false;
