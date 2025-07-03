@@ -119,15 +119,14 @@ namespace SMM_D4TA_EDITOR
 
                 if (lastItemOffset != -1)
                 {
-                    LABEL_LastItemPlaced.Text = $"Last item placed (memory): {itemID} ({itemID:X2})";
+                    LABEL_LastItemPlaced.Text = $"Last item placed (memory): {itemID} ({itemID:X2}) at 0x{lastItemOffset}";
                 }
 
                 TB_CourseName.Enabled = true;
                 NUMERIC_CourseTimer.Enabled = true;
                 GroupBox_Scroll_Settings.Enabled = true;
                 GroupBox_Physics_Settings.Enabled = true;
-                CHECK_OldPhysics.Enabled = true;
-                CHECK_RemoveFlags.Enabled = true;
+                BUTTON_CourseStatusNone.Enabled = true;
                 CHECK_UploadReady.Enabled = true;
                 BUTTON_Cancel.Enabled = true;
                 BUTTON_SaveFile.Enabled = true;
@@ -148,6 +147,14 @@ namespace SMM_D4TA_EDITOR
                 else if (CourseUpdatePhysics == 6) RADIO_Physics06.Checked = true;
                 else if (CourseUpdatePhysics == 7) RADIO_Physics07.Checked = true;
                 else CourseUpdatePhysics = 0;
+
+                if (fileBytes[ClearCheckOffset] == 0x01) LABEL_ClearCheckStatus.Text = "Cleared";
+                else LABEL_ClearCheckStatus.Text = "Uncleared";
+
+                if(fileBytes[DownloadedCourseOffset] == 0x01) RADIO_CourseStatusDownloaded.Checked = true;
+                else if (fileBytes[UploadedCourseOffset] == 0x01) RADIO_CourseStatusUploaded.Checked = true;
+                else if (fileBytes[RemovedCourseOffset] == 0x01) RADIO_CourseStatusRemoved.Checked = true;
+                else RADIO_CourseStatusNone.Checked = true;
 
                 TB_CourseName.Text = CourseName;
                 NUMERIC_CourseTimer.Value = CourseTimer;
@@ -184,23 +191,9 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseTimerStartOffset] = (byte)(NewCourseTimer >> 8); //MSB
             fileBytes[CourseTimerEndOffset] = (byte)(NewCourseTimer & 0xFF); //LSB
 
-            if (CHECK_RemoveFlags.Checked)
-            {
-                fileBytes[DownloadedCourseOffset] = 0x00;
-                fileBytes[RemovedCourseOffset] = 0x00;
-                fileBytes[UploadedCourseOffset] = 0x00;
-                fileBytes[ClearCheckOffset] = 0x00;
-            }
-
             if (CHECK_UploadReady.Checked)
             {
                 fileBytes[ClearCheckOffset] = 0x01;
-            }
-
-
-            if (CHECK_OldPhysics.Checked)
-            {
-
             }
 
             byte physicsValue = 0;
@@ -240,29 +233,34 @@ namespace SMM_D4TA_EDITOR
             CleanUI();
         }
 
+        private void BUTTON_CourseStatusNone_Click(object sender, EventArgs e)
+        {
+            byte[] fileBytes = File.ReadAllBytes(currentFilePath);
+
+            fileBytes[DownloadedCourseOffset] = 0x00;
+            fileBytes[RemovedCourseOffset] = 0x00;
+            fileBytes[UploadedCourseOffset] = 0x00;
+            fileBytes[ClearCheckOffset] = 0x00;
+
+            LABEL_ClearCheckStatus.Text = "Uncleared";
+            RADIO_CourseStatusNone.Checked = true;
+        }
+
         private void CleanUI()
         {
             TB_CourseName.Enabled = false;
             NUMERIC_CourseTimer.Enabled = false;
-            CHECK_RemoveFlags.Enabled = false;
             CHECK_UploadReady.Enabled = false;
-            CHECK_OldPhysics.Enabled = false;
             GroupBox_Scroll_Settings.Enabled = false;
             GroupBox_Physics_Settings.Enabled = false;
+            BUTTON_CourseStatusNone.Enabled = false;
             BUTTON_Cancel.Enabled = false;
             BUTTON_SaveFile.Enabled = false;
 
             TB_CourseName.Text = "";
             LABEL_LastItemPlaced.Text = "Last item placed (memory):";
             NUMERIC_CourseTimer.Value = 0;
-            CHECK_RemoveFlags.Checked = false;
             CHECK_UploadReady.Checked = false;
-            CHECK_OldPhysics.Checked = false;
-        }
-
-        private void radioButton6_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
