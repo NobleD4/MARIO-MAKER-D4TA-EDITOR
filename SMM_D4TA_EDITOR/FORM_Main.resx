@@ -135,6 +135,18 @@
   <metadata name="OpenFileDialog_cdtFile.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>127, 90</value>
   </metadata>
+  <metadata name="OpenFileDialog_IMAGE_To_TNL.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>552, 18</value>
+  </metadata>
+  <metadata name="OpenFileDialog_TNL_To_IMAGE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>552, 54</value>
+  </metadata>
+  <metadata name="SaveFileDialog_IMAGE_To_TNL.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>774, 18</value>
+  </metadata>
+  <metadata name="SaveFileDialog_TNL_To_IMAGE.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>774, 54</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>140</value>
   </metadata>

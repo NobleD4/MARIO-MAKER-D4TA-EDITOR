@@ -31,8 +31,12 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FORM_Main));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItem_SelectFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItem_BYML_To_XML = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_BYMLConverter = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_XML_To_BYML = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_BYML_To_XML = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_TNLConverter = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_IMAGE_To_TNL = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_TNL_To_IMAGE = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveFileDialog_BYML_To_XML = new System.Windows.Forms.SaveFileDialog();
             this.OpenFileDialog_BYML_To_XML = new System.Windows.Forms.OpenFileDialog();
             this.SaveFileDialog_XML_To_BYML = new System.Windows.Forms.SaveFileDialog();
@@ -71,10 +75,14 @@
             this.BUTTON_TimerMaximum = new System.Windows.Forms.Button();
             this.BUTTON_TimerMinimum = new System.Windows.Forms.Button();
             this.GroupBox_Style = new System.Windows.Forms.GroupBox();
-            this.RADIO_M1 = new System.Windows.Forms.RadioButton();
-            this.RADIO_M3 = new System.Windows.Forms.RadioButton();
-            this.RADIO_MW = new System.Windows.Forms.RadioButton();
             this.RADIO_WU = new System.Windows.Forms.RadioButton();
+            this.RADIO_MW = new System.Windows.Forms.RadioButton();
+            this.RADIO_M3 = new System.Windows.Forms.RadioButton();
+            this.RADIO_M1 = new System.Windows.Forms.RadioButton();
+            this.OpenFileDialog_IMAGE_To_TNL = new System.Windows.Forms.OpenFileDialog();
+            this.OpenFileDialog_TNL_To_IMAGE = new System.Windows.Forms.OpenFileDialog();
+            this.SaveFileDialog_IMAGE_To_TNL = new System.Windows.Forms.SaveFileDialog();
+            this.SaveFileDialog_TNL_To_IMAGE = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             this.GroupBox_Scroll_Settings.SuspendLayout();
@@ -87,11 +95,11 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItem_SelectFile,
-            this.ToolStripMenuItem_BYML_To_XML,
-            this.ToolStripMenuItem_XML_To_BYML});
+            this.ToolStripMenuItem_BYMLConverter,
+            this.ToolStripMenuItem_TNLConverter});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(384, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(404, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -102,19 +110,51 @@
             this.ToolStripMenuItem_SelectFile.Text = "File";
             this.ToolStripMenuItem_SelectFile.Click += new System.EventHandler(this.ToolStripMenuItem_SelectFile_Click);
             // 
-            // ToolStripMenuItem_BYML_To_XML
+            // ToolStripMenuItem_BYMLConverter
             // 
-            this.ToolStripMenuItem_BYML_To_XML.Name = "ToolStripMenuItem_BYML_To_XML";
-            this.ToolStripMenuItem_BYML_To_XML.Size = new System.Drawing.Size(81, 20);
-            this.ToolStripMenuItem_BYML_To_XML.Text = "byml → xml";
-            this.ToolStripMenuItem_BYML_To_XML.Click += new System.EventHandler(this.ToolStripMenuItem_BYML_To_XML_Click);
+            this.ToolStripMenuItem_BYMLConverter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItem_XML_To_BYML,
+            this.ToolStripMenuItem_BYML_To_XML});
+            this.ToolStripMenuItem_BYMLConverter.Name = "ToolStripMenuItem_BYMLConverter";
+            this.ToolStripMenuItem_BYMLConverter.Size = new System.Drawing.Size(103, 20);
+            this.ToolStripMenuItem_BYMLConverter.Text = "BYML converter";
             // 
             // ToolStripMenuItem_XML_To_BYML
             // 
             this.ToolStripMenuItem_XML_To_BYML.Name = "ToolStripMenuItem_XML_To_BYML";
-            this.ToolStripMenuItem_XML_To_BYML.Size = new System.Drawing.Size(81, 20);
-            this.ToolStripMenuItem_XML_To_BYML.Text = "xml → byml";
+            this.ToolStripMenuItem_XML_To_BYML.Size = new System.Drawing.Size(145, 22);
+            this.ToolStripMenuItem_XML_To_BYML.Text = "XML → BYML";
             this.ToolStripMenuItem_XML_To_BYML.Click += new System.EventHandler(this.ToolStripMenuItem_XML_To_BYML_Click);
+            // 
+            // ToolStripMenuItem_BYML_To_XML
+            // 
+            this.ToolStripMenuItem_BYML_To_XML.Name = "ToolStripMenuItem_BYML_To_XML";
+            this.ToolStripMenuItem_BYML_To_XML.Size = new System.Drawing.Size(145, 22);
+            this.ToolStripMenuItem_BYML_To_XML.Text = "BYML → XML";
+            this.ToolStripMenuItem_BYML_To_XML.Click += new System.EventHandler(this.ToolStripMenuItem_BYML_To_XML_Click);
+            // 
+            // ToolStripMenuItem_TNLConverter
+            // 
+            this.ToolStripMenuItem_TNLConverter.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItem_IMAGE_To_TNL,
+            this.ToolStripMenuItem_TNL_To_IMAGE});
+            this.ToolStripMenuItem_TNLConverter.Name = "ToolStripMenuItem_TNLConverter";
+            this.ToolStripMenuItem_TNLConverter.Size = new System.Drawing.Size(94, 20);
+            this.ToolStripMenuItem_TNLConverter.Text = "TNL converter";
+            // 
+            // ToolStripMenuItem_IMAGE_To_TNL
+            // 
+            this.ToolStripMenuItem_IMAGE_To_TNL.Name = "ToolStripMenuItem_IMAGE_To_TNL";
+            this.ToolStripMenuItem_IMAGE_To_TNL.Size = new System.Drawing.Size(148, 22);
+            this.ToolStripMenuItem_IMAGE_To_TNL.Text = "IMAGE → TNL";
+            this.ToolStripMenuItem_IMAGE_To_TNL.Click += new System.EventHandler(this.ToolStripMenuItem_IMAGE_To_TNL_Click);
+            // 
+            // ToolStripMenuItem_TNL_To_IMAGE
+            // 
+            this.ToolStripMenuItem_TNL_To_IMAGE.Name = "ToolStripMenuItem_TNL_To_IMAGE";
+            this.ToolStripMenuItem_TNL_To_IMAGE.Size = new System.Drawing.Size(148, 22);
+            this.ToolStripMenuItem_TNL_To_IMAGE.Text = "TNL → IMAGE";
+            this.ToolStripMenuItem_TNL_To_IMAGE.Click += new System.EventHandler(this.ToolStripMenuItem_TNL_To_IMAGE_Click);
             // 
             // SaveFileDialog_BYML_To_XML
             // 
@@ -157,7 +197,7 @@
             // BUTTON_SaveFile
             // 
             this.BUTTON_SaveFile.Enabled = false;
-            this.BUTTON_SaveFile.Location = new System.Drawing.Point(297, 306);
+            this.BUTTON_SaveFile.Location = new System.Drawing.Point(317, 306);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_SaveFile.TabIndex = 11;
@@ -168,7 +208,7 @@
             // BUTTON_Cancel
             // 
             this.BUTTON_Cancel.Enabled = false;
-            this.BUTTON_Cancel.Location = new System.Drawing.Point(216, 306);
+            this.BUTTON_Cancel.Location = new System.Drawing.Point(236, 306);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_Cancel.TabIndex = 10;
@@ -228,7 +268,7 @@
             this.GroupBox_Scroll_Settings.Size = new System.Drawing.Size(194, 68);
             this.GroupBox_Scroll_Settings.TabIndex = 5;
             this.GroupBox_Scroll_Settings.TabStop = false;
-            this.GroupBox_Scroll_Settings.Text = "Autoscroll settings";
+            this.GroupBox_Scroll_Settings.Text = "Autoscroll";
             // 
             // RADIO_Scroll_Lock
             // 
@@ -310,17 +350,17 @@
             this.GroupBox_Physics_Settings.Size = new System.Drawing.Size(100, 208);
             this.GroupBox_Physics_Settings.TabIndex = 13;
             this.GroupBox_Physics_Settings.TabStop = false;
-            this.GroupBox_Physics_Settings.Text = "Physics settings";
+            this.GroupBox_Physics_Settings.Text = "Physics";
             // 
             // RADIO_Physics07
             // 
             this.RADIO_Physics07.AutoSize = true;
             this.RADIO_Physics07.Location = new System.Drawing.Point(6, 180);
             this.RADIO_Physics07.Name = "RADIO_Physics07";
-            this.RADIO_Physics07.Size = new System.Drawing.Size(90, 17);
+            this.RADIO_Physics07.Size = new System.Drawing.Size(84, 17);
             this.RADIO_Physics07.TabIndex = 21;
             this.RADIO_Physics07.TabStop = true;
-            this.RADIO_Physics07.Text = "Version 1.46?";
+            this.RADIO_Physics07.Text = "Version 1.47";
             this.RADIO_Physics07.UseVisualStyleBackColor = true;
             // 
             // RADIO_Physics06
@@ -331,7 +371,7 @@
             this.RADIO_Physics06.Size = new System.Drawing.Size(84, 17);
             this.RADIO_Physics06.TabIndex = 20;
             this.RADIO_Physics06.TabStop = true;
-            this.RADIO_Physics06.Text = "Version 1.45";
+            this.RADIO_Physics06.Text = "Version 1.46";
             this.RADIO_Physics06.UseVisualStyleBackColor = true;
             // 
             // RADIO_Physics05
@@ -339,10 +379,10 @@
             this.RADIO_Physics05.AutoSize = true;
             this.RADIO_Physics05.Location = new System.Drawing.Point(6, 134);
             this.RADIO_Physics05.Name = "RADIO_Physics05";
-            this.RADIO_Physics05.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics05.Size = new System.Drawing.Size(84, 17);
             this.RADIO_Physics05.TabIndex = 19;
             this.RADIO_Physics05.TabStop = true;
-            this.RADIO_Physics05.Text = "Version 1.XX";
+            this.RADIO_Physics05.Text = "Version 1.45";
             this.RADIO_Physics05.UseVisualStyleBackColor = true;
             // 
             // RADIO_Physics04
@@ -350,10 +390,10 @@
             this.RADIO_Physics04.AutoSize = true;
             this.RADIO_Physics04.Location = new System.Drawing.Point(6, 111);
             this.RADIO_Physics04.Name = "RADIO_Physics04";
-            this.RADIO_Physics04.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics04.Size = new System.Drawing.Size(84, 17);
             this.RADIO_Physics04.TabIndex = 18;
             this.RADIO_Physics04.TabStop = true;
-            this.RADIO_Physics04.Text = "Version 1.XX";
+            this.RADIO_Physics04.Text = "Version 1.44";
             this.RADIO_Physics04.UseVisualStyleBackColor = true;
             // 
             // RADIO_Physics03
@@ -361,10 +401,10 @@
             this.RADIO_Physics03.AutoSize = true;
             this.RADIO_Physics03.Location = new System.Drawing.Point(6, 88);
             this.RADIO_Physics03.Name = "RADIO_Physics03";
-            this.RADIO_Physics03.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics03.Size = new System.Drawing.Size(84, 17);
             this.RADIO_Physics03.TabIndex = 17;
             this.RADIO_Physics03.TabStop = true;
-            this.RADIO_Physics03.Text = "Version 1.XX";
+            this.RADIO_Physics03.Text = "Version 1.43";
             this.RADIO_Physics03.UseVisualStyleBackColor = true;
             // 
             // RADIO_Physics02
@@ -372,10 +412,10 @@
             this.RADIO_Physics02.AutoSize = true;
             this.RADIO_Physics02.Location = new System.Drawing.Point(6, 65);
             this.RADIO_Physics02.Name = "RADIO_Physics02";
-            this.RADIO_Physics02.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics02.Size = new System.Drawing.Size(84, 17);
             this.RADIO_Physics02.TabIndex = 16;
             this.RADIO_Physics02.TabStop = true;
-            this.RADIO_Physics02.Text = "Version 1.XX";
+            this.RADIO_Physics02.Text = "Version 1.30";
             this.RADIO_Physics02.UseVisualStyleBackColor = true;
             // 
             // RADIO_Physics01
@@ -383,10 +423,10 @@
             this.RADIO_Physics01.AutoSize = true;
             this.RADIO_Physics01.Location = new System.Drawing.Point(6, 42);
             this.RADIO_Physics01.Name = "RADIO_Physics01";
-            this.RADIO_Physics01.Size = new System.Drawing.Size(86, 17);
+            this.RADIO_Physics01.Size = new System.Drawing.Size(84, 17);
             this.RADIO_Physics01.TabIndex = 15;
             this.RADIO_Physics01.TabStop = true;
-            this.RADIO_Physics01.Text = "Version 1.XX";
+            this.RADIO_Physics01.Text = "Version 1.20";
             this.RADIO_Physics01.UseVisualStyleBackColor = true;
             // 
             // RADIO_Physics00
@@ -514,27 +554,16 @@
             this.GroupBox_Style.TabStop = false;
             this.GroupBox_Style.Text = "Style";
             // 
-            // RADIO_M1
+            // RADIO_WU
             // 
-            this.RADIO_M1.AutoSize = true;
-            this.RADIO_M1.Location = new System.Drawing.Point(6, 19);
-            this.RADIO_M1.Name = "RADIO_M1";
-            this.RADIO_M1.Size = new System.Drawing.Size(54, 17);
-            this.RADIO_M1.TabIndex = 0;
-            this.RADIO_M1.TabStop = true;
-            this.RADIO_M1.Text = "SMB1";
-            this.RADIO_M1.UseVisualStyleBackColor = true;
-            // 
-            // RADIO_M3
-            // 
-            this.RADIO_M3.AutoSize = true;
-            this.RADIO_M3.Location = new System.Drawing.Point(6, 42);
-            this.RADIO_M3.Name = "RADIO_M3";
-            this.RADIO_M3.Size = new System.Drawing.Size(54, 17);
-            this.RADIO_M3.TabIndex = 1;
-            this.RADIO_M3.TabStop = true;
-            this.RADIO_M3.Text = "SMB3";
-            this.RADIO_M3.UseVisualStyleBackColor = true;
+            this.RADIO_WU.AutoSize = true;
+            this.RADIO_WU.Location = new System.Drawing.Point(6, 88);
+            this.RADIO_WU.Name = "RADIO_WU";
+            this.RADIO_WU.Size = new System.Drawing.Size(64, 17);
+            this.RADIO_WU.TabIndex = 3;
+            this.RADIO_WU.TabStop = true;
+            this.RADIO_WU.Text = "NSMBU";
+            this.RADIO_WU.UseVisualStyleBackColor = true;
             // 
             // RADIO_MW
             // 
@@ -547,22 +576,49 @@
             this.RADIO_MW.Text = "SMW";
             this.RADIO_MW.UseVisualStyleBackColor = true;
             // 
-            // RADIO_WU
+            // RADIO_M3
             // 
-            this.RADIO_WU.AutoSize = true;
-            this.RADIO_WU.Location = new System.Drawing.Point(6, 88);
-            this.RADIO_WU.Name = "RADIO_WU";
-            this.RADIO_WU.Size = new System.Drawing.Size(64, 17);
-            this.RADIO_WU.TabIndex = 3;
-            this.RADIO_WU.TabStop = true;
-            this.RADIO_WU.Text = "NSMBU";
-            this.RADIO_WU.UseVisualStyleBackColor = true;
+            this.RADIO_M3.AutoSize = true;
+            this.RADIO_M3.Location = new System.Drawing.Point(6, 42);
+            this.RADIO_M3.Name = "RADIO_M3";
+            this.RADIO_M3.Size = new System.Drawing.Size(54, 17);
+            this.RADIO_M3.TabIndex = 1;
+            this.RADIO_M3.TabStop = true;
+            this.RADIO_M3.Text = "SMB3";
+            this.RADIO_M3.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_M1
+            // 
+            this.RADIO_M1.AutoSize = true;
+            this.RADIO_M1.Location = new System.Drawing.Point(6, 19);
+            this.RADIO_M1.Name = "RADIO_M1";
+            this.RADIO_M1.Size = new System.Drawing.Size(54, 17);
+            this.RADIO_M1.TabIndex = 0;
+            this.RADIO_M1.TabStop = true;
+            this.RADIO_M1.Text = "SMB1";
+            this.RADIO_M1.UseVisualStyleBackColor = true;
+            // 
+            // OpenFileDialog_IMAGE_To_TNL
+            // 
+            this.OpenFileDialog_IMAGE_To_TNL.Filter = "File|*.jpeg;*.jpg";
+            // 
+            // OpenFileDialog_TNL_To_IMAGE
+            // 
+            this.OpenFileDialog_TNL_To_IMAGE.Filter = "File|*.jpeg;*.jpg";
+            // 
+            // SaveFileDialog_IMAGE_To_TNL
+            // 
+            this.SaveFileDialog_IMAGE_To_TNL.Filter = "File|*.tnl";
+            // 
+            // SaveFileDialog_TNL_To_IMAGE
+            // 
+            this.SaveFileDialog_TNL_To_IMAGE.Filter = "File|*.jpeg";
             // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 341);
+            this.ClientSize = new System.Drawing.Size(404, 341);
             this.Controls.Add(this.GroupBox_Style);
             this.Controls.Add(this.BUTTON_TimerMinimum);
             this.Controls.Add(this.BUTTON_TimerMaximum);
@@ -604,8 +660,7 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_BYML_To_XML;
-        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_XML_To_BYML;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_BYMLConverter;
         private System.Windows.Forms.SaveFileDialog SaveFileDialog_BYML_To_XML;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog_BYML_To_XML;
         private System.Windows.Forms.SaveFileDialog SaveFileDialog_XML_To_BYML;
@@ -649,6 +704,15 @@
         private System.Windows.Forms.RadioButton RADIO_MW;
         private System.Windows.Forms.RadioButton RADIO_M3;
         private System.Windows.Forms.RadioButton RADIO_M1;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_TNLConverter;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog_IMAGE_To_TNL;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog_TNL_To_IMAGE;
+        private System.Windows.Forms.SaveFileDialog SaveFileDialog_IMAGE_To_TNL;
+        private System.Windows.Forms.SaveFileDialog SaveFileDialog_TNL_To_IMAGE;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_XML_To_BYML;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_BYML_To_XML;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_IMAGE_To_TNL;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_TNL_To_IMAGE;
     }
 }
 

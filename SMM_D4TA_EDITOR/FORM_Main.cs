@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace SMM_D4TA_EDITOR
 {
@@ -60,6 +61,56 @@ namespace SMM_D4TA_EDITOR
             {
                 File.WriteAllBytes(SaveFileDialog_XML_To_BYML.FileName,
                 BymlConverter.GetByml(File.ReadAllText(OpenFileDialog_XML_To_BYML.FileName, DefEnc)));
+            }
+        }
+
+        private void ToolStripMenuItem_IMAGE_To_TNL_Click(object sender, EventArgs e)
+        {
+            if (OpenFileDialog_IMAGE_To_TNL.ShowDialog() == DialogResult.OK)
+            {
+                byte[] ImageBytes = File.ReadAllBytes(OpenFileDialog_IMAGE_To_TNL.FileName);
+
+                if (ImageBytes.Length > 0xC7F8)
+                {
+                    MessageBox.Show("JPEG is too long\nMaximum length is 0xC7F8 bytes");
+                    return;
+                }
+
+                if (SaveFileDialog_IMAGE_To_TNL.ShowDialog() == DialogResult.OK)
+                {
+                    byte[] ImageLengthBytes = BitConverter.GetBytes(ImageBytes.Length);
+                    Array.Reverse(ImageLengthBytes); //Big endian order
+
+                    int totalSize = 0xC800; //51200 Bytes
+                    int payloadSize = 4 + ImageBytes.Length + (totalSize - 8 - ImageBytes.Length);
+                    byte[] payload = new byte[payloadSize];
+
+                    // Insert [size (4 bytes)] + [jpeg]
+                    Array.Copy(ImageLengthBytes, 0, payload, 0, 4);
+                    Array.Copy(ImageBytes, 0, payload, 4, ImageBytes.Length);
+                    // The rest of payload is already zero-initialized (padding)
+
+                    // CRC32
+                    Crc32 crc32 = new Crc32();
+                    byte[] crc = crc32.ComputeChecksumBytes(payload, 0, payload.Length);
+                    Array.Reverse(crc); //Big endian order
+
+                    //Create TNL
+                    byte[] tnlData = new byte[crc.Length + payload.Length];
+                    Array.Copy(crc, 0, tnlData, 0, crc.Length);
+                    Array.Copy(payload, 0, tnlData, crc.Length, payload.Length);
+
+                    File.WriteAllBytes(SaveFileDialog_IMAGE_To_TNL.FileName, tnlData);
+                    MessageBox.Show("TNL file created successfully.");
+                }
+            }
+        }
+
+        private void ToolStripMenuItem_TNL_To_IMAGE_Click(object sender, EventArgs e)
+        {
+            if (OpenFileDialog_TNL_To_IMAGE.ShowDialog() == DialogResult.OK)
+            {
+
             }
         }
 
