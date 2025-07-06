@@ -731,7 +731,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FORM_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "v0.1.0 D4TA EDITOR";
+            this.Text = "v0.1.1 D4TA EDITOR";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();

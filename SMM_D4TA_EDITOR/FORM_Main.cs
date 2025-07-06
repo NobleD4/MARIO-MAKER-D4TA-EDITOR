@@ -22,8 +22,8 @@ namespace SMM_D4TA_EDITOR
         public static Encoding DefEnc = Encoding.GetEncoding("Shift-JIS");
         private string currentFilePath = "";
 
-        int CourseNameStartOffset = 0x29;
-        int CourseNameEndOffset = 0x68;
+        int CourseNameStartOffset = 0x28;
+        int CourseNameEndOffset = 0x67;
 
         int CourseUpdatePhysicsOffset = 0x27; //There are physics from 00 to 07
 
@@ -168,12 +168,15 @@ namespace SMM_D4TA_EDITOR
                 currentFilePath = OpenFileDialog_cdtFile.FileName;
                 byte[] fileBytes = File.ReadAllBytes(currentFilePath);
 
-                //Extract course name bytes (from offset 0x29 to 0x68)
+                //Extract course name bytes (from offset 0x28 to 0x67)
                 int CourseNameBytesLength = CourseNameEndOffset - CourseNameStartOffset + 1;
                 byte[] CourseNameBytes = new byte[CourseNameBytesLength];
                 Array.Copy(fileBytes, CourseNameStartOffset, CourseNameBytes, 0, CourseNameBytesLength);
-                //Convert bytes to string using UTF-16LE encode
-                string CourseName = Encoding.Unicode.GetString(CourseNameBytes).TrimEnd('\0');
+                Array.Reverse(CourseNameBytes); //For some reason reversing this displays correctly chars
+                //Convert bytes to a char array using UTF-16LE encode
+                char[] charArray = Encoding.Unicode.GetString(CourseNameBytes).TrimEnd('\0').ToArray();
+                Array.Reverse(charArray); //To make sure the course name is not reversed
+                string CourseName = new string(charArray); //CourseName works!
 
                 //Extract course timer bytes (from offset 0x70 to 0x71)
                 int CourseTimerBytesLength = CourseTimerEndOffset - CourseTimerStartOffset + 1;
@@ -303,20 +306,23 @@ namespace SMM_D4TA_EDITOR
 
             //Set file path and read data
             byte[] fileBytes = File.ReadAllBytes(currentFilePath);
-            string NewCourseName = TB_CourseName.Text;
 
-            byte[] nameBytes = Encoding.Unicode.GetBytes(NewCourseName); //64 bytes (32 * 2)
-
+            //To write a new course name correctly, I'm doing in reverse whatever I did to read
+            int NewCourseNameBytesLength = CourseNameEndOffset - CourseNameStartOffset + 1;
+            char[] charArray = TB_CourseName.Text.ToArray();
+            Array.Reverse(charArray);
+            byte[] NewCourseNameBytes = new byte[NewCourseNameBytesLength];
+            NewCourseNameBytes = Encoding.Unicode.GetBytes(charArray);
+            Array.Reverse(NewCourseNameBytes);
             //Create a 64 bytes array filled with zeros
-            byte[] paddedNameBytes = new byte[64];
+            byte[] paddedNameBytes = new byte[64]; //64 bytes (32 * 2)
             Array.Clear(paddedNameBytes, 0, 64);
-
             //Copy course name bytes to beginning of array
-            Array.Copy(nameBytes, paddedNameBytes, nameBytes.Length);
-
+            Array.Copy(NewCourseNameBytes, paddedNameBytes, NewCourseNameBytes.Length);
             //Insert those bytes to the file
             Array.Copy(paddedNameBytes, 0, fileBytes, CourseNameStartOffset, 64);
 
+            //byte[] nameBytes = Encoding.Unicode.GetBytes(NewCourseName); //64 bytes (32 * 2)
             ushort NewCourseTimer = (ushort)NUMERIC_CourseTimer.Value;
             fileBytes[CourseTimerStartOffset] = (byte)(NewCourseTimer >> 8); //MSB
             fileBytes[CourseTimerEndOffset] = (byte)(NewCourseTimer & 0xFF); //LSB
