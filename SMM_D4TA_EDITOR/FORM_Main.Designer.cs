@@ -83,12 +83,20 @@
             this.OpenFileDialog_TNL_To_IMAGE = new System.Windows.Forms.OpenFileDialog();
             this.SaveFileDialog_IMAGE_To_TNL = new System.Windows.Forms.SaveFileDialog();
             this.SaveFileDialog_TNL_To_IMAGE = new System.Windows.Forms.SaveFileDialog();
+            this.GroupBox_Theme = new System.Windows.Forms.GroupBox();
+            this.RADIO_Theme02 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Theme03 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Theme05 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Theme04 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Theme01 = new System.Windows.Forms.RadioButton();
+            this.RADIO_Theme00 = new System.Windows.Forms.RadioButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             this.GroupBox_Scroll_Settings.SuspendLayout();
             this.GroupBox_Physics_Settings.SuspendLayout();
             this.GroupBox_CourseStatus.SuspendLayout();
             this.GroupBox_Style.SuspendLayout();
+            this.GroupBox_Theme.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -99,7 +107,7 @@
             this.ToolStripMenuItem_TNLConverter});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(404, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(494, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -179,7 +187,7 @@
             // TB_CourseName
             // 
             this.TB_CourseName.Enabled = false;
-            this.TB_CourseName.Location = new System.Drawing.Point(90, 27);
+            this.TB_CourseName.Location = new System.Drawing.Point(196, 27);
             this.TB_CourseName.MaxLength = 32;
             this.TB_CourseName.Name = "TB_CourseName";
             this.TB_CourseName.Size = new System.Drawing.Size(210, 20);
@@ -188,7 +196,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 30);
+            this.label1.Location = new System.Drawing.Point(118, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 13);
             this.label1.TabIndex = 0;
@@ -197,10 +205,10 @@
             // BUTTON_SaveFile
             // 
             this.BUTTON_SaveFile.Enabled = false;
-            this.BUTTON_SaveFile.Location = new System.Drawing.Point(317, 306);
+            this.BUTTON_SaveFile.Location = new System.Drawing.Point(407, 286);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_SaveFile.TabIndex = 11;
+            this.BUTTON_SaveFile.TabIndex = 12;
             this.BUTTON_SaveFile.Text = "Save course";
             this.BUTTON_SaveFile.UseVisualStyleBackColor = true;
             this.BUTTON_SaveFile.Click += new System.EventHandler(this.BUTTON_SaveFile_Click);
@@ -208,10 +216,10 @@
             // BUTTON_Cancel
             // 
             this.BUTTON_Cancel.Enabled = false;
-            this.BUTTON_Cancel.Location = new System.Drawing.Point(236, 306);
+            this.BUTTON_Cancel.Location = new System.Drawing.Point(326, 286);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_Cancel.TabIndex = 10;
+            this.BUTTON_Cancel.TabIndex = 11;
             this.BUTTON_Cancel.Text = "Cancel";
             this.BUTTON_Cancel.UseVisualStyleBackColor = true;
             this.BUTTON_Cancel.Click += new System.EventHandler(this.BUTTON_Cancel_Click);
@@ -220,10 +228,10 @@
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(212, 55);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(318, 54);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(89, 17);
-            this.CHECK_UploadReady.TabIndex = 3;
+            this.CHECK_UploadReady.TabIndex = 4;
             this.CHECK_UploadReady.Text = "Upload ready";
             this.CHECK_UploadReady.UseVisualStyleBackColor = true;
             this.CHECK_UploadReady.Visible = false;
@@ -236,7 +244,7 @@
             0,
             0,
             0});
-            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(54, 53);
+            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(160, 53);
             this.NUMERIC_CourseTimer.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -249,7 +257,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 55);
+            this.label2.Location = new System.Drawing.Point(118, 56);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(36, 13);
             this.label2.TabIndex = 6;
@@ -263,10 +271,10 @@
             this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_Turtle);
             this.GroupBox_Scroll_Settings.Controls.Add(this.RADIO_Scroll_None);
             this.GroupBox_Scroll_Settings.Enabled = false;
-            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(123, 232);
+            this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(12, 241);
             this.GroupBox_Scroll_Settings.Name = "GroupBox_Scroll_Settings";
             this.GroupBox_Scroll_Settings.Size = new System.Drawing.Size(194, 68);
-            this.GroupBox_Scroll_Settings.TabIndex = 5;
+            this.GroupBox_Scroll_Settings.TabIndex = 6;
             this.GroupBox_Scroll_Settings.TabStop = false;
             this.GroupBox_Scroll_Settings.Text = "Autoscroll";
             // 
@@ -328,7 +336,7 @@
             // LABEL_LastItemPlaced
             // 
             this.LABEL_LastItemPlaced.AutoSize = true;
-            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(12, 76);
+            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(118, 76);
             this.LABEL_LastItemPlaced.Name = "LABEL_LastItemPlaced";
             this.LABEL_LastItemPlaced.Size = new System.Drawing.Size(132, 13);
             this.LABEL_LastItemPlaced.TabIndex = 12;
@@ -345,10 +353,10 @@
             this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics01);
             this.GroupBox_Physics_Settings.Controls.Add(this.RADIO_Physics00);
             this.GroupBox_Physics_Settings.Enabled = false;
-            this.GroupBox_Physics_Settings.Location = new System.Drawing.Point(14, 92);
+            this.GroupBox_Physics_Settings.Location = new System.Drawing.Point(12, 27);
             this.GroupBox_Physics_Settings.Name = "GroupBox_Physics_Settings";
             this.GroupBox_Physics_Settings.Size = new System.Drawing.Size(100, 208);
-            this.GroupBox_Physics_Settings.TabIndex = 13;
+            this.GroupBox_Physics_Settings.TabIndex = 5;
             this.GroupBox_Physics_Settings.TabStop = false;
             this.GroupBox_Physics_Settings.Text = "Physics";
             // 
@@ -443,7 +451,7 @@
             // LABEL_ClearCheckStatus
             // 
             this.LABEL_ClearCheckStatus.AutoSize = true;
-            this.LABEL_ClearCheckStatus.Location = new System.Drawing.Point(308, 30);
+            this.LABEL_ClearCheckStatus.Location = new System.Drawing.Point(412, 30);
             this.LABEL_ClearCheckStatus.Name = "LABEL_ClearCheckStatus";
             this.LABEL_ClearCheckStatus.Size = new System.Drawing.Size(64, 13);
             this.LABEL_ClearCheckStatus.TabIndex = 14;
@@ -456,10 +464,10 @@
             this.GroupBox_CourseStatus.Controls.Add(this.RADIO_CourseStatusDownloaded);
             this.GroupBox_CourseStatus.Controls.Add(this.RADIO_CourseStatusNone);
             this.GroupBox_CourseStatus.Enabled = false;
-            this.GroupBox_CourseStatus.Location = new System.Drawing.Point(123, 92);
+            this.GroupBox_CourseStatus.Location = new System.Drawing.Point(118, 92);
             this.GroupBox_CourseStatus.Name = "GroupBox_CourseStatus";
             this.GroupBox_CourseStatus.Size = new System.Drawing.Size(100, 110);
-            this.GroupBox_CourseStatus.TabIndex = 15;
+            this.GroupBox_CourseStatus.TabIndex = 7;
             this.GroupBox_CourseStatus.TabStop = false;
             this.GroupBox_CourseStatus.Text = "Course status";
             // 
@@ -510,10 +518,10 @@
             // BUTTON_CourseStatusNone
             // 
             this.BUTTON_CourseStatusNone.Enabled = false;
-            this.BUTTON_CourseStatusNone.Location = new System.Drawing.Point(123, 203);
+            this.BUTTON_CourseStatusNone.Location = new System.Drawing.Point(118, 203);
             this.BUTTON_CourseStatusNone.Name = "BUTTON_CourseStatusNone";
-            this.BUTTON_CourseStatusNone.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_CourseStatusNone.TabIndex = 16;
+            this.BUTTON_CourseStatusNone.Size = new System.Drawing.Size(100, 23);
+            this.BUTTON_CourseStatusNone.TabIndex = 8;
             this.BUTTON_CourseStatusNone.Text = "Set none";
             this.BUTTON_CourseStatusNone.UseVisualStyleBackColor = true;
             this.BUTTON_CourseStatusNone.Click += new System.EventHandler(this.BUTTON_CourseStatusNone_Click);
@@ -521,10 +529,10 @@
             // BUTTON_TimerMaximum
             // 
             this.BUTTON_TimerMaximum.Enabled = false;
-            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(166, 51);
+            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(272, 50);
             this.BUTTON_TimerMaximum.Name = "BUTTON_TimerMaximum";
             this.BUTTON_TimerMaximum.Size = new System.Drawing.Size(40, 23);
-            this.BUTTON_TimerMaximum.TabIndex = 17;
+            this.BUTTON_TimerMaximum.TabIndex = 3;
             this.BUTTON_TimerMaximum.Text = "Max";
             this.BUTTON_TimerMaximum.UseVisualStyleBackColor = true;
             this.BUTTON_TimerMaximum.Click += new System.EventHandler(this.BUTTON_TimerMaximum_Click);
@@ -532,10 +540,10 @@
             // BUTTON_TimerMinimum
             // 
             this.BUTTON_TimerMinimum.Enabled = false;
-            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(120, 51);
+            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(226, 50);
             this.BUTTON_TimerMinimum.Name = "BUTTON_TimerMinimum";
             this.BUTTON_TimerMinimum.Size = new System.Drawing.Size(40, 23);
-            this.BUTTON_TimerMinimum.TabIndex = 18;
+            this.BUTTON_TimerMinimum.TabIndex = 2;
             this.BUTTON_TimerMinimum.Text = "Min";
             this.BUTTON_TimerMinimum.UseVisualStyleBackColor = true;
             this.BUTTON_TimerMinimum.Click += new System.EventHandler(this.BUTTON_TimerMinimum_Click);
@@ -547,10 +555,10 @@
             this.GroupBox_Style.Controls.Add(this.RADIO_M3);
             this.GroupBox_Style.Controls.Add(this.RADIO_M1);
             this.GroupBox_Style.Enabled = false;
-            this.GroupBox_Style.Location = new System.Drawing.Point(229, 92);
+            this.GroupBox_Style.Location = new System.Drawing.Point(224, 92);
             this.GroupBox_Style.Name = "GroupBox_Style";
             this.GroupBox_Style.Size = new System.Drawing.Size(75, 110);
-            this.GroupBox_Style.TabIndex = 19;
+            this.GroupBox_Style.TabIndex = 9;
             this.GroupBox_Style.TabStop = false;
             this.GroupBox_Style.Text = "Style";
             // 
@@ -614,11 +622,94 @@
             // 
             this.SaveFileDialog_TNL_To_IMAGE.Filter = "File|*.jpeg";
             // 
+            // GroupBox_Theme
+            // 
+            this.GroupBox_Theme.Controls.Add(this.RADIO_Theme02);
+            this.GroupBox_Theme.Controls.Add(this.RADIO_Theme03);
+            this.GroupBox_Theme.Controls.Add(this.RADIO_Theme05);
+            this.GroupBox_Theme.Controls.Add(this.RADIO_Theme04);
+            this.GroupBox_Theme.Controls.Add(this.RADIO_Theme01);
+            this.GroupBox_Theme.Controls.Add(this.RADIO_Theme00);
+            this.GroupBox_Theme.Enabled = false;
+            this.GroupBox_Theme.Location = new System.Drawing.Point(305, 92);
+            this.GroupBox_Theme.Name = "GroupBox_Theme";
+            this.GroupBox_Theme.Size = new System.Drawing.Size(110, 160);
+            this.GroupBox_Theme.TabIndex = 10;
+            this.GroupBox_Theme.TabStop = false;
+            this.GroupBox_Theme.Text = "Theme";
+            // 
+            // RADIO_Theme02
+            // 
+            this.RADIO_Theme02.AutoSize = true;
+            this.RADIO_Theme02.Location = new System.Drawing.Point(6, 134);
+            this.RADIO_Theme02.Name = "RADIO_Theme02";
+            this.RADIO_Theme02.Size = new System.Drawing.Size(54, 17);
+            this.RADIO_Theme02.TabIndex = 9;
+            this.RADIO_Theme02.TabStop = true;
+            this.RADIO_Theme02.Text = "Castle";
+            this.RADIO_Theme02.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Theme03
+            // 
+            this.RADIO_Theme03.AutoSize = true;
+            this.RADIO_Theme03.Location = new System.Drawing.Point(6, 111);
+            this.RADIO_Theme03.Name = "RADIO_Theme03";
+            this.RADIO_Theme03.Size = new System.Drawing.Size(56, 17);
+            this.RADIO_Theme03.TabIndex = 8;
+            this.RADIO_Theme03.TabStop = true;
+            this.RADIO_Theme03.Text = "Airship";
+            this.RADIO_Theme03.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Theme05
+            // 
+            this.RADIO_Theme05.AutoSize = true;
+            this.RADIO_Theme05.Location = new System.Drawing.Point(6, 88);
+            this.RADIO_Theme05.Name = "RADIO_Theme05";
+            this.RADIO_Theme05.Size = new System.Drawing.Size(85, 17);
+            this.RADIO_Theme05.TabIndex = 7;
+            this.RADIO_Theme05.TabStop = true;
+            this.RADIO_Theme05.Text = "Ghost house";
+            this.RADIO_Theme05.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Theme04
+            // 
+            this.RADIO_Theme04.AutoSize = true;
+            this.RADIO_Theme04.Location = new System.Drawing.Point(6, 65);
+            this.RADIO_Theme04.Name = "RADIO_Theme04";
+            this.RADIO_Theme04.Size = new System.Drawing.Size(80, 17);
+            this.RADIO_Theme04.TabIndex = 6;
+            this.RADIO_Theme04.TabStop = true;
+            this.RADIO_Theme04.Text = "Underwater";
+            this.RADIO_Theme04.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Theme01
+            // 
+            this.RADIO_Theme01.AutoSize = true;
+            this.RADIO_Theme01.Location = new System.Drawing.Point(6, 42);
+            this.RADIO_Theme01.Name = "RADIO_Theme01";
+            this.RADIO_Theme01.Size = new System.Drawing.Size(87, 17);
+            this.RADIO_Theme01.TabIndex = 5;
+            this.RADIO_Theme01.TabStop = true;
+            this.RADIO_Theme01.Text = "Underground";
+            this.RADIO_Theme01.UseVisualStyleBackColor = true;
+            // 
+            // RADIO_Theme00
+            // 
+            this.RADIO_Theme00.AutoSize = true;
+            this.RADIO_Theme00.Location = new System.Drawing.Point(6, 19);
+            this.RADIO_Theme00.Name = "RADIO_Theme00";
+            this.RADIO_Theme00.Size = new System.Drawing.Size(60, 17);
+            this.RADIO_Theme00.TabIndex = 4;
+            this.RADIO_Theme00.TabStop = true;
+            this.RADIO_Theme00.Text = "Ground";
+            this.RADIO_Theme00.UseVisualStyleBackColor = true;
+            // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(404, 341);
+            this.ClientSize = new System.Drawing.Size(494, 321);
+            this.Controls.Add(this.GroupBox_Theme);
             this.Controls.Add(this.GroupBox_Style);
             this.Controls.Add(this.BUTTON_TimerMinimum);
             this.Controls.Add(this.BUTTON_TimerMaximum);
@@ -640,7 +731,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FORM_Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "v0.0.X D4TA EDITOR";
+            this.Text = "v0.1.0 D4TA EDITOR";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
@@ -652,6 +743,8 @@
             this.GroupBox_CourseStatus.PerformLayout();
             this.GroupBox_Style.ResumeLayout(false);
             this.GroupBox_Style.PerformLayout();
+            this.GroupBox_Theme.ResumeLayout(false);
+            this.GroupBox_Theme.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -713,6 +806,13 @@
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_BYML_To_XML;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_IMAGE_To_TNL;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_TNL_To_IMAGE;
+        private System.Windows.Forms.GroupBox GroupBox_Theme;
+        private System.Windows.Forms.RadioButton RADIO_Theme04;
+        private System.Windows.Forms.RadioButton RADIO_Theme01;
+        private System.Windows.Forms.RadioButton RADIO_Theme00;
+        private System.Windows.Forms.RadioButton RADIO_Theme02;
+        private System.Windows.Forms.RadioButton RADIO_Theme03;
+        private System.Windows.Forms.RadioButton RADIO_Theme05;
     }
 }
 

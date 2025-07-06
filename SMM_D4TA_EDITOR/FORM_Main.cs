@@ -41,6 +41,9 @@ namespace SMM_D4TA_EDITOR
         int UploadedCourseOffset = 0x6E;
         int ClearCheckOffset = 0x6F;
 
+        //VALUES: 00 = Ground, 01 Underground, 02 Castle, 03 Airship, 04 Underwater, 05 Ghost house
+        int CourseThemeOffset = 0x6D;
+
         int CourseFirstItemOffset = 0x108;
         int CourseLastItemOffset = 0x145F0;
 
@@ -94,7 +97,7 @@ namespace SMM_D4TA_EDITOR
                     //Insert [size (4 bytes)] + [jpeg]
                     Array.Copy(ImageLengthBytes, 0, payload, 0, 4);
                     Array.Copy(ImageBytes, 0, payload, 4, ImageBytes.Length);
-                    // The rest of payload is already zero-initialized (padding)
+                    //The rest of payload is already zero-initialized (padding)
 
                     //CRC32
                     Crc32 crc32 = new Crc32();
@@ -188,6 +191,11 @@ namespace SMM_D4TA_EDITOR
                 Array.Copy(fileBytes, CourseUpdatePhysicsOffset, CourseUpdatePhysicsByte, 0, 1);
                 int CourseUpdatePhysics = Convert.ToInt32(CourseUpdatePhysicsByte[0]);
 
+                //Extract course physics setting byte (offset 0x6D)
+                byte[] CourseThemeByte = new byte[1];
+                Array.Copy(fileBytes, CourseThemeOffset, CourseThemeByte, 0, 1);
+                int CourseTheme = Convert.ToInt32(CourseThemeByte[0]);
+
                 //Extract course style bytes (from offset 0x6A to 0x6B)
                 int CourseStyleBytesLength = CourseStyleEndOffset - CourseStyleStartOffset + 1;
                 byte[] CourseStyleBytes = new byte[CourseStyleBytesLength];
@@ -231,6 +239,7 @@ namespace SMM_D4TA_EDITOR
                 GroupBox_Scroll_Settings.Enabled = true;
                 GroupBox_Physics_Settings.Enabled = true;
                 GroupBox_Style.Enabled = true;
+                GroupBox_Theme.Enabled = true;
                 BUTTON_TimerMinimum.Enabled = true;
                 BUTTON_TimerMaximum.Enabled = true;
                 BUTTON_CourseStatusNone.Enabled = true;
@@ -248,12 +257,20 @@ namespace SMM_D4TA_EDITOR
                 if (CourseUpdatePhysics == 0) RADIO_Physics00.Checked = true;
                 else if (CourseUpdatePhysics == 1) RADIO_Physics01.Checked = true;
                 else if (CourseUpdatePhysics == 2) RADIO_Physics02.Checked = true;
-                else if (CourseUpdatePhysics == 3) RADIO_Physics02.Checked = true;
-                else if (CourseUpdatePhysics == 4) RADIO_Physics03.Checked = true;
-                else if (CourseUpdatePhysics == 5) RADIO_Physics04.Checked = true;
+                else if (CourseUpdatePhysics == 3) RADIO_Physics03.Checked = true;
+                else if (CourseUpdatePhysics == 4) RADIO_Physics04.Checked = true;
+                else if (CourseUpdatePhysics == 5) RADIO_Physics05.Checked = true;
                 else if (CourseUpdatePhysics == 6) RADIO_Physics06.Checked = true;
                 else if (CourseUpdatePhysics == 7) RADIO_Physics07.Checked = true;
                 else CourseUpdatePhysics = 0;
+
+                if (CourseTheme == 0) RADIO_Theme00.Checked = true;
+                else if (CourseTheme == 1) RADIO_Theme01.Checked = true;
+                else if (CourseTheme == 2) RADIO_Theme02.Checked = true;
+                else if (CourseTheme == 3) RADIO_Theme03.Checked = true;
+                else if (CourseTheme == 4) RADIO_Theme04.Checked = true;
+                else if (CourseTheme == 5) RADIO_Theme05.Checked = true;
+                else CourseTheme = 0;
 
                 if (CourseStyle == "M1") RADIO_M1.Checked = true;
                 else if (CourseStyle == "M3") RADIO_M3.Checked = true;
@@ -313,13 +330,12 @@ namespace SMM_D4TA_EDITOR
             if (RADIO_Physics00.Checked) physicsValue = 0;
             else if (RADIO_Physics01.Checked) physicsValue = 1;
             else if (RADIO_Physics02.Checked) physicsValue = 2;
-            else if (RADIO_Physics02.Checked) physicsValue = 3;
-            else if (RADIO_Physics03.Checked) physicsValue = 4;
-            else if (RADIO_Physics04.Checked) physicsValue = 5;
+            else if (RADIO_Physics03.Checked) physicsValue = 3;
+            else if (RADIO_Physics04.Checked) physicsValue = 4;
+            else if (RADIO_Physics05.Checked) physicsValue = 5;
             else if (RADIO_Physics06.Checked) physicsValue = 6;
             else if (RADIO_Physics07.Checked) physicsValue = 7;
             else physicsValue = 0;
-
             //Insert physics byte value to the file
             fileBytes[CourseUpdatePhysicsOffset] = physicsValue;
 
@@ -329,9 +345,19 @@ namespace SMM_D4TA_EDITOR
             else if (RADIO_Scroll_Cheetah.Checked) scrollValue = 3;
             else if (RADIO_Scroll_Lock.Checked) scrollValue = 4;
             else scrollValue = 0;
-
             //Insert scroll byte value to the file
             fileBytes[CourseScrollSettingsOffset] = scrollValue;
+
+            byte themeValue = 0;
+            if (RADIO_Theme00.Checked) themeValue = 0;
+            else if (RADIO_Theme01.Checked) themeValue = 1;
+            else if (RADIO_Theme02.Checked) themeValue = 2;
+            else if (RADIO_Theme03.Checked) themeValue = 3;
+            else if (RADIO_Theme04.Checked) themeValue = 4;
+            else if (RADIO_Theme05.Checked) themeValue = 5;
+            else themeValue = 0;
+            //Insert theme byte value to the file
+            fileBytes[CourseThemeOffset] = themeValue;
 
             string styleValue;
             if (RADIO_M1.Checked) styleValue = "M1";
@@ -339,7 +365,6 @@ namespace SMM_D4TA_EDITOR
             else if (RADIO_MW.Checked) styleValue = "MW";
             else if (RADIO_WU.Checked) styleValue = "WU";
             else styleValue = "M1";
-
             //Insert style byte value to the file
             byte[] styleBytes = Encoding.ASCII.GetBytes(styleValue);
             fileBytes[CourseStyleStartOffset] = styleBytes[0];
@@ -381,6 +406,7 @@ namespace SMM_D4TA_EDITOR
             GroupBox_Scroll_Settings.Enabled = false;
             GroupBox_Physics_Settings.Enabled = false;
             GroupBox_Style.Enabled = false;
+            GroupBox_Theme.Enabled = false;
             BUTTON_TimerMinimum.Enabled = false;
             BUTTON_TimerMaximum.Enabled = false;
             BUTTON_CourseStatusNone.Enabled = false;
