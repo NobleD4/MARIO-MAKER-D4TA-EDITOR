@@ -70,9 +70,15 @@ namespace SMM_D4TA_EDITOR
             {
                 byte[] ImageBytes = File.ReadAllBytes(OpenFileDialog_IMAGE_To_TNL.FileName);
 
+                if (ImageBytes.Length < 4 || ImageBytes[0] != 0xFF || ImageBytes[1] != 0xD8) //JPG image first 2 bytes starts with FF D8
+                {
+                    MessageBox.Show("Selected file is not a valid JPG/JPEG image");
+                    return;
+                }
+
                 if (ImageBytes.Length > 0xC7F8)
                 {
-                    MessageBox.Show("JPEG is too long\nMaximum length is 0xC7F8 bytes");
+                    MessageBox.Show("JPG/JPEG is too long\nMaximum length is 50 KB"); //Should be less than 0xC7F8 bytes
                     return;
                 }
 
@@ -85,12 +91,12 @@ namespace SMM_D4TA_EDITOR
                     int payloadSize = 4 + ImageBytes.Length + (totalSize - 8 - ImageBytes.Length);
                     byte[] payload = new byte[payloadSize];
 
-                    // Insert [size (4 bytes)] + [jpeg]
+                    //Insert [size (4 bytes)] + [jpeg]
                     Array.Copy(ImageLengthBytes, 0, payload, 0, 4);
                     Array.Copy(ImageBytes, 0, payload, 4, ImageBytes.Length);
                     // The rest of payload is already zero-initialized (padding)
 
-                    // CRC32
+                    //CRC32
                     Crc32 crc32 = new Crc32();
                     byte[] crc = crc32.ComputeChecksumBytes(payload, 0, payload.Length);
                     Array.Reverse(crc); //Big endian order
@@ -110,7 +116,34 @@ namespace SMM_D4TA_EDITOR
         {
             if (OpenFileDialog_TNL_To_IMAGE.ShowDialog() == DialogResult.OK)
             {
+                byte[] tnlBytes = File.ReadAllBytes(OpenFileDialog_TNL_To_IMAGE.FileName);
 
+                if (tnlBytes.Length < 12)
+                {
+                    MessageBox.Show("TNL file too short or corrupted");
+                    return;
+                }
+
+                //Get JPEG length (offsets 0x04 to 0x07)
+                byte[] jpegLengthBytes = new byte[4];
+                Array.Copy(tnlBytes, 4, jpegLengthBytes, 0, 4);
+                Array.Reverse(jpegLengthBytes); //Little endian order
+                int jpegLength = BitConverter.ToInt32(jpegLengthBytes, 0);
+
+                if (jpegLength <= 0 || jpegLength > 0xC7F8 || tnlBytes.Length < 8 + jpegLength)
+                {
+                    MessageBox.Show("Invalid JPEG length in TNL file");
+                    return;
+                }
+
+                byte[] jpegBytes = new byte[jpegLength];
+                Array.Copy(tnlBytes, 8, jpegBytes, 0, jpegLength);
+
+                if (SaveFileDialog_TNL_To_IMAGE.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllBytes(SaveFileDialog_TNL_To_IMAGE.FileName, jpegBytes);
+                    MessageBox.Show("JPEG image extracted successfully");
+                }
             }
         }
 

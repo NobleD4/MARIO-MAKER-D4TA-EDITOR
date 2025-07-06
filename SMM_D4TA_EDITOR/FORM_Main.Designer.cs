@@ -604,7 +604,7 @@
             // 
             // OpenFileDialog_TNL_To_IMAGE
             // 
-            this.OpenFileDialog_TNL_To_IMAGE.Filter = "File|*.jpeg;*.jpg";
+            this.OpenFileDialog_TNL_To_IMAGE.Filter = "File|*.tnl";
             // 
             // SaveFileDialog_IMAGE_To_TNL
             // 
