@@ -71,6 +71,7 @@ namespace SMM_D4TA_EDITOR
         {
             if (OpenFileDialog_IMAGE_To_TNL.ShowDialog() == DialogResult.OK)
             {
+                //Read original bytes
                 byte[] ImageBytes = File.ReadAllBytes(OpenFileDialog_IMAGE_To_TNL.FileName);
 
                 if (ImageBytes.Length < 4 || ImageBytes[0] != 0xFF || ImageBytes[1] != 0xD8) //JPG image first 2 bytes starts with FF D8
@@ -79,10 +80,37 @@ namespace SMM_D4TA_EDITOR
                     return;
                 }
 
+                //Load in memory as BitMap
+                Bitmap bmp = new Bitmap(OpenFileDialog_IMAGE_To_TNL.FileName);
+
+                bool validResolution = (bmp.Width == 320 && bmp.Height == 240)
+                || (bmp.Width <= 720 && bmp.Height == 80);
+
+                if (!validResolution) //Validate resolution
+                {
+                    MessageBox.Show("Invalid resolution.\nOnly the following resolutions are allowed:\n• 320×240\n• <=720×80");
+                    return;
+                }
+
                 if (ImageBytes.Length > 0xC7F8)
                 {
-                    MessageBox.Show("JPG/JPEG is too long\nMaximum length is 50 KB"); //Should be less than 0xC7F8 bytes
-                    return;
+                    bool compressedSuccessfully = false;
+
+                    for (long quality = 80; quality >= 30; quality -= 10)
+                    {
+                        ImageBytes = RecompressJpeg(bmp, quality);
+                        if (ImageBytes.Length <= 0xC7F8)
+                        {
+                            compressedSuccessfully = true;
+                            break;
+                        }
+                    }
+
+                    if (!compressedSuccessfully)
+                    {
+                        MessageBox.Show("Image is too large\nTry using a lower-quality JPG");
+                        return;
+                    }
                 }
 
                 if (SaveFileDialog_IMAGE_To_TNL.ShowDialog() == DialogResult.OK)
@@ -423,6 +451,20 @@ namespace SMM_D4TA_EDITOR
             LABEL_LastItemPlaced.Text = "Last item placed (memory):";
             NUMERIC_CourseTimer.Value = 0;
             CHECK_UploadReady.Checked = false;
+        }
+
+        public byte[] RecompressJpeg(Bitmap image, long quality)
+        {
+            using (var ms = new MemoryStream())
+            {
+                ImageCodecInfo jpgEncoder = ImageCodecInfo.GetImageDecoders().First(c => c.FormatID == ImageFormat.Jpeg.Guid);
+
+                EncoderParameters encParams = new EncoderParameters(1);
+                encParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, quality);
+
+                image.Save(ms, jpgEncoder, encParams);
+                return ms.ToArray();
+            }
         }
     }
 }
