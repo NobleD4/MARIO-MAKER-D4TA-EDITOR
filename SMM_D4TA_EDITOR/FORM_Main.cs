@@ -71,26 +71,25 @@ namespace SMM_D4TA_EDITOR
         {
             if (OpenFileDialog_IMAGE_To_TNL.ShowDialog() == DialogResult.OK)
             {
-                //Read original bytes
-                byte[] ImageBytes = File.ReadAllBytes(OpenFileDialog_IMAGE_To_TNL.FileName);
-
-                if (ImageBytes.Length < 4 || ImageBytes[0] != 0xFF || ImageBytes[1] != 0xD8) //JPG image first 2 bytes starts with FF D8
-                {
-                    MessageBox.Show("Selected file is not a valid JPG/JPEG image");
-                    return;
-                }
-
                 //Load in memory as BitMap
-                Bitmap bmp = new Bitmap(OpenFileDialog_IMAGE_To_TNL.FileName);
+                Bitmap originalBmp = new Bitmap(OpenFileDialog_IMAGE_To_TNL.FileName);
 
-                bool validResolution = (bmp.Width == 320 && bmp.Height == 240)
-                || (bmp.Width <= 720 && bmp.Height == 80);
+                bool validResolution = (originalBmp.Width == 320 && originalBmp.Height == 240)
+                || (originalBmp.Width <= 720 && originalBmp.Height == 80);
 
                 if (!validResolution) //Validate resolution
                 {
-                    MessageBox.Show("Invalid resolution.\nOnly the following resolutions are allowed:\n• 320×240\n• <=720×80");
+                    MessageBox.Show("Invalid resolution.\nOnly the following resolutions are allowed:\n<=720×80 for thumbnail0\n320×240 for thumbnail1");
                     return;
                 }
+
+                //Remove PNG Alpha channel
+                Bitmap bmp = new Bitmap(originalBmp.Width, originalBmp.Height, PixelFormat.Format24bppRgb);
+                using (Graphics graphics = Graphics.FromImage(bmp)) { graphics.DrawImage(originalBmp, 0, 0, bmp.Width, bmp.Height); }
+                originalBmp.Dispose(); //Reserve memory
+
+                //Read original bytes
+                byte[] ImageBytes = RecompressJpeg(bmp, 100);
 
                 if (ImageBytes.Length > 0xC7F8)
                 {
@@ -108,7 +107,7 @@ namespace SMM_D4TA_EDITOR
 
                     if (!compressedSuccessfully)
                     {
-                        MessageBox.Show("Image is too large\nTry using a lower-quality JPG");
+                        MessageBox.Show("Image is too large even after compression\nTry resizing it");
                         return;
                     }
                 }
@@ -268,9 +267,9 @@ namespace SMM_D4TA_EDITOR
                 TB_CourseName.Enabled = true;
                 NUMERIC_CourseTimer.Enabled = true;
                 GroupBox_Scroll_Settings.Enabled = true;
-                GroupBox_Physics_Settings.Enabled = true;
-                GroupBox_Style.Enabled = true;
                 GroupBox_Theme.Enabled = true;
+                ComboBox_Physics_Settings.Enabled = true;
+                ComboBox_Style_Settings.Enabled = true;
                 BUTTON_TimerMinimum.Enabled = true;
                 BUTTON_TimerMaximum.Enabled = true;
                 BUTTON_CourseStatusNone.Enabled = true;
@@ -285,14 +284,14 @@ namespace SMM_D4TA_EDITOR
                 else if (CourseScroll == 4) RADIO_Scroll_Lock.Checked = true;
                 else CourseScroll = 0;
 
-                if (CourseUpdatePhysics == 0) RADIO_Physics00.Checked = true;
-                else if (CourseUpdatePhysics == 1) RADIO_Physics01.Checked = true;
-                else if (CourseUpdatePhysics == 2) RADIO_Physics02.Checked = true;
-                else if (CourseUpdatePhysics == 3) RADIO_Physics03.Checked = true;
-                else if (CourseUpdatePhysics == 4) RADIO_Physics04.Checked = true;
-                else if (CourseUpdatePhysics == 5) RADIO_Physics05.Checked = true;
-                else if (CourseUpdatePhysics == 6) RADIO_Physics06.Checked = true;
-                else if (CourseUpdatePhysics == 7) RADIO_Physics07.Checked = true;
+                if (CourseUpdatePhysics == 0) ComboBox_Physics_Settings.SelectedIndex = 0;
+                else if (CourseUpdatePhysics == 1) ComboBox_Physics_Settings.SelectedIndex = 1;
+                else if (CourseUpdatePhysics == 2) ComboBox_Physics_Settings.SelectedIndex = 2;
+                else if (CourseUpdatePhysics == 3) ComboBox_Physics_Settings.SelectedIndex = 3;
+                else if (CourseUpdatePhysics == 4) ComboBox_Physics_Settings.SelectedIndex = 4;
+                else if (CourseUpdatePhysics == 5) ComboBox_Physics_Settings.SelectedIndex = 5;
+                else if (CourseUpdatePhysics == 6) ComboBox_Physics_Settings.SelectedIndex = 6;
+                else if (CourseUpdatePhysics == 7) ComboBox_Physics_Settings.SelectedIndex = 7;
                 else CourseUpdatePhysics = 0;
 
                 if (CourseTheme == 0) RADIO_Theme00.Checked = true;
@@ -303,10 +302,10 @@ namespace SMM_D4TA_EDITOR
                 else if (CourseTheme == 5) RADIO_Theme05.Checked = true;
                 else CourseTheme = 0;
 
-                if (CourseStyle == "M1") RADIO_M1.Checked = true;
-                else if (CourseStyle == "M3") RADIO_M3.Checked = true;
-                else if (CourseStyle == "MW") RADIO_MW.Checked = true;
-                else if (CourseStyle == "WU") RADIO_WU.Checked = true;
+                if (CourseStyle == "M1") ComboBox_Style_Settings.SelectedIndex = 0; 
+                else if (CourseStyle == "M3") ComboBox_Style_Settings.SelectedIndex = 1; 
+                else if (CourseStyle == "MW") ComboBox_Style_Settings.SelectedIndex = 2; 
+                else if (CourseStyle == "WU") ComboBox_Style_Settings.SelectedIndex = 3; 
                 else CourseStyle = "M1";
 
                 if (fileBytes[ClearCheckOffset] == 0x01) LABEL_ClearCheckStatus.Text = "Cleared";
@@ -361,14 +360,14 @@ namespace SMM_D4TA_EDITOR
             }
 
             byte physicsValue = 0;
-            if (RADIO_Physics00.Checked) physicsValue = 0;
-            else if (RADIO_Physics01.Checked) physicsValue = 1;
-            else if (RADIO_Physics02.Checked) physicsValue = 2;
-            else if (RADIO_Physics03.Checked) physicsValue = 3;
-            else if (RADIO_Physics04.Checked) physicsValue = 4;
-            else if (RADIO_Physics05.Checked) physicsValue = 5;
-            else if (RADIO_Physics06.Checked) physicsValue = 6;
-            else if (RADIO_Physics07.Checked) physicsValue = 7;
+            if (ComboBox_Physics_Settings.SelectedIndex == 0) physicsValue = 0;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 1) physicsValue = 1;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 2) physicsValue = 2;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 3) physicsValue = 3;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 4) physicsValue = 4;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 5) physicsValue = 5;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 6) physicsValue = 6;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 7) physicsValue = 7;
             else physicsValue = 0;
             //Insert physics byte value to the file
             fileBytes[CourseUpdatePhysicsOffset] = physicsValue;
@@ -394,10 +393,11 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseThemeOffset] = themeValue;
 
             string styleValue;
-            if (RADIO_M1.Checked) styleValue = "M1";
-            else if (RADIO_M3.Checked) styleValue = "M3";
-            else if (RADIO_MW.Checked) styleValue = "MW";
-            else if (RADIO_WU.Checked) styleValue = "WU";
+
+            if (ComboBox_Style_Settings.SelectedIndex == 0) styleValue = "M1";
+            else if (ComboBox_Style_Settings.SelectedIndex == 1) styleValue = "M3";
+            else if (ComboBox_Style_Settings.SelectedIndex == 2) styleValue = "MW";
+            else if (ComboBox_Style_Settings.SelectedIndex == 3) styleValue = "WU";
             else styleValue = "M1";
             //Insert style byte value to the file
             byte[] styleBytes = Encoding.ASCII.GetBytes(styleValue);
@@ -437,9 +437,9 @@ namespace SMM_D4TA_EDITOR
             TB_CourseName.Enabled = false;
             NUMERIC_CourseTimer.Enabled = false;
             CHECK_UploadReady.Enabled = false;
+            ComboBox_Physics_Settings.Enabled = false;
+            ComboBox_Style_Settings.Enabled = false;
             GroupBox_Scroll_Settings.Enabled = false;
-            GroupBox_Physics_Settings.Enabled = false;
-            GroupBox_Style.Enabled = false;
             GroupBox_Theme.Enabled = false;
             BUTTON_TimerMinimum.Enabled = false;
             BUTTON_TimerMaximum.Enabled = false;
