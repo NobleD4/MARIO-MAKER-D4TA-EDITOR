@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SLN_SMM_D4TA_EDITOR.Properties {
+namespace SMM_D4TA_EDITOR.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,6 +20,18 @@ namespace SLN_SMM_D4TA_EDITOR.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("English")]
+        public string LanguageFile {
+            get {
+                return ((string)(this["LanguageFile"]));
+            }
+            set {
+                this["LanguageFile"] = value;
             }
         }
     }

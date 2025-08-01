@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SLN_SMM_D4TA_EDITOR.Properties {
+namespace SMM_D4TA_EDITOR.Properties {
     using System;
     
     
@@ -57,6 +57,14 @@ namespace SLN_SMM_D4TA_EDITOR.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+
+        internal static string English
+        {
+            get
+            {
+                return ResourceManager.GetString("English", resourceCulture);
             }
         }
     }

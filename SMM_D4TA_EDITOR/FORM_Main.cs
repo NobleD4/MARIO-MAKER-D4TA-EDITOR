@@ -19,6 +19,33 @@ namespace SMM_D4TA_EDITOR
             InitializeComponent();
         }
 
+        private void FORM_Main_Load(object sender, EventArgs e)
+        {
+            LanguageManager.ApplyToContainer(this, "FORM_Main");
+            ComboBox_Physics_Settings.Items.Clear();
+            ComboBox_Physics_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Physics").ToArray());
+            ComboBox_Theme_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Theme").ToArray());
+            Activate();
+            //Get Language Files
+            string langDir = Path.Combine(Application.StartupPath, "Languages");
+            if (Directory.Exists(langDir))
+            {
+                string[] files = Directory.GetFiles(langDir);
+                for (int l = 0; l < files.Length; l++)
+                {
+                    if (files[l].EndsWith(".ini"))
+                    {
+                        int startPos = files[l].LastIndexOf(Path.DirectorySeparatorChar) + 1;
+                        ToolStripComboBox_Language_Settings.Items.Add(files[l].Substring(startPos, files[l].LastIndexOf('.') - startPos));
+                    }
+                }
+            }
+            ToolStripComboBox_Language_Settings.DropDownStyle = ComboBoxStyle.DropDownList;
+            ToolStripComboBox_Language_Settings.SelectedIndexChanged -= new EventHandler(ToolStripComboBox_Language_Settings_SelectedIndexChanged);
+            ToolStripComboBox_Language_Settings.SelectedItem = Properties.Settings.Default.LanguageFile;
+            ToolStripComboBox_Language_Settings.SelectedIndexChanged += new EventHandler(ToolStripComboBox_Language_Settings_SelectedIndexChanged);
+        }
+
         public static Encoding DefEnc = Encoding.GetEncoding("Shift-JIS");
         private string currentFilePath = "";
 
@@ -267,9 +294,9 @@ namespace SMM_D4TA_EDITOR
                 TB_CourseName.Enabled = true;
                 NUMERIC_CourseTimer.Enabled = true;
                 GroupBox_Scroll_Settings.Enabled = true;
-                GroupBox_Theme.Enabled = true;
                 ComboBox_Physics_Settings.Enabled = true;
                 ComboBox_Style_Settings.Enabled = true;
+                ComboBox_Theme_Settings.Enabled = true;
                 BUTTON_TimerMinimum.Enabled = true;
                 BUTTON_TimerMaximum.Enabled = true;
                 BUTTON_CourseStatusNone.Enabled = true;
@@ -294,12 +321,12 @@ namespace SMM_D4TA_EDITOR
                 else if (CourseUpdatePhysics == 7) ComboBox_Physics_Settings.SelectedIndex = 7;
                 else CourseUpdatePhysics = 0;
 
-                if (CourseTheme == 0) RADIO_Theme00.Checked = true;
-                else if (CourseTheme == 1) RADIO_Theme01.Checked = true;
-                else if (CourseTheme == 2) RADIO_Theme02.Checked = true;
-                else if (CourseTheme == 3) RADIO_Theme03.Checked = true;
-                else if (CourseTheme == 4) RADIO_Theme04.Checked = true;
-                else if (CourseTheme == 5) RADIO_Theme05.Checked = true;
+                if (CourseTheme == 0) ComboBox_Theme_Settings.SelectedIndex = 0;
+                else if (CourseTheme == 1) ComboBox_Theme_Settings.SelectedIndex = 1;
+                else if (CourseTheme == 2) ComboBox_Theme_Settings.SelectedIndex = 2;
+                else if (CourseTheme == 3) ComboBox_Theme_Settings.SelectedIndex = 3;
+                else if (CourseTheme == 4) ComboBox_Theme_Settings.SelectedIndex = 4;
+                else if (CourseTheme == 5) ComboBox_Theme_Settings.SelectedIndex = 5;
                 else CourseTheme = 0;
 
                 if (CourseStyle == "M1") ComboBox_Style_Settings.SelectedIndex = 0; 
@@ -382,12 +409,13 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseScrollSettingsOffset] = scrollValue;
 
             byte themeValue = 0;
-            if (RADIO_Theme00.Checked) themeValue = 0;
-            else if (RADIO_Theme01.Checked) themeValue = 1;
-            else if (RADIO_Theme02.Checked) themeValue = 2;
-            else if (RADIO_Theme03.Checked) themeValue = 3;
-            else if (RADIO_Theme04.Checked) themeValue = 4;
-            else if (RADIO_Theme05.Checked) themeValue = 5;
+
+            if (ComboBox_Theme_Settings.SelectedIndex == 0) themeValue = 0;
+            else if (ComboBox_Theme_Settings.SelectedIndex == 1) themeValue = 1;
+            else if (ComboBox_Theme_Settings.SelectedIndex == 2) themeValue = 2;
+            else if (ComboBox_Theme_Settings.SelectedIndex == 3) themeValue = 3;
+            else if (ComboBox_Theme_Settings.SelectedIndex == 4) themeValue = 4;
+            else if (ComboBox_Theme_Settings.SelectedIndex == 5) themeValue = 5;
             else themeValue = 0;
             //Insert theme byte value to the file
             fileBytes[CourseThemeOffset] = themeValue;
@@ -439,8 +467,8 @@ namespace SMM_D4TA_EDITOR
             CHECK_UploadReady.Enabled = false;
             ComboBox_Physics_Settings.Enabled = false;
             ComboBox_Style_Settings.Enabled = false;
+            ComboBox_Theme_Settings.Enabled = false;
             GroupBox_Scroll_Settings.Enabled = false;
-            GroupBox_Theme.Enabled = false;
             BUTTON_TimerMinimum.Enabled = false;
             BUTTON_TimerMaximum.Enabled = false;
             BUTTON_CourseStatusNone.Enabled = false;
@@ -465,6 +493,23 @@ namespace SMM_D4TA_EDITOR
                 image.Save(ms, jpgEncoder, encParams);
                 return ms.ToArray();
             }
+        }
+
+        private void ToolStripComboBox_Language_Settings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selected = ToolStripComboBox_Language_Settings.SelectedItem.ToString();
+
+            if (selected == Properties.Settings.Default.LanguageFile)
+            {
+                return;
+            }
+
+            Properties.Settings.Default.LanguageFile = selected;
+            Properties.Settings.Default.Save();
+
+            string caption = LanguageManager.Get("FORM_Main", "LangChangedTitle");
+            string text = LanguageManager.Get("FORM_Main", "LangChanged");
+            MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
