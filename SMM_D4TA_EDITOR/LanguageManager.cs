@@ -1,21 +1,4 @@
-﻿/*
-*   This file is part of NSMB Editor 5.
-*
-*   NSMB Editor 5 is free software: you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation, either version 3 of the License, or
-*   (at your option) any later version.
-*
-*   NSMB Editor 5 is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*   GNU General Public License for more details.
-*
-*   You should have received a copy of the GNU General Public License
-*   along with NSMB Editor 5.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -186,12 +169,34 @@ namespace SMM_D4TA_EDITOR
                         {
                             TSItem.ToolTipText = Referred[TSItem.Name + tooltipIdentifier];
                         }
+                        //Language to DropDownItems
+                        if (TSItem is System.Windows.Forms.ToolStripMenuItem menuItem && menuItem.HasDropDownItems)
+                        {
+                            ApplyToToolStripMenuItemRecursive(menuItem, Referred);
+                        }
                     }
                 }
 
                 if (Control.Controls.Count > 0)
                 {
                     ApplyToContainer(Control, Referred, tooltip);
+                }
+            }
+        }
+
+        //New recursive function to apply language to DropDownMenu from ToolStripMenuItem
+        private static void ApplyToToolStripMenuItemRecursive(System.Windows.Forms.ToolStripMenuItem parent, Dictionary<string, string> Referred)
+        {
+            foreach (System.Windows.Forms.ToolStripItem subItem in parent.DropDownItems)
+            {
+                if (!string.IsNullOrEmpty(subItem.Name) && Referred.ContainsKey(subItem.Name))
+                {
+                    subItem.Text = Referred[subItem.Name];
+                }
+
+                if (subItem is System.Windows.Forms.ToolStripMenuItem subMenuItem && subMenuItem.HasDropDownItems)
+                {
+                    ApplyToToolStripMenuItemRecursive(subMenuItem, Referred);
                 }
             }
         }

@@ -76,6 +76,7 @@
             this.LABEL_Style = new System.Windows.Forms.Label();
             this.ComboBox_Theme_Settings = new System.Windows.Forms.ComboBox();
             this.LABEL_Theme = new System.Windows.Forms.Label();
+            this.LABEL_LastItemOffset = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             this.GroupBox_Scroll_Settings.SuspendLayout();
@@ -91,7 +92,7 @@
             this.ToolStripComboBox_Language_Settings});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(494, 27);
+            this.menuStrip1.Size = new System.Drawing.Size(504, 27);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -178,7 +179,7 @@
             // TB_CourseName
             // 
             this.TB_CourseName.Enabled = false;
-            this.TB_CourseName.Location = new System.Drawing.Point(121, 46);
+            this.TB_CourseName.Location = new System.Drawing.Point(143, 46);
             this.TB_CourseName.MaxLength = 32;
             this.TB_CourseName.Name = "TB_CourseName";
             this.TB_CourseName.Size = new System.Drawing.Size(210, 20);
@@ -187,7 +188,7 @@
             // LABEL_CourseName
             // 
             this.LABEL_CourseName.AutoSize = true;
-            this.LABEL_CourseName.Location = new System.Drawing.Point(118, 30);
+            this.LABEL_CourseName.Location = new System.Drawing.Point(140, 30);
             this.LABEL_CourseName.Name = "LABEL_CourseName";
             this.LABEL_CourseName.Size = new System.Drawing.Size(81, 13);
             this.LABEL_CourseName.TabIndex = 0;
@@ -196,7 +197,7 @@
             // BUTTON_SaveFile
             // 
             this.BUTTON_SaveFile.Enabled = false;
-            this.BUTTON_SaveFile.Location = new System.Drawing.Point(382, 286);
+            this.BUTTON_SaveFile.Location = new System.Drawing.Point(392, 286);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(100, 23);
             this.BUTTON_SaveFile.TabIndex = 12;
@@ -207,7 +208,7 @@
             // BUTTON_Cancel
             // 
             this.BUTTON_Cancel.Enabled = false;
-            this.BUTTON_Cancel.Location = new System.Drawing.Point(301, 286);
+            this.BUTTON_Cancel.Location = new System.Drawing.Point(311, 286);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_Cancel.TabIndex = 11;
@@ -219,7 +220,7 @@
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(299, 88);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(321, 89);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(101, 17);
             this.CHECK_UploadReady.TabIndex = 5;
@@ -235,7 +236,7 @@
             0,
             0,
             0});
-            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(121, 85);
+            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(143, 86);
             this.NUMERIC_CourseTimer.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -248,7 +249,7 @@
             // LABEL_Timer
             // 
             this.LABEL_Timer.AutoSize = true;
-            this.LABEL_Timer.Location = new System.Drawing.Point(118, 69);
+            this.LABEL_Timer.Location = new System.Drawing.Point(140, 70);
             this.LABEL_Timer.Name = "LABEL_Timer";
             this.LABEL_Timer.Size = new System.Drawing.Size(45, 13);
             this.LABEL_Timer.TabIndex = 6;
@@ -327,7 +328,7 @@
             // LABEL_LastItemPlaced
             // 
             this.LABEL_LastItemPlaced.AutoSize = true;
-            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(118, 129);
+            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(143, 111);
             this.LABEL_LastItemPlaced.Name = "LABEL_LastItemPlaced";
             this.LABEL_LastItemPlaced.Size = new System.Drawing.Size(144, 13);
             this.LABEL_LastItemPlaced.TabIndex = 12;
@@ -336,7 +337,7 @@
             // LABEL_ClearCheckStatus
             // 
             this.LABEL_ClearCheckStatus.AutoSize = true;
-            this.LABEL_ClearCheckStatus.Location = new System.Drawing.Point(337, 49);
+            this.LABEL_ClearCheckStatus.Location = new System.Drawing.Point(359, 49);
             this.LABEL_ClearCheckStatus.Name = "LABEL_ClearCheckStatus";
             this.LABEL_ClearCheckStatus.Size = new System.Drawing.Size(76, 13);
             this.LABEL_ClearCheckStatus.TabIndex = 14;
@@ -351,7 +352,7 @@
             this.GroupBox_CourseStatus.Enabled = false;
             this.GroupBox_CourseStatus.Location = new System.Drawing.Point(178, 153);
             this.GroupBox_CourseStatus.Name = "GroupBox_CourseStatus";
-            this.GroupBox_CourseStatus.Size = new System.Drawing.Size(125, 110);
+            this.GroupBox_CourseStatus.Size = new System.Drawing.Size(130, 110);
             this.GroupBox_CourseStatus.TabIndex = 9;
             this.GroupBox_CourseStatus.TabStop = false;
             this.GroupBox_CourseStatus.Text = "<Course status>";
@@ -405,7 +406,7 @@
             this.BUTTON_CourseStatusNone.Enabled = false;
             this.BUTTON_CourseStatusNone.Location = new System.Drawing.Point(178, 265);
             this.BUTTON_CourseStatusNone.Name = "BUTTON_CourseStatusNone";
-            this.BUTTON_CourseStatusNone.Size = new System.Drawing.Size(125, 23);
+            this.BUTTON_CourseStatusNone.Size = new System.Drawing.Size(130, 23);
             this.BUTTON_CourseStatusNone.TabIndex = 10;
             this.BUTTON_CourseStatusNone.Text = "<Set none>";
             this.BUTTON_CourseStatusNone.UseVisualStyleBackColor = true;
@@ -414,7 +415,7 @@
             // BUTTON_TimerMaximum
             // 
             this.BUTTON_TimerMaximum.Enabled = false;
-            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(243, 84);
+            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(265, 85);
             this.BUTTON_TimerMaximum.Name = "BUTTON_TimerMaximum";
             this.BUTTON_TimerMaximum.Size = new System.Drawing.Size(50, 23);
             this.BUTTON_TimerMaximum.TabIndex = 4;
@@ -425,7 +426,7 @@
             // BUTTON_TimerMinimum
             // 
             this.BUTTON_TimerMinimum.Enabled = false;
-            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(187, 84);
+            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(209, 85);
             this.BUTTON_TimerMinimum.Name = "BUTTON_TimerMinimum";
             this.BUTTON_TimerMinimum.Size = new System.Drawing.Size(50, 23);
             this.BUTTON_TimerMinimum.TabIndex = 3;
@@ -461,7 +462,7 @@
             "NSMBU"});
             this.ComboBox_Style_Settings.Location = new System.Drawing.Point(12, 86);
             this.ComboBox_Style_Settings.Name = "ComboBox_Style_Settings";
-            this.ComboBox_Style_Settings.Size = new System.Drawing.Size(100, 21);
+            this.ComboBox_Style_Settings.Size = new System.Drawing.Size(125, 21);
             this.ComboBox_Style_Settings.TabIndex = 6;
             // 
             // ComboBox_Physics_Settings
@@ -471,7 +472,7 @@
             this.ComboBox_Physics_Settings.FormattingEnabled = true;
             this.ComboBox_Physics_Settings.Location = new System.Drawing.Point(12, 46);
             this.ComboBox_Physics_Settings.Name = "ComboBox_Physics_Settings";
-            this.ComboBox_Physics_Settings.Size = new System.Drawing.Size(100, 21);
+            this.ComboBox_Physics_Settings.Size = new System.Drawing.Size(125, 21);
             this.ComboBox_Physics_Settings.TabIndex = 1;
             // 
             // LABEL_Physics
@@ -499,7 +500,7 @@
             this.ComboBox_Theme_Settings.FormattingEnabled = true;
             this.ComboBox_Theme_Settings.Location = new System.Drawing.Point(12, 126);
             this.ComboBox_Theme_Settings.Name = "ComboBox_Theme_Settings";
-            this.ComboBox_Theme_Settings.Size = new System.Drawing.Size(100, 21);
+            this.ComboBox_Theme_Settings.Size = new System.Drawing.Size(125, 21);
             this.ComboBox_Theme_Settings.TabIndex = 19;
             // 
             // LABEL_Theme
@@ -511,11 +512,21 @@
             this.LABEL_Theme.TabIndex = 20;
             this.LABEL_Theme.Text = "<Theme>";
             // 
+            // LABEL_LastItemOffset
+            // 
+            this.LABEL_LastItemOffset.AutoSize = true;
+            this.LABEL_LastItemOffset.Location = new System.Drawing.Point(143, 129);
+            this.LABEL_LastItemOffset.Name = "LABEL_LastItemOffset";
+            this.LABEL_LastItemOffset.Size = new System.Drawing.Size(93, 13);
+            this.LABEL_LastItemOffset.TabIndex = 21;
+            this.LABEL_LastItemOffset.Text = "<Last item offset:>";
+            // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 321);
+            this.ClientSize = new System.Drawing.Size(504, 321);
+            this.Controls.Add(this.LABEL_LastItemOffset);
             this.Controls.Add(this.LABEL_Theme);
             this.Controls.Add(this.ComboBox_Theme_Settings);
             this.Controls.Add(this.LABEL_Style);
@@ -606,6 +617,7 @@
         private System.Windows.Forms.ToolStripComboBox ToolStripComboBox_Language_Settings;
         private System.Windows.Forms.ComboBox ComboBox_Theme_Settings;
         private System.Windows.Forms.Label LABEL_Theme;
+        private System.Windows.Forms.Label LABEL_LastItemOffset;
     }
 }
 

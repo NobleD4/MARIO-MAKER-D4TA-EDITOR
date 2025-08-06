@@ -106,7 +106,8 @@ namespace SMM_D4TA_EDITOR
 
                 if (!validResolution) //Validate resolution
                 {
-                    MessageBox.Show("Invalid resolution.\nOnly the following resolutions are allowed:\n<=720×80 for thumbnail0\n320×240 for thumbnail1");
+                    string text = LanguageManager.Get("FORM_Main", "msgInvalidResolution");
+                    MessageBox.Show(text);
                     return;
                 }
 
@@ -134,7 +135,8 @@ namespace SMM_D4TA_EDITOR
 
                     if (!compressedSuccessfully)
                     {
-                        MessageBox.Show("Image is too large even after compression\nTry resizing it");
+                        string text = LanguageManager.Get("FORM_Main", "msgTooLargeForCompression");
+                        MessageBox.Show(text);
                         return;
                     }
                 }
@@ -164,7 +166,8 @@ namespace SMM_D4TA_EDITOR
                     Array.Copy(payload, 0, tnlData, crc.Length, payload.Length);
 
                     File.WriteAllBytes(SaveFileDialog_IMAGE_To_TNL.FileName, tnlData);
-                    MessageBox.Show("TNL file created successfully.");
+                    string TNLcreated = LanguageManager.Get("FORM_Main", "msgTNLcreated");
+                    MessageBox.Show(TNLcreated);
                 }
             }
         }
@@ -177,7 +180,8 @@ namespace SMM_D4TA_EDITOR
 
                 if (tnlBytes.Length < 12)
                 {
-                    MessageBox.Show("TNL file too short or corrupted");
+                    string text = LanguageManager.Get("FORM_Main", "msgTNLtooShort");
+                    MessageBox.Show(text);
                     return;
                 }
 
@@ -189,7 +193,8 @@ namespace SMM_D4TA_EDITOR
 
                 if (jpegLength <= 0 || jpegLength > 0xC7F8 || tnlBytes.Length < 8 + jpegLength)
                 {
-                    MessageBox.Show("Invalid JPEG length in TNL file");
+                    string text = LanguageManager.Get("FORM_Main", "msgInvalidJPEG");
+                    MessageBox.Show(text);
                     return;
                 }
 
@@ -199,7 +204,8 @@ namespace SMM_D4TA_EDITOR
                 if (SaveFileDialog_TNL_To_IMAGE.ShowDialog() == DialogResult.OK)
                 {
                     File.WriteAllBytes(SaveFileDialog_TNL_To_IMAGE.FileName, jpegBytes);
-                    MessageBox.Show("JPEG image extracted successfully");
+                    string JPEGextracted = LanguageManager.Get("FORM_Main", "msgJPEGextracted");
+                    MessageBox.Show(JPEGextracted);
                 }
             }
         }
@@ -288,7 +294,10 @@ namespace SMM_D4TA_EDITOR
 
                 if (lastItemOffset != -1)
                 {
-                    LABEL_LastItemPlaced.Text = $"Last item placed (memory): {itemID} ({itemID:X2}) at 0x{lastItemOffset}";
+                    string lastItemPlacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
+                    string lastItemOffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
+                    LABEL_LastItemPlaced.Text = lastItemPlacedLang + $" {itemID} (0x{itemID:X2})";
+                    LABEL_LastItemOffset.Text = lastItemOffsetLang + $" 0x{lastItemOffset}";
                 }
 
                 TB_CourseName.Enabled = true;
@@ -335,8 +344,10 @@ namespace SMM_D4TA_EDITOR
                 else if (CourseStyle == "WU") ComboBox_Style_Settings.SelectedIndex = 3; 
                 else CourseStyle = "M1";
 
-                if (fileBytes[ClearCheckOffset] == 0x01) LABEL_ClearCheckStatus.Text = "Cleared";
-                else LABEL_ClearCheckStatus.Text = "Uncleared";
+                string clearCheckStatus0 = LanguageManager.Get("FORM_Main", "ClearCheckStatus0");
+                string clearCheckStatus1 = LanguageManager.Get("FORM_Main", "ClearCheckStatus1");
+                if (fileBytes[ClearCheckOffset] == 0x01) LABEL_ClearCheckStatus.Text = clearCheckStatus1;
+                else LABEL_ClearCheckStatus.Text = clearCheckStatus0;
 
                 if(fileBytes[DownloadedCourseOffset] == 0x01) RADIO_CourseStatusDownloaded.Checked = true;
                 else if (fileBytes[UploadedCourseOffset] == 0x01) RADIO_CourseStatusUploaded.Checked = true;
@@ -440,7 +451,9 @@ namespace SMM_D4TA_EDITOR
 
             //Save and overwrites .cdt file
             File.WriteAllBytes(currentFilePath, fileBytes);
-            MessageBox.Show("File saved successfully\n" + currentFilePath);
+            string caption = LanguageManager.Get("FORM_Main", "cdtFileSaveTitle");
+            string text = LanguageManager.Get("FORM_Main", "cdtFileSave");
+            MessageBox.Show(text + currentFilePath, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             CleanUI();
         }
