@@ -68,7 +68,16 @@
   <ItemGroup>
     <Compile Include="BymlConverter.cs" />
     <Compile Include="BymlFormat.cs" />
+    <Compile Include="BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CustomClasses.cs" />
+    <Compile Include="FORM_About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FORM_About.Designer.cs">
+      <DependentUpon>FORM_About.cs</DependentUpon>
+    </Compile>
     <Compile Include="FORM_Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +87,9 @@
     <Compile Include="LanguageManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FORM_About.resx">
+      <DependentUpon>FORM_About.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FORM_Main.resx">
       <DependentUpon>FORM_Main.cs</DependentUpon>
     </EmbeddedResource>
