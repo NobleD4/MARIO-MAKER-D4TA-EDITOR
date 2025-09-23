@@ -1,18 +1,21 @@
-﻿using System;
+﻿using SLN_SMM_D4TA_EDITOR;
+using System;
+using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Drawing.Imaging;
 
 namespace SMM_D4TA_EDITOR
 {
-    public partial class FORM_Main : Form
+    public partial class FORM_Main : BaseForm
     {
         public FORM_Main()
         {
@@ -26,53 +29,54 @@ namespace SMM_D4TA_EDITOR
             ComboBox_Physics_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Physics").ToArray());
             ComboBox_Theme_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Theme").ToArray());
             Activate();
-            //Get Language Files
-            string langDir = Path.Combine(Application.StartupPath, "Languages");
-            if (Directory.Exists(langDir))
-            {
-                string[] files = Directory.GetFiles(langDir);
-                for (int l = 0; l < files.Length; l++)
-                {
-                    if (files[l].EndsWith(".ini"))
-                    {
-                        int startPos = files[l].LastIndexOf(Path.DirectorySeparatorChar) + 1;
-                        ToolStripComboBox_Language_Settings.Items.Add(files[l].Substring(startPos, files[l].LastIndexOf('.') - startPos));
-                    }
-                }
-            }
-            ToolStripComboBox_Language_Settings.DropDownStyle = ComboBoxStyle.DropDownList;
-            ToolStripComboBox_Language_Settings.SelectedIndexChanged -= new EventHandler(ToolStripComboBox_Language_Settings_SelectedIndexChanged);
-            ToolStripComboBox_Language_Settings.SelectedItem = Properties.Settings.Default.LanguageFile;
-            ToolStripComboBox_Language_Settings.SelectedIndexChanged += new EventHandler(ToolStripComboBox_Language_Settings_SelectedIndexChanged);
         }
 
         public static Encoding DefEnc = Encoding.GetEncoding("Shift-JIS");
         private string currentFilePath = "";
 
-        int CourseNameStartOffset = 0x28;
-        int CourseNameEndOffset = 0x67;
+        const string KeyAccessSMM1 = "9f2b4678";
 
-        int CourseUpdatePhysicsOffset = 0x27; //There are physics from 00 to 07
+        const int CourseDateYearStartOffset = 0x10;
+        const int CourseDateYearEndOffset = 0x11;
+        const int CourseDateMonthOffset = 0x12; //01 to 0C
+        const int CourseDateDayOffset = 0x13; //01 to 1F
+        const int CourseDateHourOffset = 0x14; //00 to 17
+        const int CourseDateMinuteOffset = 0x15; //00 to 3B
+
+        //ID: PRFX-SFX1-SFX2-SFX3 (PREFIX-SUBFFIX)
+        const int CourseIDsuffixStartOffset = 0x1A;
+        const int CourseIDsuffixEndOffset = 0x1F;
+
+        const int CourseUpdatePhysicsOffset = 0x27; //There are physics from 00 to 07
+
+        const int CourseNameStartOffset = 0x28;
+        const int CourseNameEndOffset = 0x67;
+
+        const int CourseCreatorStartOffset = 0x92;
+        const int CourseCreatorEndOffset = 0xA5;
 
         //VALUES: [4D 31 = M1] [4D 33 = M3] [4D 57 = MW] [57 55 = WU]
-        int CourseStyleStartOffset = 0x6A;
-        int CourseStyleEndOffset = 0x6B;
+        const int CourseStyleStartOffset = 0x6A;
+        const int CourseStyleEndOffset = 0x6B;
 
-        int CourseTimerStartOffset = 0x70;
-        int CourseTimerEndOffset = 0x71;
+        const int CourseTimerStartOffset = 0x70;
+        const int CourseTimerEndOffset = 0x71;
 
-        int CourseScrollSettingsOffset = 0x72;
+        const int CourseScrollSettingsOffset = 0x72;
 
-        int DownloadedCourseOffset = 0x20;
-        int RemovedCourseOffset = 0x21;
-        int UploadedCourseOffset = 0x6E;
-        int ClearCheckOffset = 0x6F;
+        const int DownloadedCourseOffset = 0x20;
+        const int RemovedCourseOffset = 0x21;
+        const int UploadedCourseOffset = 0x6E;
+        const int ClearCheckOffset = 0x6F;
 
         //VALUES: 00 = Ground, 01 Underground, 02 Castle, 03 Airship, 04 Underwater, 05 Ghost house
-        int CourseThemeOffset = 0x6D;
+        const int CourseThemeOffset = 0x6D;
 
-        int CourseFirstItemOffset = 0x108;
-        int CourseLastItemOffset = 0x145F0;
+        const int CourseFirstItemOffset = 0x108;
+        const int CourseLastItemOffset = 0x145F0;
+
+        const int CourseFirstSoundOffset = 0x145F0;
+        const int CourseLastSoundOffset = 0x14F50;
 
         private void ToolStripMenuItem_BYML_To_XML_Click(object sender, EventArgs e)
         {
@@ -228,6 +232,49 @@ namespace SMM_D4TA_EDITOR
                 currentFilePath = OpenFileDialog_cdtFile.FileName;
                 byte[] fileBytes = File.ReadAllBytes(currentFilePath);
 
+                //Extract date year bytes (from offset 0x10 to 0x11)
+                int CourseDateYearBytesLength = CourseDateYearEndOffset - CourseDateYearStartOffset + 1;
+                byte[] CourseDateYearBytes = new byte[CourseDateYearBytesLength];
+                Array.Copy(fileBytes, CourseDateYearStartOffset, CourseDateYearBytes, 0, CourseDateYearBytesLength);
+                ushort CourseDateYear = (ushort)((CourseDateYearBytes[0] << 8) | CourseDateYearBytes[1]);
+
+                //Extract date month bytes offset 0x12)
+                byte[] CourseDateMonthByte = new byte[1];
+                Array.Copy(fileBytes, CourseDateMonthOffset, CourseDateMonthByte, 0, 1);
+                ushort CourseDateMonth = (ushort)(CourseDateMonthByte[0]);
+
+                //Extract date day bytes offset 0x13)
+                byte[] CourseDateDayByte = new byte[1];
+                Array.Copy(fileBytes, CourseDateDayOffset, CourseDateDayByte, 0, 1);
+                ushort CourseDateDay = (ushort)(CourseDateDayByte[0]);
+
+                //Extract date hour bytes offset 0x14)
+                byte[] CourseDateHourByte = new byte[1];
+                Array.Copy(fileBytes, CourseDateHourOffset, CourseDateHourByte, 0, 1);
+                ushort CourseDateHour = (ushort)(CourseDateHourByte[0]);
+
+                //Extract date minute bytes offset 0x15)
+                byte[] CourseDateMinuteByte = new byte[1];
+                Array.Copy(fileBytes, CourseDateMinuteOffset, CourseDateMonthByte, 0, 1);
+                ushort CourseDateMinute = (ushort)(CourseDateMonthByte[0]);
+
+                //Extract course physics setting byte (offset 0x27)
+                byte[] CourseUpdatePhysicsByte = new byte[1];
+                Array.Copy(fileBytes, CourseUpdatePhysicsOffset, CourseUpdatePhysicsByte, 0, 1);
+                int CourseUpdatePhysics = Convert.ToInt32(CourseUpdatePhysicsByte[0]);
+
+                //Extract course ID suffix byte (from offset 0x1A to 0x1F)
+                int CourseIDsuffixbytesLength = CourseIDsuffixEndOffset - CourseIDsuffixStartOffset + 1;
+                byte[] CourseIDsuffixBytes = new byte[CourseIDsuffixbytesLength];
+                Array.Copy(fileBytes, CourseIDsuffixStartOffset, CourseIDsuffixBytes, 0, CourseIDsuffixbytesLength);
+                //Fill to 8 bytes
+                byte[] paddedBytes = new byte[8];
+                Array.Reverse(CourseIDsuffixBytes);
+                Array.Copy(CourseIDsuffixBytes, paddedBytes, CourseIDsuffixbytesLength);
+                ulong CourseIDsuffix = BitConverter.ToUInt64(paddedBytes, 0);
+                string prefix = GenerateCourseIdPrefix(CourseIDsuffix);
+                string CourseID = $"{prefix}{CourseIDsuffix:X12}";
+
                 //Extract course name bytes (from offset 0x28 to 0x67)
                 int CourseNameBytesLength = CourseNameEndOffset - CourseNameStartOffset + 1;
                 byte[] CourseNameBytes = new byte[CourseNameBytesLength];
@@ -237,6 +284,18 @@ namespace SMM_D4TA_EDITOR
                 char[] charArray = Encoding.Unicode.GetString(CourseNameBytes).TrimEnd('\0').ToArray();
                 Array.Reverse(charArray); //To make sure the course name is not reversed
                 string CourseName = new string(charArray); //CourseName works!
+
+                //Extract course style bytes (from offset 0x6A to 0x6B)
+                int CourseStyleBytesLength = CourseStyleEndOffset - CourseStyleStartOffset + 1;
+                byte[] CourseStyleBytes = new byte[CourseStyleBytesLength];
+                Array.Copy(fileBytes, CourseStyleStartOffset, CourseStyleBytes, 0, CourseStyleBytesLength);
+                //Convert bytes to string using ASCII encode
+                string CourseStyle = Encoding.ASCII.GetString(CourseStyleBytes);
+
+                //Extract course physics setting byte (offset 0x6D)
+                byte[] CourseThemeByte = new byte[1];
+                Array.Copy(fileBytes, CourseThemeOffset, CourseThemeByte, 0, 1);
+                int CourseTheme = Convert.ToInt32(CourseThemeByte[0]);
 
                 //Extract course timer bytes (from offset 0x70 to 0x71)
                 int CourseTimerBytesLength = CourseTimerEndOffset - CourseTimerStartOffset + 1;
@@ -249,22 +308,14 @@ namespace SMM_D4TA_EDITOR
                 Array.Copy(fileBytes, CourseScrollSettingsOffset, CourseScrollByte, 0, 1);
                 int CourseScroll = Convert.ToInt32(CourseScrollByte[0]);
 
-                //Extract course physics setting byte (offset 0x27)
-                byte[] CourseUpdatePhysicsByte = new byte[1];
-                Array.Copy(fileBytes, CourseUpdatePhysicsOffset, CourseUpdatePhysicsByte, 0, 1);
-                int CourseUpdatePhysics = Convert.ToInt32(CourseUpdatePhysicsByte[0]);
-
-                //Extract course physics setting byte (offset 0x6D)
-                byte[] CourseThemeByte = new byte[1];
-                Array.Copy(fileBytes, CourseThemeOffset, CourseThemeByte, 0, 1);
-                int CourseTheme = Convert.ToInt32(CourseThemeByte[0]);
-
-                //Extract course style bytes (from offset 0x6A to 0x6B)
-                int CourseStyleBytesLength = CourseStyleEndOffset - CourseStyleStartOffset + 1;
-                byte[] CourseStyleBytes = new byte[CourseStyleBytesLength];
-                Array.Copy(fileBytes, CourseStyleStartOffset, CourseStyleBytes, 0, CourseStyleBytesLength);
-                //Convert bytes to string using ASCII encode
-                string CourseStyle = Encoding.ASCII.GetString(CourseStyleBytes);
+                //Extract course creator bytes (from offset 0x92 to 0xA4)
+                int CourseCreatorBytesLength = CourseCreatorEndOffset - CourseCreatorStartOffset;                   //TRUST ME, IF THE "+ 1" IS IN THIS LINE INSTEAD OF NEXT ONE CRASHES THANKS TO WHATEVER I DID, BUT HOPEFULLY WORKS RIGHT NOW
+                byte[] CourseCreatorBytes = new byte[CourseCreatorBytesLength + 1];                                 //Epic hardcode to add an extra index to array, because for some that previously mentioned "+ 1" works here
+                Array.Copy(fileBytes, CourseCreatorStartOffset, CourseCreatorBytes, 1, CourseCreatorBytesLength);   //Number 1 here because I want starts the copy on index 1 of array instead of index 0 comparing it with other chunk reads
+                Array.Reverse(CourseCreatorBytes);                                                                  //Right now that empty extra index is at the end of array because I need last index as 0
+                char[] charCreatorArray = Encoding.Unicode.GetString(CourseCreatorBytes).TrimEnd('\0').ToArray();   //So extra index allows to have a properly encoding of first char because game reads first the char code number and then a zero, but if this zero doesn't exists encodes a totally different char
+                Array.Reverse(charCreatorArray);                                                                    //What if actually there's an easier way to read these little endian and big endian things and I'm complicating myself?
+                string CourseCreator = new string(charCreatorArray); //I did exactly the same thing as course name  //I was also thinking these parts could be a function because do almost the same thing with different values, but nahhhh, it works right now so I shouldn't change this
 
                 int Jump0x20 = 0x20;  //Basically because there's a 0x20 sized space between each item placed
                 int lastItemOffset = -1; //Will throw a -1 if this value doesn't change
@@ -297,18 +348,30 @@ namespace SMM_D4TA_EDITOR
                     string lastItemPlacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
                     string lastItemOffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
                     LABEL_LastItemPlaced.Text = lastItemPlacedLang + $" {itemID} (0x{itemID:X2})";
-                    LABEL_LastItemOffset.Text = lastItemOffsetLang + $" 0x{lastItemOffset}";
+                    LABEL_LastItemOffset.Text = lastItemOffsetLang + $" 0x{lastItemOffset:X2}"; //OH WOW, THIS WASN'T HEX IN PREVIOUS RELEASE
                 }
 
                 TB_CourseName.Enabled = true;
+                TB_CourseCreator.Enabled = true;
+                TB_CourseIDsuffix1.Enabled = true;
+                TB_CourseIDsuffix2.Enabled = true;
+                TB_CourseIDsuffix3.Enabled = true;
                 NUMERIC_CourseTimer.Enabled = true;
+                NUMERIC_CourseYear.Enabled = true;
+                NUMERIC_CourseMonth.Enabled = true;
+                NUMERIC_CourseDay.Enabled = true;
+                NUMERIC_CourseHour.Enabled = true;
+                NUMERIC_CourseMinute.Enabled = true;
                 GroupBox_Scroll_Settings.Enabled = true;
                 ComboBox_Physics_Settings.Enabled = true;
                 ComboBox_Style_Settings.Enabled = true;
                 ComboBox_Theme_Settings.Enabled = true;
                 BUTTON_TimerMinimum.Enabled = true;
                 BUTTON_TimerMaximum.Enabled = true;
-                BUTTON_CourseStatusNone.Enabled = true;
+                CHECK_CourseStatusDownloaded.Enabled = true;
+                CHECK_CourseStatusUploaded.Enabled = true;
+                CHECK_CourseStatusRemoved.Enabled = true;
+                CHECK_SetDateTimeNow.Enabled = true;
                 CHECK_UploadReady.Enabled = true;
                 BUTTON_Cancel.Enabled = true;
                 BUTTON_SaveFile.Enabled = true;
@@ -349,14 +412,51 @@ namespace SMM_D4TA_EDITOR
                 if (fileBytes[ClearCheckOffset] == 0x01) LABEL_ClearCheckStatus.Text = clearCheckStatus1;
                 else LABEL_ClearCheckStatus.Text = clearCheckStatus0;
 
-                if(fileBytes[DownloadedCourseOffset] == 0x01) RADIO_CourseStatusDownloaded.Checked = true;
-                else if (fileBytes[UploadedCourseOffset] == 0x01) RADIO_CourseStatusUploaded.Checked = true;
-                else if (fileBytes[RemovedCourseOffset] == 0x01) RADIO_CourseStatusRemoved.Checked = true;
-                else RADIO_CourseStatusNone.Checked = true;
+                //This course status section used to be for only read, but not for write at all
+                //The problem was basically every status is a completely different byte offset
+                //Every of them from 00 to 01 to set status, probably not very efficient but works in the game
+                //I don't know yet what would happen if I set all of these bytes offsets to 01 at the same time
+                if(fileBytes[DownloadedCourseOffset] == 0x01) CHECK_CourseStatusDownloaded.Checked = true;
+                else CHECK_CourseStatusDownloaded.Checked = false;
+                if (fileBytes[UploadedCourseOffset] == 0x01) CHECK_CourseStatusUploaded.Checked = true;
+                else CHECK_CourseStatusUploaded.Checked = false;
+                if (fileBytes[RemovedCourseOffset] == 0x01) CHECK_CourseStatusRemoved.Checked = true;
+                else CHECK_CourseStatusRemoved.Checked = false;
 
                 TB_CourseName.Text = CourseName;
+                TB_CourseCreator.Text = CourseCreator;
+                TB_CourseIDprefix.Text = CourseID.Substring(0, 4);
+                TB_CourseIDsuffix1.Text = CourseID.Substring(4, 4);
+                TB_CourseIDsuffix2.Text = CourseID.Substring(8, 4);
+                TB_CourseIDsuffix3.Text = CourseID.Substring(12, 4);
                 NUMERIC_CourseTimer.Value = CourseTimer;
+                NUMERIC_CourseYear.Value = CourseDateYear;
+                NUMERIC_CourseMonth.Value = CourseDateMonth;
+                NUMERIC_CourseDay.Value = CourseDateDay;
+                NUMERIC_CourseHour.Value = CourseDateHour;
+                NUMERIC_CourseMinute.Value = CourseDateMinute;
             }
+        }
+
+        static string GenerateCourseIdPrefix(ulong suffix)
+        {
+            byte[] baseKey = Encoding.ASCII.GetBytes(KeyAccessSMM1);
+            //MD5 to baseKey
+            using (var md5 = MD5.Create())
+            {
+                baseKey = md5.ComputeHash(baseKey);
+            }
+            //Little-endian suffix
+            byte[] data = BitConverter.GetBytes(suffix);
+            //HMAC-MD5
+            byte[] checksum;
+            using (var hmac = new HMACMD5(baseKey))
+            {
+                checksum = hmac.ComputeHash(data);
+            }
+            //Checksum[3:1:-1], bytes 3 & 2 reversed
+            string prefix = checksum[3].ToString("X2") + checksum[2].ToString("X2");
+            return prefix;
         }
 
         private void BUTTON_Cancel_Click(object sender, EventArgs e)
@@ -371,6 +471,21 @@ namespace SMM_D4TA_EDITOR
 
             //Set file path and read data
             byte[] fileBytes = File.ReadAllBytes(currentFilePath);
+
+            //This writes the 6 suffix bytes for course ID
+            byte[] NewIDsuffix1Bytes = new byte[2];
+            byte[] NewIDsuffix2Bytes = new byte[2];
+            byte[] NewIDsuffix3Bytes = new byte[2];
+            int.TryParse(TB_CourseIDsuffix1.Text, System.Globalization.NumberStyles.HexNumber, null, out int CourseIDsuffix1);
+            int.TryParse(TB_CourseIDsuffix2.Text, System.Globalization.NumberStyles.HexNumber, null, out int CourseIDsuffix2);
+            int.TryParse(TB_CourseIDsuffix3.Text, System.Globalization.NumberStyles.HexNumber, null, out int CourseIDsuffix3);
+            //I think is easier right now to add the offsets manually for this specifically
+            fileBytes[CourseIDsuffixStartOffset] = (byte)(CourseIDsuffix1 >> 8);
+            fileBytes[0x1B] = (byte)(CourseIDsuffix1 & 0xFF);
+            fileBytes[0x1C] = (byte)(CourseIDsuffix2 >> 8);
+            fileBytes[0x1D] = (byte)(CourseIDsuffix2 & 0xFF);
+            fileBytes[0x1E] = (byte)(CourseIDsuffix3 >> 8);
+            fileBytes[CourseIDsuffixEndOffset] = (byte)(CourseIDsuffix3 & 0xFF);
 
             //To write a new course name correctly, I'm doing in reverse whatever I did to read
             int NewCourseNameBytesLength = CourseNameEndOffset - CourseNameStartOffset + 1;
@@ -387,10 +502,38 @@ namespace SMM_D4TA_EDITOR
             //Insert those bytes to the file
             Array.Copy(paddedNameBytes, 0, fileBytes, CourseNameStartOffset, 64);
 
-            //byte[] nameBytes = Encoding.Unicode.GetBytes(NewCourseName); //64 bytes (32 * 2)
+            //Write course creator, very similar to previous block of code above
+            int NewCourseCreatorBytesLength = CourseCreatorEndOffset - CourseCreatorStartOffset + 1;
+            //Direct encoding (UTF-16 little endian)
+            byte[] NewCourseCreatorBytes = new byte[NewCourseCreatorBytesLength];
+            NewCourseCreatorBytes = Encoding.Unicode.GetBytes(TB_CourseCreator.Text);
+            //Create a 20 bytes array filled with zeros
+            byte[] paddedCreatorBytes = new byte[20];
+            Array.Clear(paddedCreatorBytes, 0, 20);
+            //Copy course creator bytes to beginning of array
+            Array.Copy(NewCourseCreatorBytes, paddedCreatorBytes, NewCourseCreatorBytes.Length);
+            //Insert those bytes to the file
+            Array.Copy(paddedCreatorBytes, 0, fileBytes, CourseCreatorStartOffset, 20);
+
             ushort NewCourseTimer = (ushort)NUMERIC_CourseTimer.Value;
             fileBytes[CourseTimerStartOffset] = (byte)(NewCourseTimer >> 8); //MSB
             fileBytes[CourseTimerEndOffset] = (byte)(NewCourseTimer & 0xFF); //LSB
+
+            ushort NewCourseDateYear = (ushort)NUMERIC_CourseYear.Value;
+            fileBytes[CourseDateYearStartOffset] = (byte)(NewCourseDateYear >> 8);
+            fileBytes[CourseDateYearEndOffset] = (byte)(NewCourseDateYear & 0xFF);
+
+            ushort NewCourseDateMonth = (ushort)NUMERIC_CourseMonth.Value;
+            fileBytes[CourseDateMonthOffset] = (byte)(NewCourseDateMonth);
+
+            ushort NewCourseDateDay = (ushort)NUMERIC_CourseDay.Value;
+            fileBytes[CourseDateDayOffset] = (byte)(NewCourseDateDay);
+
+            ushort NewCourseDateHour = (ushort)NUMERIC_CourseHour.Value;
+            fileBytes[CourseDateHourOffset] = (byte)(NewCourseDateHour);
+
+            ushort NewCourseDateMinute = (ushort)NUMERIC_CourseMinute.Value;
+            fileBytes[CourseDateMinuteOffset] = (byte)(NewCourseDateMinute);
 
             if (CHECK_UploadReady.Checked)
             {
@@ -443,6 +586,10 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseStyleStartOffset] = styleBytes[0];
             fileBytes[CourseStyleEndOffset] = styleBytes[1];
 
+            if (CHECK_CourseStatusDownloaded.Checked) fileBytes[DownloadedCourseOffset] = 0x01;
+            if (CHECK_CourseStatusUploaded.Checked) fileBytes[UploadedCourseOffset] = 0x01;
+            if (CHECK_CourseStatusRemoved.Checked) fileBytes[UploadedCourseOffset] = 0x01;
+
             //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
             Crc32 crc32 = new Crc32();
             byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
@@ -458,25 +605,20 @@ namespace SMM_D4TA_EDITOR
             CleanUI();
         }
 
-        private void BUTTON_CourseStatusNone_Click(object sender, EventArgs e)
-        {
-            byte[] fileBytes = File.ReadAllBytes(currentFilePath);
-
-            fileBytes[DownloadedCourseOffset] = 0x00;
-            fileBytes[RemovedCourseOffset] = 0x00;
-            fileBytes[UploadedCourseOffset] = 0x00;
-            fileBytes[ClearCheckOffset] = 0x00;
-
-            LABEL_ClearCheckStatus.Text = "Uncleared";
-            RADIO_CourseStatusNone.Checked = true;
-
-            File.WriteAllBytes(currentFilePath, fileBytes);
-        }
-
         private void CleanUI()
         {
             TB_CourseName.Enabled = false;
+            TB_CourseCreator.Enabled = false;
+            TB_CourseIDsuffix1.Enabled = false;
+            TB_CourseIDsuffix2.Enabled = false;
+            TB_CourseIDsuffix3.Enabled = false;
             NUMERIC_CourseTimer.Enabled = false;
+            NUMERIC_CourseYear.Enabled = false;
+            NUMERIC_CourseMonth.Enabled = false;
+            NUMERIC_CourseDay.Enabled = false;
+            NUMERIC_CourseHour.Enabled = false;
+            NUMERIC_CourseMinute.Enabled = false;
+            CHECK_SetDateTimeNow.Enabled = false;
             CHECK_UploadReady.Enabled = false;
             ComboBox_Physics_Settings.Enabled = false;
             ComboBox_Style_Settings.Enabled = false;
@@ -484,13 +626,26 @@ namespace SMM_D4TA_EDITOR
             GroupBox_Scroll_Settings.Enabled = false;
             BUTTON_TimerMinimum.Enabled = false;
             BUTTON_TimerMaximum.Enabled = false;
-            BUTTON_CourseStatusNone.Enabled = false;
+            CHECK_CourseStatusDownloaded.Enabled = false;
+            CHECK_CourseStatusUploaded.Enabled = false;
+            CHECK_CourseStatusRemoved.Enabled = false;
             BUTTON_Cancel.Enabled = false;
             BUTTON_SaveFile.Enabled = false;
 
             TB_CourseName.Text = "";
-            LABEL_LastItemPlaced.Text = "Last item placed (memory):";
+            TB_CourseCreator.Text = "";
+            TB_CourseIDprefix.Text = "";
+            TB_CourseIDsuffix1.Text = "";
+            TB_CourseIDsuffix2.Text = "";
+            TB_CourseIDsuffix3.Text = "";
+            LABEL_LastItemPlaced.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
+            LABEL_LastItemOffset.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
             NUMERIC_CourseTimer.Value = 0;
+            NUMERIC_CourseYear.Value = 0;
+            NUMERIC_CourseMonth.Value = 0;
+            NUMERIC_CourseDay.Value = 0;
+            NUMERIC_CourseHour.Value = 0;
+            NUMERIC_CourseMinute.Value = 0;
             CHECK_UploadReady.Checked = false;
         }
 
@@ -508,21 +663,58 @@ namespace SMM_D4TA_EDITOR
             }
         }
 
-        private void ToolStripComboBox_Language_Settings_SelectedIndexChanged(object sender, EventArgs e)
+        private void CHECK_SetDateTimeNow_CheckedChanged(object sender, EventArgs e)
         {
-            string selected = ToolStripComboBox_Language_Settings.SelectedItem.ToString();
-
-            if (selected == Properties.Settings.Default.LanguageFile)
+            if (CHECK_SetDateTimeNow.Checked)
             {
-                return;
+                NUMERIC_CourseMonth.Enabled = false;
+                NUMERIC_CourseDay.Enabled = false;
+                NUMERIC_CourseHour.Enabled = false;
+                NUMERIC_CourseMinute.Enabled = false;
+
+                NUMERIC_CourseMonth.Value = DateTime.Now.Month;
+                NUMERIC_CourseDay.Value = DateTime.Now.Day;
+                NUMERIC_CourseHour.Value = DateTime.Now.Hour;
+                NUMERIC_CourseMinute.Value = DateTime.Now.Minute;
             }
+            else
+            {
+                //I literally copy and pasted some of the same lines from select file section, so... Later I'll create a function or something
 
-            Properties.Settings.Default.LanguageFile = selected;
-            Properties.Settings.Default.Save();
+                //Set file path and read data
+                currentFilePath = OpenFileDialog_cdtFile.FileName;
+                byte[] fileBytes = File.ReadAllBytes(currentFilePath);
 
-            string caption = LanguageManager.Get("FORM_Main", "LangChangedTitle");
-            string text = LanguageManager.Get("FORM_Main", "LangChanged");
-            MessageBox.Show(text, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //Extract date month bytes offset 0x12)
+                byte[] CourseDateMonthByte = new byte[1];
+                Array.Copy(fileBytes, CourseDateMonthOffset, CourseDateMonthByte, 0, 1);
+                ushort CourseDateMonth = (ushort)(CourseDateMonthByte[0]);
+
+                //Extract date day bytes offset 0x13)
+                byte[] CourseDateDayByte = new byte[1];
+                Array.Copy(fileBytes, CourseDateDayOffset, CourseDateDayByte, 0, 1);
+                ushort CourseDateDay = (ushort)(CourseDateDayByte[0]);
+
+                //Extract date hour bytes offset 0x14)
+                byte[] CourseDateHourByte = new byte[1];
+                Array.Copy(fileBytes, CourseDateHourOffset, CourseDateHourByte, 0, 1);
+                ushort CourseDateHour = (ushort)(CourseDateHourByte[0]);
+
+                //Extract date minute bytes offset 0x15)
+                byte[] CourseDateMinuteByte = new byte[1];
+                Array.Copy(fileBytes, CourseDateMinuteOffset, CourseDateMonthByte, 0, 1);
+                ushort CourseDateMinute = (ushort)(CourseDateMonthByte[0]);
+
+                NUMERIC_CourseMonth.Enabled = true;
+                NUMERIC_CourseDay.Enabled = true;
+                NUMERIC_CourseHour.Enabled = true;
+                NUMERIC_CourseMinute.Enabled = true;
+
+                NUMERIC_CourseMonth.Value = CourseDateMonth;
+                NUMERIC_CourseDay.Value = CourseDateDay;
+                NUMERIC_CourseHour.Value = CourseDateHour;
+                NUMERIC_CourseMinute.Value = CourseDateMinute;
+            }
         }
     }
 }
