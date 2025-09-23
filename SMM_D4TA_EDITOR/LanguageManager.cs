@@ -133,8 +133,8 @@ namespace SMM_D4TA_EDITOR
             else
             {
                 System.Windows.Forms.MessageBox.Show(
-                    Area + " was missing from the language file.\nThe editor cannot continue.",
-                    "NSMB Editor 4",
+                    Area + " was missing from the language file.\nThe application cannot continue.",
+                    "Warning",
                     System.Windows.Forms.MessageBoxButtons.OK,
                     System.Windows.Forms.MessageBoxIcon.Exclamation);
             }
