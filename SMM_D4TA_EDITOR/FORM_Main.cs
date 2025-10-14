@@ -73,7 +73,7 @@ namespace SMM_D4TA_EDITOR
         const int CourseThemeOffset = 0x6D;
 
         const int CourseFirstItemOffset = 0x108;
-        const int CourseLastItemOffset = 0x145F0;
+        const int CourseLastItemOffset = 0x145E9;
 
         const int CourseFirstSoundOffset = 0x145F0;
         const int CourseLastSoundOffset = 0x14F50;
@@ -351,30 +351,7 @@ namespace SMM_D4TA_EDITOR
                     LABEL_LastItemOffset.Text = lastItemOffsetLang + $" 0x{lastItemOffset:X2}"; //OH WOW, THIS WASN'T HEX IN PREVIOUS RELEASE
                 }
 
-                TB_CourseName.Enabled = true;
-                TB_CourseCreator.Enabled = true;
-                TB_CourseIDsuffix1.Enabled = true;
-                TB_CourseIDsuffix2.Enabled = true;
-                TB_CourseIDsuffix3.Enabled = true;
-                NUMERIC_CourseTimer.Enabled = true;
-                NUMERIC_CourseYear.Enabled = true;
-                NUMERIC_CourseMonth.Enabled = true;
-                NUMERIC_CourseDay.Enabled = true;
-                NUMERIC_CourseHour.Enabled = true;
-                NUMERIC_CourseMinute.Enabled = true;
-                GroupBox_Scroll_Settings.Enabled = true;
-                ComboBox_Physics_Settings.Enabled = true;
-                ComboBox_Style_Settings.Enabled = true;
-                ComboBox_Theme_Settings.Enabled = true;
-                BUTTON_TimerMinimum.Enabled = true;
-                BUTTON_TimerMaximum.Enabled = true;
-                CHECK_CourseStatusDownloaded.Enabled = true;
-                CHECK_CourseStatusUploaded.Enabled = true;
-                CHECK_CourseStatusRemoved.Enabled = true;
-                CHECK_SetDateTimeNow.Enabled = true;
-                CHECK_UploadReady.Enabled = true;
-                BUTTON_Cancel.Enabled = true;
-                BUTTON_SaveFile.Enabled = true;
+                UIstate(true);
 
                 if (CourseScroll == 0) RADIO_Scroll_None.Checked = true;
                 else if (CourseScroll == 1) RADIO_Scroll_Turtle.Checked = true;
@@ -461,8 +438,7 @@ namespace SMM_D4TA_EDITOR
 
         private void BUTTON_Cancel_Click(object sender, EventArgs e)
         {
-            currentFilePath = "";
-            CleanUI();
+            UIstate(false);
         }
 
         private void BUTTON_SaveFile_Click(object sender, EventArgs e)
@@ -587,8 +563,11 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseStyleEndOffset] = styleBytes[1];
 
             if (CHECK_CourseStatusDownloaded.Checked) fileBytes[DownloadedCourseOffset] = 0x01;
+            else fileBytes[DownloadedCourseOffset] = 0x00;
             if (CHECK_CourseStatusUploaded.Checked) fileBytes[UploadedCourseOffset] = 0x01;
-            if (CHECK_CourseStatusRemoved.Checked) fileBytes[UploadedCourseOffset] = 0x01;
+            else fileBytes[UploadedCourseOffset] = 0x00;
+            if (CHECK_CourseStatusRemoved.Checked) fileBytes[RemovedCourseOffset] = 0x01; //Here used to be an "UploadedCourseOffset" instead of "RemovedCourseOffset", hopefully I'm testing it to see if there's any bug
+            else fileBytes[RemovedCourseOffset] = 0x00;
 
             //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
             Crc32 crc32 = new Crc32();
@@ -602,51 +581,61 @@ namespace SMM_D4TA_EDITOR
             string text = LanguageManager.Get("FORM_Main", "cdtFileSave");
             MessageBox.Show(text + currentFilePath, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            CleanUI();
+            UIstate(false);
         }
 
-        private void CleanUI()
+        private void UIstate(bool state)
         {
-            TB_CourseName.Enabled = false;
-            TB_CourseCreator.Enabled = false;
-            TB_CourseIDsuffix1.Enabled = false;
-            TB_CourseIDsuffix2.Enabled = false;
-            TB_CourseIDsuffix3.Enabled = false;
-            NUMERIC_CourseTimer.Enabled = false;
-            NUMERIC_CourseYear.Enabled = false;
-            NUMERIC_CourseMonth.Enabled = false;
-            NUMERIC_CourseDay.Enabled = false;
-            NUMERIC_CourseHour.Enabled = false;
-            NUMERIC_CourseMinute.Enabled = false;
-            CHECK_SetDateTimeNow.Enabled = false;
-            CHECK_UploadReady.Enabled = false;
-            ComboBox_Physics_Settings.Enabled = false;
-            ComboBox_Style_Settings.Enabled = false;
-            ComboBox_Theme_Settings.Enabled = false;
-            GroupBox_Scroll_Settings.Enabled = false;
-            BUTTON_TimerMinimum.Enabled = false;
-            BUTTON_TimerMaximum.Enabled = false;
-            CHECK_CourseStatusDownloaded.Enabled = false;
-            CHECK_CourseStatusUploaded.Enabled = false;
-            CHECK_CourseStatusRemoved.Enabled = false;
-            BUTTON_Cancel.Enabled = false;
-            BUTTON_SaveFile.Enabled = false;
+            TB_CourseName.Enabled = state;
+            TB_CourseCreator.Enabled = state;
+            TB_CourseIDsuffix1.Enabled = state;
+            TB_CourseIDsuffix2.Enabled = state;
+            TB_CourseIDsuffix3.Enabled = state;
+            NUMERIC_CourseTimer.Enabled = state;
+            NUMERIC_CourseYear.Enabled = state;
+            NUMERIC_CourseMonth.Enabled = state;
+            NUMERIC_CourseDay.Enabled = state;
+            NUMERIC_CourseHour.Enabled = state;
+            NUMERIC_CourseMinute.Enabled = state;
+            CHECK_SetDateTimeNow.Enabled = state;
+            CHECK_UploadReady.Enabled = state;
+            ComboBox_Physics_Settings.Enabled = state;
+            ComboBox_Style_Settings.Enabled = state;
+            ComboBox_Theme_Settings.Enabled = state;
+            GroupBox_Scroll_Settings.Enabled = state;
+            BUTTON_TimerMinimum.Enabled = state;
+            BUTTON_TimerMaximum.Enabled = state;
+            CHECK_CourseStatusDownloaded.Enabled = state;
+            CHECK_CourseStatusUploaded.Enabled = state;
+            CHECK_CourseStatusRemoved.Enabled = state;
+            BUTTON_Cancel.Enabled = state;
+            BUTTON_SaveFile.Enabled = state;
+            BUTTON_CopyID.Enabled = state;
 
-            TB_CourseName.Text = "";
-            TB_CourseCreator.Text = "";
-            TB_CourseIDprefix.Text = "";
-            TB_CourseIDsuffix1.Text = "";
-            TB_CourseIDsuffix2.Text = "";
-            TB_CourseIDsuffix3.Text = "";
-            LABEL_LastItemPlaced.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
-            LABEL_LastItemOffset.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
-            NUMERIC_CourseTimer.Value = 0;
-            NUMERIC_CourseYear.Value = 0;
-            NUMERIC_CourseMonth.Value = 0;
-            NUMERIC_CourseDay.Value = 0;
-            NUMERIC_CourseHour.Value = 0;
-            NUMERIC_CourseMinute.Value = 0;
-            CHECK_UploadReady.Checked = false;
+            if (state == false)
+            {
+                currentFilePath = "";
+                TB_CourseName.Text = "";
+                TB_CourseCreator.Text = "";
+                TB_CourseIDprefix.Text = "";
+                TB_CourseIDsuffix1.Text = "";
+                TB_CourseIDsuffix2.Text = "";
+                TB_CourseIDsuffix3.Text = "";
+                LABEL_LastItemPlaced.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
+                LABEL_LastItemOffset.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
+                NUMERIC_CourseTimer.Value = 0;
+                NUMERIC_CourseYear.Value = 0;
+                NUMERIC_CourseMonth.Value = 0;
+                NUMERIC_CourseDay.Value = 0;
+                NUMERIC_CourseHour.Value = 0;
+                NUMERIC_CourseMinute.Value = 0;
+                CHECK_UploadReady.Checked = false;
+                CHECK_SetDateTimeNow.Checked = false;
+                CHECK_UploadReady.Checked = false;
+                CHECK_CourseStatusDownloaded.Checked = false;
+                CHECK_CourseStatusUploaded.Checked = false;
+                CHECK_CourseStatusRemoved.Checked = false;
+            }
         }
 
         public byte[] RecompressJpeg(Bitmap image, long quality)
@@ -714,6 +703,25 @@ namespace SMM_D4TA_EDITOR
                 NUMERIC_CourseDay.Value = CourseDateDay;
                 NUMERIC_CourseHour.Value = CourseDateHour;
                 NUMERIC_CourseMinute.Value = CourseDateMinute;
+            }
+        }
+
+        private void BUTTON_CopyID_Click(object sender, EventArgs e)
+        {
+            //You can copy only if ID is fully filled
+            if (!string.IsNullOrEmpty(TB_CourseIDprefix.Text) &&
+            !string.IsNullOrEmpty(TB_CourseIDsuffix1.Text) &&
+            !string.IsNullOrEmpty(TB_CourseIDsuffix2.Text) &&
+            !string.IsNullOrEmpty(TB_CourseIDsuffix3.Text)) {
+                string textToCopy = (TB_CourseIDprefix.Text + "-"
+                + TB_CourseIDsuffix1.Text + "-"
+                + TB_CourseIDsuffix2.Text + "-"
+                + TB_CourseIDsuffix3.Text).Trim();
+
+                Thread thread = new Thread(() => Clipboard.SetText(textToCopy));
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+                thread.Join();
             }
         }
     }

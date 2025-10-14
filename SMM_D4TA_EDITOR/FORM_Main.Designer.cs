@@ -95,6 +95,7 @@ namespace SMM_D4TA_EDITOR
             this.CHECK_CourseStatusUploaded = new System.Windows.Forms.CheckBox();
             this.CHECK_CourseStatusRemoved = new System.Windows.Forms.CheckBox();
             this.LABEL_LastSFXplaced = new System.Windows.Forms.Label();
+            this.BUTTON_CopyID = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             this.GroupBox_Scroll_Settings.SuspendLayout();
@@ -234,7 +235,7 @@ namespace SMM_D4TA_EDITOR
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(391, 154);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(392, 86);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(101, 17);
             this.CHECK_UploadReady.TabIndex = 6;
@@ -487,7 +488,7 @@ namespace SMM_D4TA_EDITOR
             // NUMERIC_CourseMonth
             // 
             this.NUMERIC_CourseMonth.Enabled = false;
-            this.NUMERIC_CourseMonth.Location = new System.Drawing.Point(325, 192);
+            this.NUMERIC_CourseMonth.Location = new System.Drawing.Point(350, 192);
             this.NUMERIC_CourseMonth.Maximum = new decimal(new int[] {
             255,
             0,
@@ -500,7 +501,7 @@ namespace SMM_D4TA_EDITOR
             // NUMERIC_CourseDay
             // 
             this.NUMERIC_CourseDay.Enabled = false;
-            this.NUMERIC_CourseDay.Location = new System.Drawing.Point(391, 192);
+            this.NUMERIC_CourseDay.Location = new System.Drawing.Point(416, 192);
             this.NUMERIC_CourseDay.Maximum = new decimal(new int[] {
             255,
             0,
@@ -513,7 +514,7 @@ namespace SMM_D4TA_EDITOR
             // NUMERIC_CourseHour
             // 
             this.NUMERIC_CourseHour.Enabled = false;
-            this.NUMERIC_CourseHour.Location = new System.Drawing.Point(325, 231);
+            this.NUMERIC_CourseHour.Location = new System.Drawing.Point(350, 231);
             this.NUMERIC_CourseHour.Maximum = new decimal(new int[] {
             255,
             0,
@@ -526,7 +527,7 @@ namespace SMM_D4TA_EDITOR
             // NUMERIC_CourseMinute
             // 
             this.NUMERIC_CourseMinute.Enabled = false;
-            this.NUMERIC_CourseMinute.Location = new System.Drawing.Point(391, 231);
+            this.NUMERIC_CourseMinute.Location = new System.Drawing.Point(416, 231);
             this.NUMERIC_CourseMinute.Maximum = new decimal(new int[] {
             255,
             0,
@@ -551,7 +552,7 @@ namespace SMM_D4TA_EDITOR
             // LABEL_CourseMonth
             // 
             this.LABEL_CourseMonth.AutoSize = true;
-            this.LABEL_CourseMonth.Location = new System.Drawing.Point(326, 176);
+            this.LABEL_CourseMonth.Location = new System.Drawing.Point(351, 176);
             this.LABEL_CourseMonth.Name = "LABEL_CourseMonth";
             this.LABEL_CourseMonth.Size = new System.Drawing.Size(49, 13);
             this.LABEL_CourseMonth.TabIndex = 29;
@@ -560,7 +561,7 @@ namespace SMM_D4TA_EDITOR
             // LABEL_CourseDay
             // 
             this.LABEL_CourseDay.AutoSize = true;
-            this.LABEL_CourseDay.Location = new System.Drawing.Point(393, 176);
+            this.LABEL_CourseDay.Location = new System.Drawing.Point(418, 176);
             this.LABEL_CourseDay.Name = "LABEL_CourseDay";
             this.LABEL_CourseDay.Size = new System.Drawing.Size(38, 13);
             this.LABEL_CourseDay.TabIndex = 30;
@@ -569,7 +570,7 @@ namespace SMM_D4TA_EDITOR
             // TwoDots
             // 
             this.TwoDots.AutoSize = true;
-            this.TwoDots.Location = new System.Drawing.Point(378, 234);
+            this.TwoDots.Location = new System.Drawing.Point(403, 234);
             this.TwoDots.Name = "TwoDots";
             this.TwoDots.Size = new System.Drawing.Size(10, 13);
             this.TwoDots.TabIndex = 31;
@@ -578,7 +579,7 @@ namespace SMM_D4TA_EDITOR
             // LABEL_CourseHour
             // 
             this.LABEL_CourseHour.AutoSize = true;
-            this.LABEL_CourseHour.Location = new System.Drawing.Point(326, 215);
+            this.LABEL_CourseHour.Location = new System.Drawing.Point(351, 215);
             this.LABEL_CourseHour.Name = "LABEL_CourseHour";
             this.LABEL_CourseHour.Size = new System.Drawing.Size(42, 13);
             this.LABEL_CourseHour.TabIndex = 32;
@@ -587,7 +588,7 @@ namespace SMM_D4TA_EDITOR
             // LABEL_CourseMinute
             // 
             this.LABEL_CourseMinute.AutoSize = true;
-            this.LABEL_CourseMinute.Location = new System.Drawing.Point(394, 215);
+            this.LABEL_CourseMinute.Location = new System.Drawing.Point(419, 215);
             this.LABEL_CourseMinute.Name = "LABEL_CourseMinute";
             this.LABEL_CourseMinute.Size = new System.Drawing.Size(51, 13);
             this.LABEL_CourseMinute.TabIndex = 33;
@@ -596,7 +597,7 @@ namespace SMM_D4TA_EDITOR
             // NUMERIC_CourseYear
             // 
             this.NUMERIC_CourseYear.Enabled = false;
-            this.NUMERIC_CourseYear.Location = new System.Drawing.Point(325, 151);
+            this.NUMERIC_CourseYear.Location = new System.Drawing.Point(406, 151);
             this.NUMERIC_CourseYear.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -609,7 +610,7 @@ namespace SMM_D4TA_EDITOR
             // LABEL_CourseYear
             // 
             this.LABEL_CourseYear.AutoSize = true;
-            this.LABEL_CourseYear.Location = new System.Drawing.Point(326, 135);
+            this.LABEL_CourseYear.Location = new System.Drawing.Point(407, 135);
             this.LABEL_CourseYear.Name = "LABEL_CourseYear";
             this.LABEL_CourseYear.Size = new System.Drawing.Size(41, 13);
             this.LABEL_CourseYear.TabIndex = 35;
@@ -696,17 +697,29 @@ namespace SMM_D4TA_EDITOR
             // LABEL_LastSFXplaced
             // 
             this.LABEL_LastSFXplaced.AutoSize = true;
-            this.LABEL_LastSFXplaced.Location = new System.Drawing.Point(326, 277);
+            this.LABEL_LastSFXplaced.Location = new System.Drawing.Point(325, 295);
             this.LABEL_LastSFXplaced.Name = "LABEL_LastSFXplaced";
             this.LABEL_LastSFXplaced.Size = new System.Drawing.Size(145, 13);
             this.LABEL_LastSFXplaced.TabIndex = 44;
             this.LABEL_LastSFXplaced.Text = "<Last SFX placed (memory):>";
+            // 
+            // BUTTON_CopyID
+            // 
+            this.BUTTON_CopyID.Enabled = false;
+            this.BUTTON_CopyID.Location = new System.Drawing.Point(325, 148);
+            this.BUTTON_CopyID.Name = "BUTTON_CopyID";
+            this.BUTTON_CopyID.Size = new System.Drawing.Size(75, 23);
+            this.BUTTON_CopyID.TabIndex = 45;
+            this.BUTTON_CopyID.Text = "<Copy ID>";
+            this.BUTTON_CopyID.UseVisualStyleBackColor = true;
+            this.BUTTON_CopyID.Click += new System.EventHandler(this.BUTTON_CopyID_Click);
             // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 351);
+            this.Controls.Add(this.BUTTON_CopyID);
             this.Controls.Add(this.LABEL_LastSFXplaced);
             this.Controls.Add(this.CHECK_CourseStatusRemoved);
             this.Controls.Add(this.CHECK_CourseStatusUploaded);
@@ -801,6 +814,7 @@ namespace SMM_D4TA_EDITOR
             this.Controls.SetChildIndex(this.CHECK_CourseStatusUploaded, 0);
             this.Controls.SetChildIndex(this.CHECK_CourseStatusRemoved, 0);
             this.Controls.SetChildIndex(this.LABEL_LastSFXplaced, 0);
+            this.Controls.SetChildIndex(this.BUTTON_CopyID, 0);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
@@ -882,6 +896,7 @@ namespace SMM_D4TA_EDITOR
         private System.Windows.Forms.CheckBox CHECK_CourseStatusUploaded;
         private System.Windows.Forms.CheckBox CHECK_CourseStatusRemoved;
         private System.Windows.Forms.Label LABEL_LastSFXplaced;
+        private System.Windows.Forms.Button BUTTON_CopyID;
     }
 }
 
