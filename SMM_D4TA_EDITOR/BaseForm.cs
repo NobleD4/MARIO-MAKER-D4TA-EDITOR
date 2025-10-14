@@ -20,8 +20,6 @@ namespace SLN_SMM_D4TA_EDITOR
             var ToolStripMenuItem_SMM1_SaveFile = new ToolStripMenuItem("Edit SMM1 Save file");
             var ToolStripMenuItem_About = new ToolStripMenuItem("About");
 
-            ToolStripMenuItem_SMM1_SaveFile.Enabled = false;
-
             ToolStripMenuItem_SMM1_EditLevel.Click += (s, e) => {
                 var x = new Thread(() => Application.Run(new FORM_Main()));
                 //THIS NEXT LINE IS IMPORTANT, MAIN THREAD IS "STA" AND IF I DON'T ADD IT MAIN THREAD WOULD BE "MTA" NOW
@@ -31,7 +29,11 @@ namespace SLN_SMM_D4TA_EDITOR
             };
             ToolStripMenuItem_SMM1_SaveFile.Click += (s, e) =>
             {
-
+                var x = new Thread(() => Application.Run(new FORM_SMM1_SaveFile()));
+                //THIS NEXT LINE IS IMPORTANT, MAIN THREAD IS "STA" AND IF I DON'T ADD IT MAIN THREAD WOULD BE "MTA" NOW
+                x.SetApartmentState(ApartmentState.STA); //IF THE PROGRAM IS AT "MTA" THREAD, WILL CRASH IF YOU TRY TO OPEN A FILE
+                this.Close();
+                x.Start();
             };
             ToolStripMenuItem_About.Click += (s, e) =>
             {
