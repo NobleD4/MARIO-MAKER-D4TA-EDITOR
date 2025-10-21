@@ -491,6 +491,7 @@
             this.Controls.Add(this.BUTTON_DESC_Sort);
             this.Controls.Add(this.LISTBOX_Coursebot);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FORM_SMM1_SaveFile";

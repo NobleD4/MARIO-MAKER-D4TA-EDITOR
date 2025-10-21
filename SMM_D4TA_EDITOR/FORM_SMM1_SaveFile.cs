@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace SLN_SMM_D4TA_EDITOR
 {
@@ -106,9 +107,9 @@ namespace SLN_SMM_D4TA_EDITOR
                 {
                     int offset = CoursebotStartOffset + i;
                     byte memoryValue = fileBytes[offset]; //Level number in memory (from 0x00 to 0x77)
-                    string itemText = $"W{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
-                    $"Slot {memoryValue + 1:000}: course{i:000}   " +
-                    $"Memory: 0x{memoryValue:X2} ({memoryValue})";
+                    string itemText = null;
+
+                    itemText = ListBoxText(i, memoryValue);
 
                     CoursebotCoursesList.Add(new CoursebotEntry
                     {
@@ -313,9 +314,9 @@ namespace SLN_SMM_D4TA_EDITOR
             {
                 int offset = CoursebotStartOffset + i;
                 byte memoryValue = fileBytes[offset];
-                string itemText = $"W{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
-                    $"Slot {memoryValue + 1:000}: course{i:000}   " +
-                    $"Memory: 0x{memoryValue:X2} ({memoryValue})";
+                string itemText = null;
+
+                itemText = ListBoxText(i, memoryValue);
 
                 CoursebotCoursesList.Add(new CoursebotEntry
                 {
@@ -345,10 +346,9 @@ namespace SLN_SMM_D4TA_EDITOR
 
                 entry.MemoryValue = 0xFF;
                 fileBytes[offset] = 0xFF;
+                entry.DisplayText = null;
 
-                entry.DisplayText = $"W{(entry.MemoryValue / 4) + 1}-{(entry.MemoryValue % 4) + 1}\t" +
-                $"Slot {entry.MemoryValue + 1:000}: course{entry.CourseIndex:000}   " +
-                $"Memory: 0x{entry.MemoryValue:X2} ({entry.MemoryValue})";
+                entry.DisplayText = ListBoxText(entry.CourseIndex, entry.MemoryValue);
             }
 
             //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
@@ -369,9 +369,9 @@ namespace SLN_SMM_D4TA_EDITOR
             {
                 int offset = CoursebotStartOffset + i;
                 byte memoryValue = fileBytes[offset];
-                string itemText = $"W{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
-                    $"Slot {memoryValue + 1:000}: course{i:000}   " +
-                    $"Memory: 0x{memoryValue:X2} ({memoryValue})";
+                string itemText = null;
+
+                itemText = ListBoxText(i, memoryValue);
 
                 CoursebotCoursesList.Add(new CoursebotEntry
                 {
@@ -382,6 +382,19 @@ namespace SLN_SMM_D4TA_EDITOR
 
                 LISTBOX_Coursebot.Items.Add(itemText);
             }
+        }
+
+        string ListBoxText(int courseIndex, int memoryValue)
+        {
+            string CoursebotWorld = LanguageManager.Get("FORM_SMM1_SaveFile", "LISTBOX_CoursebotWorld");
+            string CoursebotSlot = LanguageManager.Get("FORM_SMM1_SaveFile", "LISTBOX_CoursebotSlot");
+            string CoursebotMemory = LanguageManager.Get("FORM_SMM1_SaveFile", "LISTBOX_CoursebotMemory");
+
+            string itemText = $"{CoursebotWorld}{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
+            $"{CoursebotSlot} {memoryValue + 1:000}: course{courseIndex:000}   " +
+            $"{CoursebotMemory} 0x{memoryValue:X2} ({memoryValue})";
+
+            return itemText;
         }
     }
 }

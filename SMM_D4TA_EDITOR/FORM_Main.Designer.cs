@@ -702,6 +702,7 @@ namespace SMM_D4TA_EDITOR
             this.LABEL_LastSFXplaced.Size = new System.Drawing.Size(145, 13);
             this.LABEL_LastSFXplaced.TabIndex = 44;
             this.LABEL_LastSFXplaced.Text = "<Last SFX placed (memory):>";
+            this.LABEL_LastSFXplaced.Visible = false;
             // 
             // BUTTON_CopyID
             // 

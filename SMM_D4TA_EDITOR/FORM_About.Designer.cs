@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FORM_About));
             this.COMBOBOX_Language_Settings = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.LABEL_Language = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.LINK_GitHub_SMMD4TAEDITOR = new System.Windows.Forms.LinkLabel();
             this.LINK_GitHub_NSMBeMaintained = new System.Windows.Forms.LinkLabel();
@@ -37,32 +38,32 @@
             this.LINK_GitHub_TheFourthDimension = new System.Windows.Forms.LinkLabel();
             this.LINK_GitHub_SMM1LevelDownloader = new System.Windows.Forms.LinkLabel();
             this.LINK_GitHub_PointlessMaker = new System.Windows.Forms.LinkLabel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.LABEL_RelatedContent = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // COMBOBOX_Language_Settings
             // 
             this.COMBOBOX_Language_Settings.FormattingEnabled = true;
-            this.COMBOBOX_Language_Settings.Location = new System.Drawing.Point(191, 151);
+            this.COMBOBOX_Language_Settings.Location = new System.Drawing.Point(200, 151);
             this.COMBOBOX_Language_Settings.Name = "COMBOBOX_Language_Settings";
             this.COMBOBOX_Language_Settings.Size = new System.Drawing.Size(121, 21);
             this.COMBOBOX_Language_Settings.TabIndex = 1;
             this.COMBOBOX_Language_Settings.SelectedIndexChanged += new System.EventHandler(this.COMBOBOX_Language_Settings_SelectedIndexChanged);
             // 
-            // label1
+            // LABEL_Language
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(188, 135);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(67, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "<Language>";
+            this.LABEL_Language.AutoSize = true;
+            this.LABEL_Language.Location = new System.Drawing.Point(197, 135);
+            this.LABEL_Language.Name = "LABEL_Language";
+            this.LABEL_Language.Size = new System.Drawing.Size(67, 13);
+            this.LABEL_Language.TabIndex = 0;
+            this.LABEL_Language.Text = "<Language>";
             // 
             // label2
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(0, 51);
+            this.label2.Location = new System.Drawing.Point(10, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(504, 40);
             this.label2.TabIndex = 3;
@@ -72,92 +73,92 @@
             // LINK_GitHub_SMMD4TAEDITOR
             // 
             this.LINK_GitHub_SMMD4TAEDITOR.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.LINK_GitHub_SMMD4TAEDITOR.Location = new System.Drawing.Point(0, 216);
+            this.LINK_GitHub_SMMD4TAEDITOR.Location = new System.Drawing.Point(10, 216);
             this.LINK_GitHub_SMMD4TAEDITOR.Name = "LINK_GitHub_SMMD4TAEDITOR";
             this.LINK_GitHub_SMMD4TAEDITOR.Size = new System.Drawing.Size(504, 20);
-            this.LINK_GitHub_SMMD4TAEDITOR.TabIndex = 4;
+            this.LINK_GitHub_SMMD4TAEDITOR.TabIndex = 2;
             this.LINK_GitHub_SMMD4TAEDITOR.TabStop = true;
-            this.LINK_GitHub_SMMD4TAEDITOR.Text = "SMM D4TA EDITOR on GitHub";
+            this.LINK_GitHub_SMMD4TAEDITOR.Text = "SMM D4TA EDITOR GitHub";
             this.LINK_GitHub_SMMD4TAEDITOR.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.LINK_GitHub_SMMD4TAEDITOR.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LINK_GitHub_SMMD4TAEDITOR_LinkClicked);
             // 
             // LINK_GitHub_NSMBeMaintained
             // 
             this.LINK_GitHub_NSMBeMaintained.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.LINK_GitHub_NSMBeMaintained.Location = new System.Drawing.Point(0, 275);
+            this.LINK_GitHub_NSMBeMaintained.Location = new System.Drawing.Point(10, 275);
             this.LINK_GitHub_NSMBeMaintained.Name = "LINK_GitHub_NSMBeMaintained";
             this.LINK_GitHub_NSMBeMaintained.Size = new System.Drawing.Size(504, 20);
-            this.LINK_GitHub_NSMBeMaintained.TabIndex = 5;
+            this.LINK_GitHub_NSMBeMaintained.TabIndex = 4;
             this.LINK_GitHub_NSMBeMaintained.TabStop = true;
-            this.LINK_GitHub_NSMBeMaintained.Text = "NSMBe on GitHub [Maintained]";
+            this.LINK_GitHub_NSMBeMaintained.Text = "NSMBe GitHub [Maintained]";
             this.LINK_GitHub_NSMBeMaintained.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.LINK_GitHub_NSMBeMaintained.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LINK_GitHub_NSMBeMaintained_LinkClicked);
             // 
             // LINK_GitHub_NSMBeOriginal
             // 
             this.LINK_GitHub_NSMBeOriginal.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.LINK_GitHub_NSMBeOriginal.Location = new System.Drawing.Point(0, 292);
+            this.LINK_GitHub_NSMBeOriginal.Location = new System.Drawing.Point(10, 292);
             this.LINK_GitHub_NSMBeOriginal.Name = "LINK_GitHub_NSMBeOriginal";
             this.LINK_GitHub_NSMBeOriginal.Size = new System.Drawing.Size(504, 20);
-            this.LINK_GitHub_NSMBeOriginal.TabIndex = 6;
+            this.LINK_GitHub_NSMBeOriginal.TabIndex = 5;
             this.LINK_GitHub_NSMBeOriginal.TabStop = true;
-            this.LINK_GitHub_NSMBeOriginal.Text = "NSMBe on GitHub [Original]";
+            this.LINK_GitHub_NSMBeOriginal.Text = "NSMBe GitHub [Original]";
             this.LINK_GitHub_NSMBeOriginal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.LINK_GitHub_NSMBeOriginal.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LINK_GitHub_NSMBeOriginal_LinkClicked);
             // 
             // LINK_GitHub_TheFourthDimension
             // 
             this.LINK_GitHub_TheFourthDimension.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.LINK_GitHub_TheFourthDimension.Location = new System.Drawing.Point(0, 327);
+            this.LINK_GitHub_TheFourthDimension.Location = new System.Drawing.Point(10, 327);
             this.LINK_GitHub_TheFourthDimension.Name = "LINK_GitHub_TheFourthDimension";
             this.LINK_GitHub_TheFourthDimension.Size = new System.Drawing.Size(504, 20);
             this.LINK_GitHub_TheFourthDimension.TabIndex = 7;
             this.LINK_GitHub_TheFourthDimension.TabStop = true;
-            this.LINK_GitHub_TheFourthDimension.Text = "TheFourthDimension on GitHub";
+            this.LINK_GitHub_TheFourthDimension.Text = "TheFourthDimension GitHub";
             this.LINK_GitHub_TheFourthDimension.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.LINK_GitHub_TheFourthDimension.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LINK_GitHub_TheFourthDimension_LinkClicked);
             // 
             // LINK_GitHub_SMM1LevelDownloader
             // 
             this.LINK_GitHub_SMM1LevelDownloader.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.LINK_GitHub_SMM1LevelDownloader.Location = new System.Drawing.Point(0, 309);
+            this.LINK_GitHub_SMM1LevelDownloader.Location = new System.Drawing.Point(10, 309);
             this.LINK_GitHub_SMM1LevelDownloader.Name = "LINK_GitHub_SMM1LevelDownloader";
             this.LINK_GitHub_SMM1LevelDownloader.Size = new System.Drawing.Size(504, 20);
-            this.LINK_GitHub_SMM1LevelDownloader.TabIndex = 8;
+            this.LINK_GitHub_SMM1LevelDownloader.TabIndex = 6;
             this.LINK_GitHub_SMM1LevelDownloader.TabStop = true;
-            this.LINK_GitHub_SMM1LevelDownloader.Text = "SMM1 Level Downloader on GitHub";
+            this.LINK_GitHub_SMM1LevelDownloader.Text = "SMM1 Level Downloader GitHub";
             this.LINK_GitHub_SMM1LevelDownloader.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.LINK_GitHub_SMM1LevelDownloader.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LINK_GitHub_SMM1LevelDownloader_LinkClicked);
             // 
             // LINK_GitHub_PointlessMaker
             // 
             this.LINK_GitHub_PointlessMaker.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.LINK_GitHub_PointlessMaker.Location = new System.Drawing.Point(3, 259);
+            this.LINK_GitHub_PointlessMaker.Location = new System.Drawing.Point(13, 259);
             this.LINK_GitHub_PointlessMaker.Name = "LINK_GitHub_PointlessMaker";
             this.LINK_GitHub_PointlessMaker.Size = new System.Drawing.Size(504, 20);
-            this.LINK_GitHub_PointlessMaker.TabIndex = 9;
+            this.LINK_GitHub_PointlessMaker.TabIndex = 3;
             this.LINK_GitHub_PointlessMaker.TabStop = true;
-            this.LINK_GitHub_PointlessMaker.Text = "PointlessMaker on GitHub";
+            this.LINK_GitHub_PointlessMaker.Text = "PointlessMaker GitHub";
             this.LINK_GitHub_PointlessMaker.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.LINK_GitHub_PointlessMaker.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LINK_GitHub_PointlessMaker_LinkClicked);
             // 
-            // label3
+            // LABEL_RelatedContent
             // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(0, 240);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(504, 20);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Related content";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LABEL_RelatedContent.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.LABEL_RelatedContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LABEL_RelatedContent.Location = new System.Drawing.Point(10, 240);
+            this.LABEL_RelatedContent.Name = "LABEL_RelatedContent";
+            this.LABEL_RelatedContent.Size = new System.Drawing.Size(504, 20);
+            this.LABEL_RelatedContent.TabIndex = 0;
+            this.LABEL_RelatedContent.Text = "<Related content>";
+            this.LABEL_RelatedContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FORM_About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 351);
-            this.Controls.Add(this.label3);
+            this.ClientSize = new System.Drawing.Size(524, 361);
+            this.Controls.Add(this.LABEL_RelatedContent);
             this.Controls.Add(this.LINK_GitHub_PointlessMaker);
             this.Controls.Add(this.LINK_GitHub_SMM1LevelDownloader);
             this.Controls.Add(this.LINK_GitHub_TheFourthDimension);
@@ -165,15 +166,17 @@
             this.Controls.Add(this.LINK_GitHub_NSMBeMaintained);
             this.Controls.Add(this.LINK_GitHub_SMMD4TAEDITOR);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.LABEL_Language);
             this.Controls.Add(this.COMBOBOX_Language_Settings);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FORM_About";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FORM_About";
+            this.Text = "<_TITLE>";
             this.Load += new System.EventHandler(this.FORM_About_Load);
             this.Controls.SetChildIndex(this.COMBOBOX_Language_Settings, 0);
-            this.Controls.SetChildIndex(this.label1, 0);
+            this.Controls.SetChildIndex(this.LABEL_Language, 0);
             this.Controls.SetChildIndex(this.label2, 0);
             this.Controls.SetChildIndex(this.LINK_GitHub_SMMD4TAEDITOR, 0);
             this.Controls.SetChildIndex(this.LINK_GitHub_NSMBeMaintained, 0);
@@ -181,7 +184,7 @@
             this.Controls.SetChildIndex(this.LINK_GitHub_TheFourthDimension, 0);
             this.Controls.SetChildIndex(this.LINK_GitHub_SMM1LevelDownloader, 0);
             this.Controls.SetChildIndex(this.LINK_GitHub_PointlessMaker, 0);
-            this.Controls.SetChildIndex(this.label3, 0);
+            this.Controls.SetChildIndex(this.LABEL_RelatedContent, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -190,7 +193,7 @@
         #endregion
 
         private System.Windows.Forms.ComboBox COMBOBOX_Language_Settings;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label LABEL_Language;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.LinkLabel LINK_GitHub_SMMD4TAEDITOR;
         private System.Windows.Forms.LinkLabel LINK_GitHub_NSMBeMaintained;
@@ -198,6 +201,6 @@
         private System.Windows.Forms.LinkLabel LINK_GitHub_TheFourthDimension;
         private System.Windows.Forms.LinkLabel LINK_GitHub_SMM1LevelDownloader;
         private System.Windows.Forms.LinkLabel LINK_GitHub_PointlessMaker;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label LABEL_RelatedContent;
     }
 }
