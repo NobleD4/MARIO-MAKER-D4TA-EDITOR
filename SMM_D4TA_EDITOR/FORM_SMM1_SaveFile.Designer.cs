@@ -28,13 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FORM_SMM1_SaveFile));
             this.LISTBOX_Coursebot = new System.Windows.Forms.ListBox();
             this.BUTTON_DESC_Sort = new System.Windows.Forms.Button();
             this.BUTTON_ASC_Sort = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ToolStripMenuItem_SelectFile = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenFileDialog_datFile = new System.Windows.Forms.OpenFileDialog();
-            this.BUTTON_Remove = new System.Windows.Forms.Button();
+            this.BUTTON_RemoveCourse = new System.Windows.Forms.Button();
             this.CHECKLISTBOX_ItemsOrder = new System.Windows.Forms.CheckedListBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -76,9 +77,9 @@
             // 
             this.LISTBOX_Coursebot.AllowDrop = true;
             this.LISTBOX_Coursebot.FormattingEnabled = true;
-            this.LISTBOX_Coursebot.Location = new System.Drawing.Point(226, 130);
+            this.LISTBOX_Coursebot.Location = new System.Drawing.Point(138, 51);
             this.LISTBOX_Coursebot.Name = "LISTBOX_Coursebot";
-            this.LISTBOX_Coursebot.Size = new System.Drawing.Size(266, 134);
+            this.LISTBOX_Coursebot.Size = new System.Drawing.Size(266, 121);
             this.LISTBOX_Coursebot.TabIndex = 1;
             this.LISTBOX_Coursebot.DragDrop += new System.Windows.Forms.DragEventHandler(this.LISTBOX_Coursebot_DragDrop);
             this.LISTBOX_Coursebot.DragOver += new System.Windows.Forms.DragEventHandler(this.LISTBOX_Coursebot_DragOver);
@@ -87,19 +88,20 @@
             // BUTTON_DESC_Sort
             // 
             this.BUTTON_DESC_Sort.Enabled = false;
-            this.BUTTON_DESC_Sort.Location = new System.Drawing.Point(226, 270);
+            this.BUTTON_DESC_Sort.Location = new System.Drawing.Point(32, 153);
             this.BUTTON_DESC_Sort.Name = "BUTTON_DESC_Sort";
-            this.BUTTON_DESC_Sort.Size = new System.Drawing.Size(79, 23);
+            this.BUTTON_DESC_Sort.Size = new System.Drawing.Size(100, 23);
             this.BUTTON_DESC_Sort.TabIndex = 2;
             this.BUTTON_DESC_Sort.Text = "<Desc. Sort>";
             this.BUTTON_DESC_Sort.UseVisualStyleBackColor = true;
+            this.BUTTON_DESC_Sort.Click += new System.EventHandler(this.BUTTON_DESC_Sort_Click);
             // 
             // BUTTON_ASC_Sort
             // 
             this.BUTTON_ASC_Sort.Enabled = false;
-            this.BUTTON_ASC_Sort.Location = new System.Drawing.Point(226, 293);
+            this.BUTTON_ASC_Sort.Location = new System.Drawing.Point(32, 124);
             this.BUTTON_ASC_Sort.Name = "BUTTON_ASC_Sort";
-            this.BUTTON_ASC_Sort.Size = new System.Drawing.Size(79, 23);
+            this.BUTTON_ASC_Sort.Size = new System.Drawing.Size(100, 23);
             this.BUTTON_ASC_Sort.TabIndex = 3;
             this.BUTTON_ASC_Sort.Text = "<Asc. Sort>";
             this.BUTTON_ASC_Sort.UseVisualStyleBackColor = true;
@@ -111,7 +113,7 @@
             this.ToolStripMenuItem_SelectFile});
             this.menuStrip1.Location = new System.Drawing.Point(0, 24);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(504, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(524, 24);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -126,21 +128,22 @@
             // 
             this.OpenFileDialog_datFile.Filter = "File|*.dat";
             // 
-            // BUTTON_Remove
+            // BUTTON_RemoveCourse
             // 
-            this.BUTTON_Remove.Enabled = false;
-            this.BUTTON_Remove.Location = new System.Drawing.Point(311, 270);
-            this.BUTTON_Remove.Name = "BUTTON_Remove";
-            this.BUTTON_Remove.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_Remove.TabIndex = 5;
-            this.BUTTON_Remove.Text = "<Remove>";
-            this.BUTTON_Remove.UseVisualStyleBackColor = true;
+            this.BUTTON_RemoveCourse.Enabled = false;
+            this.BUTTON_RemoveCourse.Location = new System.Drawing.Point(410, 124);
+            this.BUTTON_RemoveCourse.Name = "BUTTON_RemoveCourse";
+            this.BUTTON_RemoveCourse.Size = new System.Drawing.Size(100, 23);
+            this.BUTTON_RemoveCourse.TabIndex = 5;
+            this.BUTTON_RemoveCourse.Text = "<Remove>";
+            this.BUTTON_RemoveCourse.UseVisualStyleBackColor = true;
+            this.BUTTON_RemoveCourse.Click += new System.EventHandler(this.BUTTON_RemoveCourse_Click);
             // 
             // CHECKLISTBOX_ItemsOrder
             // 
             this.CHECKLISTBOX_ItemsOrder.Enabled = false;
             this.CHECKLISTBOX_ItemsOrder.FormattingEnabled = true;
-            this.CHECKLISTBOX_ItemsOrder.Location = new System.Drawing.Point(60, 172);
+            this.CHECKLISTBOX_ItemsOrder.Location = new System.Drawing.Point(158, 308);
             this.CHECKLISTBOX_ItemsOrder.Name = "CHECKLISTBOX_ItemsOrder";
             this.CHECKLISTBOX_ItemsOrder.Size = new System.Drawing.Size(120, 169);
             this.CHECKLISTBOX_ItemsOrder.TabIndex = 6;
@@ -149,7 +152,7 @@
             // button1
             // 
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(142, 288);
+            this.button1.Location = new System.Drawing.Point(158, 317);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
@@ -160,7 +163,7 @@
             // button2
             // 
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(142, 317);
+            this.button2.Location = new System.Drawing.Point(203, 317);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 8;
@@ -261,9 +264,9 @@
             this.GroupBox_Controls.Controls.Add(this.RADIO_DashJump);
             this.GroupBox_Controls.Controls.Add(this.RADIO_JumpDash);
             this.GroupBox_Controls.Enabled = false;
-            this.GroupBox_Controls.Location = new System.Drawing.Point(12, 57);
+            this.GroupBox_Controls.Location = new System.Drawing.Point(12, 182);
             this.GroupBox_Controls.Name = "GroupBox_Controls";
-            this.GroupBox_Controls.Size = new System.Drawing.Size(208, 67);
+            this.GroupBox_Controls.Size = new System.Drawing.Size(221, 67);
             this.GroupBox_Controls.TabIndex = 17;
             this.GroupBox_Controls.TabStop = false;
             this.GroupBox_Controls.Text = "<Controls>";
@@ -295,7 +298,7 @@
             this.GroupBox_GamePad3DAudio.Controls.Add(this.RADIO_GamePad3DAudio_On);
             this.GroupBox_GamePad3DAudio.Controls.Add(this.RADIO_GamePad3DAudio_Off);
             this.GroupBox_GamePad3DAudio.Enabled = false;
-            this.GroupBox_GamePad3DAudio.Location = new System.Drawing.Point(226, 57);
+            this.GroupBox_GamePad3DAudio.Location = new System.Drawing.Point(239, 182);
             this.GroupBox_GamePad3DAudio.Name = "GroupBox_GamePad3DAudio";
             this.GroupBox_GamePad3DAudio.Size = new System.Drawing.Size(130, 67);
             this.GroupBox_GamePad3DAudio.TabIndex = 18;
@@ -329,7 +332,7 @@
             this.GroupBox_NotifyCreators.Controls.Add(this.RADIO_NotifyCreators_On);
             this.GroupBox_NotifyCreators.Controls.Add(this.RADIO_NotifyCreators_Off);
             this.GroupBox_NotifyCreators.Enabled = false;
-            this.GroupBox_NotifyCreators.Location = new System.Drawing.Point(362, 57);
+            this.GroupBox_NotifyCreators.Location = new System.Drawing.Point(375, 182);
             this.GroupBox_NotifyCreators.Name = "GroupBox_NotifyCreators";
             this.GroupBox_NotifyCreators.Size = new System.Drawing.Size(130, 67);
             this.GroupBox_NotifyCreators.TabIndex = 19;
@@ -363,7 +366,7 @@
             this.GroupBox_NotifyMyCourses.Controls.Add(this.RADIO_NotifyMyCourses_On);
             this.GroupBox_NotifyMyCourses.Controls.Add(this.RADIO_NotifyMyCourses_Off);
             this.GroupBox_NotifyMyCourses.Enabled = false;
-            this.GroupBox_NotifyMyCourses.Location = new System.Drawing.Point(12, 130);
+            this.GroupBox_NotifyMyCourses.Location = new System.Drawing.Point(12, 255);
             this.GroupBox_NotifyMyCourses.Name = "GroupBox_NotifyMyCourses";
             this.GroupBox_NotifyMyCourses.Size = new System.Drawing.Size(151, 67);
             this.GroupBox_NotifyMyCourses.TabIndex = 20;
@@ -395,7 +398,7 @@
             // BUTTON_SaveFile
             // 
             this.BUTTON_SaveFile.Enabled = false;
-            this.BUTTON_SaveFile.Location = new System.Drawing.Point(392, 316);
+            this.BUTTON_SaveFile.Location = new System.Drawing.Point(412, 326);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(100, 23);
             this.BUTTON_SaveFile.TabIndex = 21;
@@ -406,31 +409,33 @@
             // BUTTON_Cancel
             // 
             this.BUTTON_Cancel.Enabled = false;
-            this.BUTTON_Cancel.Location = new System.Drawing.Point(311, 316);
+            this.BUTTON_Cancel.Location = new System.Drawing.Point(331, 326);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_Cancel.TabIndex = 22;
             this.BUTTON_Cancel.Text = "<Cancel>";
             this.BUTTON_Cancel.UseVisualStyleBackColor = true;
+            this.BUTTON_Cancel.Click += new System.EventHandler(this.BUTTON_Cancel_Click);
             // 
             // BUTTON_ConfirmSort
             // 
             this.BUTTON_ConfirmSort.Enabled = false;
-            this.BUTTON_ConfirmSort.Location = new System.Drawing.Point(392, 270);
+            this.BUTTON_ConfirmSort.Location = new System.Drawing.Point(410, 153);
             this.BUTTON_ConfirmSort.Name = "BUTTON_ConfirmSort";
             this.BUTTON_ConfirmSort.Size = new System.Drawing.Size(100, 23);
             this.BUTTON_ConfirmSort.TabIndex = 23;
             this.BUTTON_ConfirmSort.Text = "<Confirm order>";
             this.BUTTON_ConfirmSort.UseVisualStyleBackColor = true;
+            this.BUTTON_ConfirmSort.Click += new System.EventHandler(this.BUTTON_ConfirmSort_Click);
             // 
             // GroupBox_SortCoursebot
             // 
             this.GroupBox_SortCoursebot.Controls.Add(this.RADIO_SortBySlot);
             this.GroupBox_SortCoursebot.Controls.Add(this.RADIO_SortByCourseNumber);
             this.GroupBox_SortCoursebot.Enabled = false;
-            this.GroupBox_SortCoursebot.Location = new System.Drawing.Point(104, 197);
+            this.GroupBox_SortCoursebot.Location = new System.Drawing.Point(12, 51);
             this.GroupBox_SortCoursebot.Name = "GroupBox_SortCoursebot";
-            this.GroupBox_SortCoursebot.Size = new System.Drawing.Size(114, 67);
+            this.GroupBox_SortCoursebot.Size = new System.Drawing.Size(120, 67);
             this.GroupBox_SortCoursebot.TabIndex = 21;
             this.GroupBox_SortCoursebot.TabStop = false;
             this.GroupBox_SortCoursebot.Text = "<Sort by>";
@@ -461,14 +466,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 351);
+            this.ClientSize = new System.Drawing.Size(524, 361);
             this.Controls.Add(this.GroupBox_SortCoursebot);
             this.Controls.Add(this.BUTTON_ConfirmSort);
+            this.Controls.Add(this.GroupBox_GamePad3DAudio);
+            this.Controls.Add(this.GroupBox_NotifyCreators);
             this.Controls.Add(this.BUTTON_Cancel);
             this.Controls.Add(this.BUTTON_SaveFile);
             this.Controls.Add(this.GroupBox_NotifyMyCourses);
-            this.Controls.Add(this.GroupBox_NotifyCreators);
-            this.Controls.Add(this.GroupBox_GamePad3DAudio);
             this.Controls.Add(this.GroupBox_Controls);
             this.Controls.Add(this.CHECK_ItemDelivery8);
             this.Controls.Add(this.CHECK_ItemDelivery7);
@@ -481,11 +486,12 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.CHECKLISTBOX_ItemsOrder);
-            this.Controls.Add(this.BUTTON_Remove);
+            this.Controls.Add(this.BUTTON_RemoveCourse);
             this.Controls.Add(this.BUTTON_ASC_Sort);
             this.Controls.Add(this.BUTTON_DESC_Sort);
             this.Controls.Add(this.LISTBOX_Coursebot);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FORM_SMM1_SaveFile";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -495,7 +501,7 @@
             this.Controls.SetChildIndex(this.LISTBOX_Coursebot, 0);
             this.Controls.SetChildIndex(this.BUTTON_DESC_Sort, 0);
             this.Controls.SetChildIndex(this.BUTTON_ASC_Sort, 0);
-            this.Controls.SetChildIndex(this.BUTTON_Remove, 0);
+            this.Controls.SetChildIndex(this.BUTTON_RemoveCourse, 0);
             this.Controls.SetChildIndex(this.CHECKLISTBOX_ItemsOrder, 0);
             this.Controls.SetChildIndex(this.button1, 0);
             this.Controls.SetChildIndex(this.button2, 0);
@@ -508,11 +514,11 @@
             this.Controls.SetChildIndex(this.CHECK_ItemDelivery7, 0);
             this.Controls.SetChildIndex(this.CHECK_ItemDelivery8, 0);
             this.Controls.SetChildIndex(this.GroupBox_Controls, 0);
-            this.Controls.SetChildIndex(this.GroupBox_GamePad3DAudio, 0);
-            this.Controls.SetChildIndex(this.GroupBox_NotifyCreators, 0);
             this.Controls.SetChildIndex(this.GroupBox_NotifyMyCourses, 0);
             this.Controls.SetChildIndex(this.BUTTON_SaveFile, 0);
             this.Controls.SetChildIndex(this.BUTTON_Cancel, 0);
+            this.Controls.SetChildIndex(this.GroupBox_NotifyCreators, 0);
+            this.Controls.SetChildIndex(this.GroupBox_GamePad3DAudio, 0);
             this.Controls.SetChildIndex(this.BUTTON_ConfirmSort, 0);
             this.Controls.SetChildIndex(this.GroupBox_SortCoursebot, 0);
             this.menuStrip1.ResumeLayout(false);
@@ -540,7 +546,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_SelectFile;
         private System.Windows.Forms.OpenFileDialog OpenFileDialog_datFile;
-        private System.Windows.Forms.Button BUTTON_Remove;
+        private System.Windows.Forms.Button BUTTON_RemoveCourse;
         private System.Windows.Forms.CheckedListBox CHECKLISTBOX_ItemsOrder;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;

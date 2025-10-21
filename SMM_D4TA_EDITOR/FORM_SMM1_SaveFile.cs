@@ -1,5 +1,6 @@
 ﻿using SMM_D4TA_EDITOR;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,7 +22,8 @@ namespace SLN_SMM_D4TA_EDITOR
 
         private void FORM_SMM1_SaveFile_Load(object sender, EventArgs e)
         {
-            
+            LanguageManager.ApplyToContainer(this, "FORM_SMM1_SaveFile");
+            Activate();
         }
 
         private string currentFilePath = "";
@@ -43,6 +45,15 @@ namespace SLN_SMM_D4TA_EDITOR
         const int CoursebotStartOffset = 0x4340;
         const int CoursebotEndOffset = 0x43B7;
 
+        public class CoursebotEntry
+        {
+            public int CourseIndex { get; set; } //From course000 to course119
+            public byte MemoryValue { get; set; } //From 0x00 to 0x77 (0 to 119)
+            public string DisplayText { get; set; }
+        }
+
+        List<CoursebotEntry> CoursebotCoursesList = new List<CoursebotEntry>();
+
         private void LISTBOX_Coursebot_DragOver(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
@@ -59,17 +70,19 @@ namespace SLN_SMM_D4TA_EDITOR
             Point point = LISTBOX_Coursebot.PointToClient(new Point(e.X, e.Y));
             int index = this.LISTBOX_Coursebot.IndexFromPoint(point);
             if (index < 0) index = this.LISTBOX_Coursebot.Items.Count - 1;
+
+            int oldIndex = this.LISTBOX_Coursebot.SelectedIndex;
+            if (oldIndex == index) return;
+
+            //Update LISTBOX_Coursebot
             object data = e.Data.GetData(typeof(string));
             this.LISTBOX_Coursebot.Items.Remove(data);
             this.LISTBOX_Coursebot.Items.Insert(index, data);
-        }
 
-        private void BUTTON_ASC_Sort_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i <= 4; i++)
-            {
-                this.LISTBOX_Coursebot.Items.Add(DateTime.Now.AddDays(i));
-            }
+            //Update CoursebotCoursesList
+            var movedItem = CoursebotCoursesList[oldIndex];
+            CoursebotCoursesList.RemoveAt(oldIndex);
+            CoursebotCoursesList.Insert(index, movedItem);
         }
 
         private void ToolStripMenuItem_SelectFile_Click(object sender, EventArgs e)
@@ -93,7 +106,17 @@ namespace SLN_SMM_D4TA_EDITOR
                 {
                     int offset = CoursebotStartOffset + i;
                     byte memoryValue = fileBytes[offset]; //Level number in memory (from 0x00 to 0x77)
-                    string itemText = $"Slot {memoryValue + 1:000}: course{i:000} - Course in memory: 0x{memoryValue:X2} ({memoryValue})";
+                    string itemText = $"W{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
+                    $"Slot {memoryValue + 1:000}: course{i:000}   " +
+                    $"Memory: 0x{memoryValue:X2} ({memoryValue})";
+
+                    CoursebotCoursesList.Add(new CoursebotEntry
+                    {
+                        CourseIndex = i,
+                        MemoryValue = memoryValue,
+                        DisplayText = itemText
+                    });
+
                     this.LISTBOX_Coursebot.Items.Add(itemText);
                 }
 
@@ -128,6 +151,8 @@ namespace SLN_SMM_D4TA_EDITOR
 
                 if (SettingsNotifyMyCourses == 0) RADIO_NotifyMyCourses_Off.Checked = true;
                 else if (SettingsNotifyMyCourses == 1) RADIO_NotifyMyCourses_On.Checked = true;
+
+                RADIO_SortByCourseNumber.Checked = true;
             }
 
             UIstate(true);
@@ -179,54 +204,184 @@ namespace SLN_SMM_D4TA_EDITOR
             UIstate(false);
         }
 
-        //I'm actually wondering why I didn't do this from the beginning at Main Form
-        //I'll change it later
         private void UIstate(bool state)
         {
             GroupBox_Controls.Enabled = state;
             GroupBox_GamePad3DAudio.Enabled = state;
             GroupBox_NotifyCreators.Enabled = state;
             GroupBox_NotifyMyCourses.Enabled = state;
+            GroupBox_SortCoursebot.Enabled = state;
             BUTTON_SaveFile.Enabled = state;
             LISTBOX_Coursebot.Enabled = state;
             BUTTON_DESC_Sort.Enabled = state;
             BUTTON_ASC_Sort.Enabled = state;
-            BUTTON_Remove.Enabled = state;
+            BUTTON_RemoveCourse.Enabled = state;
             BUTTON_Cancel.Enabled = state;
             BUTTON_ConfirmSort.Enabled = state;
         }
 
-        public int[] QuicksortArray(int[] array, int leftIndex, int rightIndex)
+        private void BUTTON_ASC_Sort_Click(object sender, EventArgs e)
         {
-            var i = leftIndex;
-            var j = rightIndex;
-            var pivot = array[leftIndex];
-            while (i <= j)
-            {
-                while (array[i] < pivot)
-                {
-                    i++;
-                }
+            LISTBOX_Coursebot.Items.Clear();
 
-                while (array[j] > pivot)
+            if (RADIO_SortByCourseNumber.Checked)
+            {
+                CoursebotCoursesList = CoursebotCoursesList.OrderBy(entry => entry.CourseIndex).ToList();
+
+                //Order by course number
+                foreach (var entry in CoursebotCoursesList.OrderBy(entry => entry.CourseIndex))
                 {
-                    j--;
-                }
-                if (i <= j)
-                {
-                    int temp = array[i];
-                    array[i] = array[j];
-                    array[j] = temp;
-                    i++;
-                    j--;
+                    LISTBOX_Coursebot.Items.Add(entry.DisplayText);
                 }
             }
 
-            if (leftIndex < j)
-                QuicksortArray(array, leftIndex, j);
-            if (i < rightIndex)
-                QuicksortArray(array, i, rightIndex);
-            return array;
+            if (RADIO_SortBySlot.Checked)
+            {
+                CoursebotCoursesList = CoursebotCoursesList.OrderBy(entry => entry.MemoryValue).ToList();
+
+                //Order by memory
+                var sortedList = CoursebotCoursesList.OrderBy(entry => entry.MemoryValue).ToList();
+
+                foreach (var entry in sortedList)
+                {
+                    LISTBOX_Coursebot.Items.Add(entry.DisplayText);
+                }
+            }
+        }
+
+        private void BUTTON_DESC_Sort_Click(object sender, EventArgs e)
+        {
+            LISTBOX_Coursebot.Items.Clear();
+
+            if (RADIO_SortByCourseNumber.Checked)
+            {
+                CoursebotCoursesList = CoursebotCoursesList.OrderByDescending(entry => entry.CourseIndex).ToList();
+
+                //Order by course number
+                foreach (var entry in CoursebotCoursesList.OrderByDescending(entry => entry.CourseIndex))
+                {
+                    LISTBOX_Coursebot.Items.Add(entry.DisplayText);
+                }
+            }
+
+            if (RADIO_SortBySlot.Checked)
+            {
+                CoursebotCoursesList = CoursebotCoursesList.OrderByDescending(entry => entry.MemoryValue).ToList();
+
+                //Order by memory
+                var sortedList = CoursebotCoursesList.OrderByDescending(entry => entry.MemoryValue).ToList();
+
+                foreach (var entry in sortedList)
+                {
+                    LISTBOX_Coursebot.Items.Add(entry.DisplayText);
+                }
+            }
+        }
+
+        private void BUTTON_Cancel_Click(object sender, EventArgs e)
+        {
+            UIstate(false);
+            LISTBOX_Coursebot.Items.Clear();
+        }
+
+        private void BUTTON_ConfirmSort_Click(object sender, EventArgs e)
+        {
+            byte[] fileBytes = File.ReadAllBytes(currentFilePath);
+
+            // Reescribir sección del Coursebot
+            for (int i = 0; i < CoursebotCoursesList.Count; i++)
+            {
+                int offset = CoursebotStartOffset + i;
+                fileBytes[offset] = CoursebotCoursesList[i].MemoryValue;
+            }
+
+            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
+            Crc32 crc32 = new Crc32();
+            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
+            Array.Reverse(checksum); //Parse to big-endian order
+            Array.Copy(checksum, 0, fileBytes, 0x08, 4);
+
+            File.WriteAllBytes(currentFilePath, fileBytes);
+
+            MessageBox.Show("Order overwrited\n" + currentFilePath, "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            //Update LISTBOX_Coursebot with overwrited data
+            LISTBOX_Coursebot.Items.Clear();
+            CoursebotCoursesList.Clear();
+
+            for (int i = 0; i < 120; i++)
+            {
+                int offset = CoursebotStartOffset + i;
+                byte memoryValue = fileBytes[offset];
+                string itemText = $"W{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
+                    $"Slot {memoryValue + 1:000}: course{i:000}   " +
+                    $"Memory: 0x{memoryValue:X2} ({memoryValue})";
+
+                CoursebotCoursesList.Add(new CoursebotEntry
+                {
+                    CourseIndex = i,
+                    MemoryValue = memoryValue,
+                    DisplayText = itemText
+                });
+
+                LISTBOX_Coursebot.Items.Add(itemText);
+            }
+        }
+
+        private void BUTTON_RemoveCourse_Click(object sender, EventArgs e)
+        {
+            if (LISTBOX_Coursebot.SelectedIndices.Count == 0)
+            {
+                MessageBox.Show("You have to select at least one level to remove", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            byte[] fileBytes = File.ReadAllBytes(currentFilePath);
+
+            foreach (int selectedIndex in LISTBOX_Coursebot.SelectedIndices)
+            {
+                var entry = CoursebotCoursesList[selectedIndex];
+                int offset = CoursebotStartOffset + selectedIndex;
+
+                entry.MemoryValue = 0xFF;
+                fileBytes[offset] = 0xFF;
+
+                entry.DisplayText = $"W{(entry.MemoryValue / 4) + 1}-{(entry.MemoryValue % 4) + 1}\t" +
+                $"Slot {entry.MemoryValue + 1:000}: course{entry.CourseIndex:000}   " +
+                $"Memory: 0x{entry.MemoryValue:X2} ({entry.MemoryValue})";
+            }
+
+            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
+            Crc32 crc32 = new Crc32();
+            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
+            Array.Reverse(checksum); //Parse to big-endian order
+            Array.Copy(checksum, 0, fileBytes, 0x08, 4);
+
+            File.WriteAllBytes(currentFilePath, fileBytes);
+
+            MessageBox.Show("Course Removed from coursebot\n" + currentFilePath, "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            //Update LISTBOX_Coursebot with overwrited data
+            LISTBOX_Coursebot.Items.Clear();
+            CoursebotCoursesList.Clear();
+
+            for (int i = 0; i < 120; i++)
+            {
+                int offset = CoursebotStartOffset + i;
+                byte memoryValue = fileBytes[offset];
+                string itemText = $"W{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
+                    $"Slot {memoryValue + 1:000}: course{i:000}   " +
+                    $"Memory: 0x{memoryValue:X2} ({memoryValue})";
+
+                CoursebotCoursesList.Add(new CoursebotEntry
+                {
+                    CourseIndex = i,
+                    MemoryValue = memoryValue,
+                    DisplayText = itemText
+                });
+
+                LISTBOX_Coursebot.Items.Add(itemText);
+            }
         }
     }
 }

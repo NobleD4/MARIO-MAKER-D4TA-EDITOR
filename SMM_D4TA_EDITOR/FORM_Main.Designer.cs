@@ -114,7 +114,7 @@ namespace SMM_D4TA_EDITOR
             this.ToolStripMenuItem_TNLConverter});
             this.menuStrip1.Location = new System.Drawing.Point(0, 24);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(504, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(524, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -212,7 +212,7 @@ namespace SMM_D4TA_EDITOR
             // BUTTON_SaveFile
             // 
             this.BUTTON_SaveFile.Enabled = false;
-            this.BUTTON_SaveFile.Location = new System.Drawing.Point(392, 316);
+            this.BUTTON_SaveFile.Location = new System.Drawing.Point(412, 326);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(100, 23);
             this.BUTTON_SaveFile.TabIndex = 12;
@@ -223,7 +223,7 @@ namespace SMM_D4TA_EDITOR
             // BUTTON_Cancel
             // 
             this.BUTTON_Cancel.Enabled = false;
-            this.BUTTON_Cancel.Location = new System.Drawing.Point(311, 316);
+            this.BUTTON_Cancel.Location = new System.Drawing.Point(331, 326);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_Cancel.TabIndex = 11;
@@ -718,7 +718,7 @@ namespace SMM_D4TA_EDITOR
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 351);
+            this.ClientSize = new System.Drawing.Size(524, 361);
             this.Controls.Add(this.BUTTON_CopyID);
             this.Controls.Add(this.LABEL_LastSFXplaced);
             this.Controls.Add(this.CHECK_CourseStatusRemoved);
