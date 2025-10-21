@@ -80,7 +80,7 @@
             this.LISTBOX_Coursebot.Location = new System.Drawing.Point(138, 51);
             this.LISTBOX_Coursebot.Name = "LISTBOX_Coursebot";
             this.LISTBOX_Coursebot.Size = new System.Drawing.Size(266, 121);
-            this.LISTBOX_Coursebot.TabIndex = 1;
+            this.LISTBOX_Coursebot.TabIndex = 4;
             this.LISTBOX_Coursebot.DragDrop += new System.Windows.Forms.DragEventHandler(this.LISTBOX_Coursebot_DragDrop);
             this.LISTBOX_Coursebot.DragOver += new System.Windows.Forms.DragEventHandler(this.LISTBOX_Coursebot_DragOver);
             this.LISTBOX_Coursebot.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LISTBOX_Coursebot_MouseDown);
@@ -91,7 +91,7 @@
             this.BUTTON_DESC_Sort.Location = new System.Drawing.Point(32, 153);
             this.BUTTON_DESC_Sort.Name = "BUTTON_DESC_Sort";
             this.BUTTON_DESC_Sort.Size = new System.Drawing.Size(100, 23);
-            this.BUTTON_DESC_Sort.TabIndex = 2;
+            this.BUTTON_DESC_Sort.TabIndex = 3;
             this.BUTTON_DESC_Sort.Text = "<Desc. Sort>";
             this.BUTTON_DESC_Sort.UseVisualStyleBackColor = true;
             this.BUTTON_DESC_Sort.Click += new System.EventHandler(this.BUTTON_DESC_Sort_Click);
@@ -102,7 +102,7 @@
             this.BUTTON_ASC_Sort.Location = new System.Drawing.Point(32, 124);
             this.BUTTON_ASC_Sort.Name = "BUTTON_ASC_Sort";
             this.BUTTON_ASC_Sort.Size = new System.Drawing.Size(100, 23);
-            this.BUTTON_ASC_Sort.TabIndex = 3;
+            this.BUTTON_ASC_Sort.TabIndex = 2;
             this.BUTTON_ASC_Sort.Text = "<Asc. Sort>";
             this.BUTTON_ASC_Sort.UseVisualStyleBackColor = true;
             this.BUTTON_ASC_Sort.Click += new System.EventHandler(this.BUTTON_ASC_Sort_Click);
@@ -267,7 +267,7 @@
             this.GroupBox_Controls.Location = new System.Drawing.Point(12, 182);
             this.GroupBox_Controls.Name = "GroupBox_Controls";
             this.GroupBox_Controls.Size = new System.Drawing.Size(221, 67);
-            this.GroupBox_Controls.TabIndex = 17;
+            this.GroupBox_Controls.TabIndex = 6;
             this.GroupBox_Controls.TabStop = false;
             this.GroupBox_Controls.Text = "<Controls>";
             // 
@@ -301,7 +301,7 @@
             this.GroupBox_GamePad3DAudio.Location = new System.Drawing.Point(239, 182);
             this.GroupBox_GamePad3DAudio.Name = "GroupBox_GamePad3DAudio";
             this.GroupBox_GamePad3DAudio.Size = new System.Drawing.Size(130, 67);
-            this.GroupBox_GamePad3DAudio.TabIndex = 18;
+            this.GroupBox_GamePad3DAudio.TabIndex = 7;
             this.GroupBox_GamePad3DAudio.TabStop = false;
             this.GroupBox_GamePad3DAudio.Text = "<GamePad 3D Audio>";
             // 
@@ -335,7 +335,7 @@
             this.GroupBox_NotifyCreators.Location = new System.Drawing.Point(375, 182);
             this.GroupBox_NotifyCreators.Name = "GroupBox_NotifyCreators";
             this.GroupBox_NotifyCreators.Size = new System.Drawing.Size(130, 67);
-            this.GroupBox_NotifyCreators.TabIndex = 19;
+            this.GroupBox_NotifyCreators.TabIndex = 8;
             this.GroupBox_NotifyCreators.TabStop = false;
             this.GroupBox_NotifyCreators.Text = "<Notify to creators>";
             // 
@@ -369,7 +369,7 @@
             this.GroupBox_NotifyMyCourses.Location = new System.Drawing.Point(12, 255);
             this.GroupBox_NotifyMyCourses.Name = "GroupBox_NotifyMyCourses";
             this.GroupBox_NotifyMyCourses.Size = new System.Drawing.Size(151, 67);
-            this.GroupBox_NotifyMyCourses.TabIndex = 20;
+            this.GroupBox_NotifyMyCourses.TabIndex = 9;
             this.GroupBox_NotifyMyCourses.TabStop = false;
             this.GroupBox_NotifyMyCourses.Text = "<Notify about my courses>";
             // 
@@ -401,7 +401,7 @@
             this.BUTTON_SaveFile.Location = new System.Drawing.Point(412, 326);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(100, 23);
-            this.BUTTON_SaveFile.TabIndex = 21;
+            this.BUTTON_SaveFile.TabIndex = 11;
             this.BUTTON_SaveFile.Text = "<Save data>";
             this.BUTTON_SaveFile.UseVisualStyleBackColor = true;
             this.BUTTON_SaveFile.Click += new System.EventHandler(this.BUTTON_SaveFile_Click);
@@ -412,7 +412,7 @@
             this.BUTTON_Cancel.Location = new System.Drawing.Point(331, 326);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_Cancel.TabIndex = 22;
+            this.BUTTON_Cancel.TabIndex = 10;
             this.BUTTON_Cancel.Text = "<Cancel>";
             this.BUTTON_Cancel.UseVisualStyleBackColor = true;
             this.BUTTON_Cancel.Click += new System.EventHandler(this.BUTTON_Cancel_Click);
@@ -423,7 +423,7 @@
             this.BUTTON_ConfirmSort.Location = new System.Drawing.Point(410, 153);
             this.BUTTON_ConfirmSort.Name = "BUTTON_ConfirmSort";
             this.BUTTON_ConfirmSort.Size = new System.Drawing.Size(100, 23);
-            this.BUTTON_ConfirmSort.TabIndex = 23;
+            this.BUTTON_ConfirmSort.TabIndex = 6;
             this.BUTTON_ConfirmSort.Text = "<Confirm order>";
             this.BUTTON_ConfirmSort.UseVisualStyleBackColor = true;
             this.BUTTON_ConfirmSort.Click += new System.EventHandler(this.BUTTON_ConfirmSort_Click);
@@ -436,7 +436,7 @@
             this.GroupBox_SortCoursebot.Location = new System.Drawing.Point(12, 51);
             this.GroupBox_SortCoursebot.Name = "GroupBox_SortCoursebot";
             this.GroupBox_SortCoursebot.Size = new System.Drawing.Size(120, 67);
-            this.GroupBox_SortCoursebot.TabIndex = 21;
+            this.GroupBox_SortCoursebot.TabIndex = 1;
             this.GroupBox_SortCoursebot.TabStop = false;
             this.GroupBox_SortCoursebot.Text = "<Sort by>";
             // 

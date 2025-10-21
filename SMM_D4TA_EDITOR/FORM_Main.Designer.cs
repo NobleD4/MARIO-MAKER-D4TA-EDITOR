@@ -215,7 +215,7 @@ namespace SMM_D4TA_EDITOR
             this.BUTTON_SaveFile.Location = new System.Drawing.Point(412, 326);
             this.BUTTON_SaveFile.Name = "BUTTON_SaveFile";
             this.BUTTON_SaveFile.Size = new System.Drawing.Size(100, 23);
-            this.BUTTON_SaveFile.TabIndex = 12;
+            this.BUTTON_SaveFile.TabIndex = 25;
             this.BUTTON_SaveFile.Text = "<Save course>";
             this.BUTTON_SaveFile.UseVisualStyleBackColor = true;
             this.BUTTON_SaveFile.Click += new System.EventHandler(this.BUTTON_SaveFile_Click);
@@ -226,7 +226,7 @@ namespace SMM_D4TA_EDITOR
             this.BUTTON_Cancel.Location = new System.Drawing.Point(331, 326);
             this.BUTTON_Cancel.Name = "BUTTON_Cancel";
             this.BUTTON_Cancel.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_Cancel.TabIndex = 11;
+            this.BUTTON_Cancel.TabIndex = 24;
             this.BUTTON_Cancel.Text = "<Cancel>";
             this.BUTTON_Cancel.UseVisualStyleBackColor = true;
             this.BUTTON_Cancel.Click += new System.EventHandler(this.BUTTON_Cancel_Click);
@@ -235,10 +235,10 @@ namespace SMM_D4TA_EDITOR
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(392, 86);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(187, 248);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(101, 17);
-            this.CHECK_UploadReady.TabIndex = 6;
+            this.CHECK_UploadReady.TabIndex = 18;
             this.CHECK_UploadReady.Text = "<Upload ready>";
             this.CHECK_UploadReady.UseVisualStyleBackColor = true;
             this.CHECK_UploadReady.Visible = false;
@@ -259,7 +259,7 @@ namespace SMM_D4TA_EDITOR
             0});
             this.NUMERIC_CourseTimer.Name = "NUMERIC_CourseTimer";
             this.NUMERIC_CourseTimer.Size = new System.Drawing.Size(60, 20);
-            this.NUMERIC_CourseTimer.TabIndex = 3;
+            this.NUMERIC_CourseTimer.TabIndex = 4;
             // 
             // LABEL_Timer
             // 
@@ -281,7 +281,7 @@ namespace SMM_D4TA_EDITOR
             this.GroupBox_Scroll_Settings.Location = new System.Drawing.Point(10, 178);
             this.GroupBox_Scroll_Settings.Name = "GroupBox_Scroll_Settings";
             this.GroupBox_Scroll_Settings.Size = new System.Drawing.Size(160, 135);
-            this.GroupBox_Scroll_Settings.TabIndex = 8;
+            this.GroupBox_Scroll_Settings.TabIndex = 14;
             this.GroupBox_Scroll_Settings.TabStop = false;
             this.GroupBox_Scroll_Settings.Text = "<Autoscroll>";
             // 
@@ -364,7 +364,7 @@ namespace SMM_D4TA_EDITOR
             this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(369, 109);
             this.BUTTON_TimerMaximum.Name = "BUTTON_TimerMaximum";
             this.BUTTON_TimerMaximum.Size = new System.Drawing.Size(50, 23);
-            this.BUTTON_TimerMaximum.TabIndex = 5;
+            this.BUTTON_TimerMaximum.TabIndex = 6;
             this.BUTTON_TimerMaximum.Text = "<Max>";
             this.BUTTON_TimerMaximum.UseVisualStyleBackColor = true;
             this.BUTTON_TimerMaximum.Click += new System.EventHandler(this.BUTTON_TimerMaximum_Click);
@@ -375,7 +375,7 @@ namespace SMM_D4TA_EDITOR
             this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(313, 109);
             this.BUTTON_TimerMinimum.Name = "BUTTON_TimerMinimum";
             this.BUTTON_TimerMinimum.Size = new System.Drawing.Size(50, 23);
-            this.BUTTON_TimerMinimum.TabIndex = 4;
+            this.BUTTON_TimerMinimum.TabIndex = 5;
             this.BUTTON_TimerMinimum.Text = "<Min>";
             this.BUTTON_TimerMinimum.UseVisualStyleBackColor = true;
             this.BUTTON_TimerMinimum.Click += new System.EventHandler(this.BUTTON_TimerMinimum_Click);
@@ -483,7 +483,7 @@ namespace SMM_D4TA_EDITOR
             this.TB_CourseCreator.MaxLength = 10;
             this.TB_CourseCreator.Name = "TB_CourseCreator";
             this.TB_CourseCreator.Size = new System.Drawing.Size(100, 20);
-            this.TB_CourseCreator.TabIndex = 23;
+            this.TB_CourseCreator.TabIndex = 3;
             // 
             // NUMERIC_CourseMonth
             // 
@@ -496,7 +496,7 @@ namespace SMM_D4TA_EDITOR
             0});
             this.NUMERIC_CourseMonth.Name = "NUMERIC_CourseMonth";
             this.NUMERIC_CourseMonth.Size = new System.Drawing.Size(50, 20);
-            this.NUMERIC_CourseMonth.TabIndex = 24;
+            this.NUMERIC_CourseMonth.TabIndex = 19;
             // 
             // NUMERIC_CourseDay
             // 
@@ -509,7 +509,7 @@ namespace SMM_D4TA_EDITOR
             0});
             this.NUMERIC_CourseDay.Name = "NUMERIC_CourseDay";
             this.NUMERIC_CourseDay.Size = new System.Drawing.Size(50, 20);
-            this.NUMERIC_CourseDay.TabIndex = 25;
+            this.NUMERIC_CourseDay.TabIndex = 20;
             // 
             // NUMERIC_CourseHour
             // 
@@ -522,7 +522,7 @@ namespace SMM_D4TA_EDITOR
             0});
             this.NUMERIC_CourseHour.Name = "NUMERIC_CourseHour";
             this.NUMERIC_CourseHour.Size = new System.Drawing.Size(50, 20);
-            this.NUMERIC_CourseHour.TabIndex = 26;
+            this.NUMERIC_CourseHour.TabIndex = 21;
             // 
             // NUMERIC_CourseMinute
             // 
@@ -535,7 +535,7 @@ namespace SMM_D4TA_EDITOR
             0});
             this.NUMERIC_CourseMinute.Name = "NUMERIC_CourseMinute";
             this.NUMERIC_CourseMinute.Size = new System.Drawing.Size(50, 20);
-            this.NUMERIC_CourseMinute.TabIndex = 27;
+            this.NUMERIC_CourseMinute.TabIndex = 22;
             // 
             // CHECK_SetDateTimeNow
             // 
@@ -544,7 +544,7 @@ namespace SMM_D4TA_EDITOR
             this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(325, 257);
             this.CHECK_SetDateTimeNow.Name = "CHECK_SetDateTimeNow";
             this.CHECK_SetDateTimeNow.Size = new System.Drawing.Size(120, 17);
-            this.CHECK_SetDateTimeNow.TabIndex = 28;
+            this.CHECK_SetDateTimeNow.TabIndex = 23;
             this.CHECK_SetDateTimeNow.Text = "<Set datetime now>";
             this.CHECK_SetDateTimeNow.UseVisualStyleBackColor = true;
             this.CHECK_SetDateTimeNow.CheckedChanged += new System.EventHandler(this.CHECK_SetDateTimeNow_CheckedChanged);
@@ -605,7 +605,7 @@ namespace SMM_D4TA_EDITOR
             0});
             this.NUMERIC_CourseYear.Name = "NUMERIC_CourseYear";
             this.NUMERIC_CourseYear.Size = new System.Drawing.Size(60, 20);
-            this.NUMERIC_CourseYear.TabIndex = 34;
+            this.NUMERIC_CourseYear.TabIndex = 13;
             // 
             // LABEL_CourseYear
             // 
@@ -623,7 +623,7 @@ namespace SMM_D4TA_EDITOR
             this.TB_CourseIDprefix.MaxLength = 4;
             this.TB_CourseIDprefix.Name = "TB_CourseIDprefix";
             this.TB_CourseIDprefix.Size = new System.Drawing.Size(40, 20);
-            this.TB_CourseIDprefix.TabIndex = 36;
+            this.TB_CourseIDprefix.TabIndex = 8;
             // 
             // TB_CourseIDsuffix1
             // 
@@ -632,7 +632,7 @@ namespace SMM_D4TA_EDITOR
             this.TB_CourseIDsuffix1.MaxLength = 4;
             this.TB_CourseIDsuffix1.Name = "TB_CourseIDsuffix1";
             this.TB_CourseIDsuffix1.Size = new System.Drawing.Size(40, 20);
-            this.TB_CourseIDsuffix1.TabIndex = 37;
+            this.TB_CourseIDsuffix1.TabIndex = 9;
             // 
             // TB_CourseIDsuffix2
             // 
@@ -641,7 +641,7 @@ namespace SMM_D4TA_EDITOR
             this.TB_CourseIDsuffix2.MaxLength = 4;
             this.TB_CourseIDsuffix2.Name = "TB_CourseIDsuffix2";
             this.TB_CourseIDsuffix2.Size = new System.Drawing.Size(40, 20);
-            this.TB_CourseIDsuffix2.TabIndex = 38;
+            this.TB_CourseIDsuffix2.TabIndex = 10;
             // 
             // TB_CourseIDsuffix3
             // 
@@ -650,7 +650,7 @@ namespace SMM_D4TA_EDITOR
             this.TB_CourseIDsuffix3.MaxLength = 4;
             this.TB_CourseIDsuffix3.Name = "TB_CourseIDsuffix3";
             this.TB_CourseIDsuffix3.Size = new System.Drawing.Size(40, 20);
-            this.TB_CourseIDsuffix3.TabIndex = 39;
+            this.TB_CourseIDsuffix3.TabIndex = 11;
             // 
             // LABEL_CourseID
             // 
@@ -668,7 +668,7 @@ namespace SMM_D4TA_EDITOR
             this.CHECK_CourseStatusDownloaded.Location = new System.Drawing.Point(187, 192);
             this.CHECK_CourseStatusDownloaded.Name = "CHECK_CourseStatusDownloaded";
             this.CHECK_CourseStatusDownloaded.Size = new System.Drawing.Size(98, 17);
-            this.CHECK_CourseStatusDownloaded.TabIndex = 41;
+            this.CHECK_CourseStatusDownloaded.TabIndex = 15;
             this.CHECK_CourseStatusDownloaded.Text = "<Downloaded>";
             this.CHECK_CourseStatusDownloaded.UseVisualStyleBackColor = true;
             // 
@@ -679,7 +679,7 @@ namespace SMM_D4TA_EDITOR
             this.CHECK_CourseStatusUploaded.Location = new System.Drawing.Point(187, 211);
             this.CHECK_CourseStatusUploaded.Name = "CHECK_CourseStatusUploaded";
             this.CHECK_CourseStatusUploaded.Size = new System.Drawing.Size(84, 17);
-            this.CHECK_CourseStatusUploaded.TabIndex = 42;
+            this.CHECK_CourseStatusUploaded.TabIndex = 16;
             this.CHECK_CourseStatusUploaded.Text = "<Uploaded>";
             this.CHECK_CourseStatusUploaded.UseVisualStyleBackColor = true;
             // 
@@ -690,7 +690,7 @@ namespace SMM_D4TA_EDITOR
             this.CHECK_CourseStatusRemoved.Location = new System.Drawing.Point(187, 230);
             this.CHECK_CourseStatusRemoved.Name = "CHECK_CourseStatusRemoved";
             this.CHECK_CourseStatusRemoved.Size = new System.Drawing.Size(84, 17);
-            this.CHECK_CourseStatusRemoved.TabIndex = 43;
+            this.CHECK_CourseStatusRemoved.TabIndex = 17;
             this.CHECK_CourseStatusRemoved.Text = "<Removed>";
             this.CHECK_CourseStatusRemoved.UseVisualStyleBackColor = true;
             // 
@@ -709,7 +709,7 @@ namespace SMM_D4TA_EDITOR
             this.BUTTON_CopyID.Location = new System.Drawing.Point(325, 148);
             this.BUTTON_CopyID.Name = "BUTTON_CopyID";
             this.BUTTON_CopyID.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_CopyID.TabIndex = 45;
+            this.BUTTON_CopyID.TabIndex = 12;
             this.BUTTON_CopyID.Text = "<Copy ID>";
             this.BUTTON_CopyID.UseVisualStyleBackColor = true;
             this.BUTTON_CopyID.Click += new System.EventHandler(this.BUTTON_CopyID_Click);
