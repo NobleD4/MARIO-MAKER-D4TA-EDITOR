@@ -96,6 +96,8 @@ namespace SMM_D4TA_EDITOR
             this.CHECK_CourseStatusRemoved = new System.Windows.Forms.CheckBox();
             this.LABEL_LastSFXplaced = new System.Windows.Forms.Label();
             this.BUTTON_CopyID = new System.Windows.Forms.Button();
+            this.NUMERIC_CountryCode = new System.Windows.Forms.NumericUpDown();
+            this.LABEL_Country = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             this.GroupBox_Scroll_Settings.SuspendLayout();
@@ -104,6 +106,7 @@ namespace SMM_D4TA_EDITOR
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseHour)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseMinute)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseYear)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CountryCode)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -251,7 +254,7 @@ namespace SMM_D4TA_EDITOR
             0,
             0,
             0});
-            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(247, 112);
+            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(313, 112);
             this.NUMERIC_CourseTimer.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -264,7 +267,7 @@ namespace SMM_D4TA_EDITOR
             // LABEL_Timer
             // 
             this.LABEL_Timer.AutoSize = true;
-            this.LABEL_Timer.Location = new System.Drawing.Point(244, 96);
+            this.LABEL_Timer.Location = new System.Drawing.Point(310, 96);
             this.LABEL_Timer.Name = "LABEL_Timer";
             this.LABEL_Timer.Size = new System.Drawing.Size(45, 13);
             this.LABEL_Timer.TabIndex = 6;
@@ -361,7 +364,7 @@ namespace SMM_D4TA_EDITOR
             // BUTTON_TimerMaximum
             // 
             this.BUTTON_TimerMaximum.Enabled = false;
-            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(369, 109);
+            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(435, 109);
             this.BUTTON_TimerMaximum.Name = "BUTTON_TimerMaximum";
             this.BUTTON_TimerMaximum.Size = new System.Drawing.Size(50, 23);
             this.BUTTON_TimerMaximum.TabIndex = 6;
@@ -372,7 +375,7 @@ namespace SMM_D4TA_EDITOR
             // BUTTON_TimerMinimum
             // 
             this.BUTTON_TimerMinimum.Enabled = false;
-            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(313, 109);
+            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(379, 109);
             this.BUTTON_TimerMinimum.Name = "BUTTON_TimerMinimum";
             this.BUTTON_TimerMinimum.Size = new System.Drawing.Size(50, 23);
             this.BUTTON_TimerMinimum.TabIndex = 5;
@@ -541,7 +544,7 @@ namespace SMM_D4TA_EDITOR
             // 
             this.CHECK_SetDateTimeNow.AutoSize = true;
             this.CHECK_SetDateTimeNow.Enabled = false;
-            this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(325, 257);
+            this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(350, 257);
             this.CHECK_SetDateTimeNow.Name = "CHECK_SetDateTimeNow";
             this.CHECK_SetDateTimeNow.Size = new System.Drawing.Size(120, 17);
             this.CHECK_SetDateTimeNow.TabIndex = 23;
@@ -715,11 +718,35 @@ namespace SMM_D4TA_EDITOR
             this.BUTTON_CopyID.UseVisualStyleBackColor = true;
             this.BUTTON_CopyID.Click += new System.EventHandler(this.BUTTON_CopyID_Click);
             // 
+            // NUMERIC_CountryCode
+            // 
+            this.NUMERIC_CountryCode.Enabled = false;
+            this.NUMERIC_CountryCode.Location = new System.Drawing.Point(247, 112);
+            this.NUMERIC_CountryCode.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_CountryCode.Name = "NUMERIC_CountryCode";
+            this.NUMERIC_CountryCode.Size = new System.Drawing.Size(60, 20);
+            this.NUMERIC_CountryCode.TabIndex = 45;
+            // 
+            // LABEL_Country
+            // 
+            this.LABEL_Country.AutoSize = true;
+            this.LABEL_Country.Location = new System.Drawing.Point(244, 96);
+            this.LABEL_Country.Name = "LABEL_Country";
+            this.LABEL_Country.Size = new System.Drawing.Size(55, 13);
+            this.LABEL_Country.TabIndex = 46;
+            this.LABEL_Country.Text = "<Country>";
+            // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 361);
+            this.Controls.Add(this.LABEL_Country);
+            this.Controls.Add(this.NUMERIC_CountryCode);
             this.Controls.Add(this.BUTTON_CopyID);
             this.Controls.Add(this.LABEL_LastSFXplaced);
             this.Controls.Add(this.CHECK_CourseStatusRemoved);
@@ -816,6 +843,8 @@ namespace SMM_D4TA_EDITOR
             this.Controls.SetChildIndex(this.CHECK_CourseStatusRemoved, 0);
             this.Controls.SetChildIndex(this.LABEL_LastSFXplaced, 0);
             this.Controls.SetChildIndex(this.BUTTON_CopyID, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_CountryCode, 0);
+            this.Controls.SetChildIndex(this.LABEL_Country, 0);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
@@ -826,6 +855,7 @@ namespace SMM_D4TA_EDITOR
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseHour)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseMinute)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseYear)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CountryCode)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -898,6 +928,8 @@ namespace SMM_D4TA_EDITOR
         private System.Windows.Forms.CheckBox CHECK_CourseStatusRemoved;
         private System.Windows.Forms.Label LABEL_LastSFXplaced;
         private System.Windows.Forms.Button BUTTON_CopyID;
+        private System.Windows.Forms.NumericUpDown NUMERIC_CountryCode;
+        private System.Windows.Forms.Label LABEL_Country;
     }
 }
 

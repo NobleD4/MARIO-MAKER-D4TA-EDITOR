@@ -72,6 +72,8 @@ namespace SMM_D4TA_EDITOR
         //VALUES: 00 = Ground, 01 Underground, 02 Castle, 03 Airship, 04 Underwater, 05 Ghost house
         const int CourseThemeOffset = 0x6D;
 
+        const int CourseCountryOffset = 0xDB; //From 000 to 195 represents a country
+
         const int CourseFirstItemOffset = 0x108;
         const int CourseLastItemOffset = 0x145E9;
 
@@ -317,6 +319,11 @@ namespace SMM_D4TA_EDITOR
                 Array.Reverse(charCreatorArray);                                                                    //What if actually there's an easier way to read these little endian and big endian things and I'm complicating myself?
                 string CourseCreator = new string(charCreatorArray); //I did exactly the same thing as course name  //I was also thinking these parts could be a function because do almost the same thing with different values, but nahhhh, it works right now so I shouldn't change this
 
+                //Extract creator country bytes (offset 0xDB)
+                byte[] CourseCountryBytes = new byte[1];
+                Array.Copy(fileBytes, CourseCountryOffset, CourseCountryBytes, 0, 1);
+                ushort CourseCountry = (ushort)(CourseCountryBytes[0]);
+
                 int Jump0x20 = 0x20;  //Basically because there's a 0x20 sized space between each item placed
                 int lastItemOffset = -1; //Will throw a -1 if this value doesn't change
                 int itemID = -1;
@@ -406,6 +413,7 @@ namespace SMM_D4TA_EDITOR
                 TB_CourseIDsuffix1.Text = CourseID.Substring(4, 4);
                 TB_CourseIDsuffix2.Text = CourseID.Substring(8, 4);
                 TB_CourseIDsuffix3.Text = CourseID.Substring(12, 4);
+                NUMERIC_CountryCode.Value = CourseCountry;
                 NUMERIC_CourseTimer.Value = CourseTimer;
                 NUMERIC_CourseYear.Value = CourseDateYear;
                 NUMERIC_CourseMonth.Value = CourseDateMonth;
@@ -494,6 +502,9 @@ namespace SMM_D4TA_EDITOR
             ushort NewCourseTimer = (ushort)NUMERIC_CourseTimer.Value;
             fileBytes[CourseTimerStartOffset] = (byte)(NewCourseTimer >> 8); //MSB
             fileBytes[CourseTimerEndOffset] = (byte)(NewCourseTimer & 0xFF); //LSB
+
+            ushort NewCourseCountry = (ushort)NUMERIC_CountryCode.Value;
+            fileBytes[CourseCountryOffset] = (byte)(NewCourseCountry);
 
             ushort NewCourseDateYear = (ushort)NUMERIC_CourseYear.Value;
             fileBytes[CourseDateYearStartOffset] = (byte)(NewCourseDateYear >> 8);
@@ -591,6 +602,7 @@ namespace SMM_D4TA_EDITOR
             TB_CourseIDsuffix1.Enabled = state;
             TB_CourseIDsuffix2.Enabled = state;
             TB_CourseIDsuffix3.Enabled = state;
+            NUMERIC_CountryCode.Enabled = state;
             NUMERIC_CourseTimer.Enabled = state;
             NUMERIC_CourseYear.Enabled = state;
             NUMERIC_CourseMonth.Enabled = state;
@@ -623,6 +635,7 @@ namespace SMM_D4TA_EDITOR
                 TB_CourseIDsuffix3.Text = "";
                 LABEL_LastItemPlaced.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
                 LABEL_LastItemOffset.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
+                NUMERIC_CountryCode.Value = 0;
                 NUMERIC_CourseTimer.Value = 0;
                 NUMERIC_CourseYear.Value = 0;
                 NUMERIC_CourseMonth.Value = 0;
