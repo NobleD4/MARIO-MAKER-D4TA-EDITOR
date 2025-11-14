@@ -39,12 +39,13 @@
             this.LINK_GitHub_SMM1LevelDownloader = new System.Windows.Forms.LinkLabel();
             this.LINK_GitHub_PointlessMaker = new System.Windows.Forms.LinkLabel();
             this.LABEL_RelatedContent = new System.Windows.Forms.Label();
+            this.LABEL_Version = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // COMBOBOX_Language_Settings
             // 
             this.COMBOBOX_Language_Settings.FormattingEnabled = true;
-            this.COMBOBOX_Language_Settings.Location = new System.Drawing.Point(200, 151);
+            this.COMBOBOX_Language_Settings.Location = new System.Drawing.Point(200, 163);
             this.COMBOBOX_Language_Settings.Name = "COMBOBOX_Language_Settings";
             this.COMBOBOX_Language_Settings.Size = new System.Drawing.Size(121, 21);
             this.COMBOBOX_Language_Settings.TabIndex = 1;
@@ -53,7 +54,7 @@
             // LABEL_Language
             // 
             this.LABEL_Language.AutoSize = true;
-            this.LABEL_Language.Location = new System.Drawing.Point(197, 135);
+            this.LABEL_Language.Location = new System.Drawing.Point(197, 147);
             this.LABEL_Language.Name = "LABEL_Language";
             this.LABEL_Language.Size = new System.Drawing.Size(67, 13);
             this.LABEL_Language.TabIndex = 0;
@@ -153,11 +154,23 @@
             this.LABEL_RelatedContent.Text = "<Related content>";
             this.LABEL_RelatedContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // LABEL_Version
+            // 
+            this.LABEL_Version.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.LABEL_Version.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LABEL_Version.Location = new System.Drawing.Point(10, 91);
+            this.LABEL_Version.Name = "LABEL_Version";
+            this.LABEL_Version.Size = new System.Drawing.Size(504, 40);
+            this.LABEL_Version.TabIndex = 8;
+            this.LABEL_Version.Text = "X.X.X";
+            this.LABEL_Version.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // FORM_About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 361);
+            this.Controls.Add(this.LABEL_Version);
             this.Controls.Add(this.LABEL_RelatedContent);
             this.Controls.Add(this.LINK_GitHub_PointlessMaker);
             this.Controls.Add(this.LINK_GitHub_SMM1LevelDownloader);
@@ -185,6 +198,7 @@
             this.Controls.SetChildIndex(this.LINK_GitHub_SMM1LevelDownloader, 0);
             this.Controls.SetChildIndex(this.LINK_GitHub_PointlessMaker, 0);
             this.Controls.SetChildIndex(this.LABEL_RelatedContent, 0);
+            this.Controls.SetChildIndex(this.LABEL_Version, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -202,5 +216,6 @@
         private System.Windows.Forms.LinkLabel LINK_GitHub_SMM1LevelDownloader;
         private System.Windows.Forms.LinkLabel LINK_GitHub_PointlessMaker;
         private System.Windows.Forms.Label LABEL_RelatedContent;
+        private System.Windows.Forms.Label LABEL_Version;
     }
 }

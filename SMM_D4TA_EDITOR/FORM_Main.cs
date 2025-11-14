@@ -241,29 +241,19 @@ namespace SMM_D4TA_EDITOR
                 ushort CourseDateYear = (ushort)((CourseDateYearBytes[0] << 8) | CourseDateYearBytes[1]);
 
                 //Extract date month bytes offset 0x12)
-                byte[] CourseDateMonthByte = new byte[1];
-                Array.Copy(fileBytes, CourseDateMonthOffset, CourseDateMonthByte, 0, 1);
-                ushort CourseDateMonth = (ushort)(CourseDateMonthByte[0]);
+                ushort CourseDateMonth = ExctractBytesFromOffset(fileBytes, CourseDateMonthOffset);
 
                 //Extract date day bytes offset 0x13)
-                byte[] CourseDateDayByte = new byte[1];
-                Array.Copy(fileBytes, CourseDateDayOffset, CourseDateDayByte, 0, 1);
-                ushort CourseDateDay = (ushort)(CourseDateDayByte[0]);
+                ushort CourseDateDay = ExctractBytesFromOffset(fileBytes, CourseDateDayOffset);
 
                 //Extract date hour bytes offset 0x14)
-                byte[] CourseDateHourByte = new byte[1];
-                Array.Copy(fileBytes, CourseDateHourOffset, CourseDateHourByte, 0, 1);
-                ushort CourseDateHour = (ushort)(CourseDateHourByte[0]);
+                ushort CourseDateHour = ExctractBytesFromOffset(fileBytes, CourseDateHourOffset);
 
                 //Extract date minute bytes offset 0x15)
-                byte[] CourseDateMinuteByte = new byte[1];
-                Array.Copy(fileBytes, CourseDateMinuteOffset, CourseDateMonthByte, 0, 1);
-                ushort CourseDateMinute = (ushort)(CourseDateMonthByte[0]);
+                ushort CourseDateMinute = ExctractBytesFromOffset(fileBytes, CourseDateMinuteOffset); //This one used to have bytes from month for some reason before making function
 
                 //Extract course physics setting byte (offset 0x27)
-                byte[] CourseUpdatePhysicsByte = new byte[1];
-                Array.Copy(fileBytes, CourseUpdatePhysicsOffset, CourseUpdatePhysicsByte, 0, 1);
-                int CourseUpdatePhysics = Convert.ToInt32(CourseUpdatePhysicsByte[0]);
+                ushort CourseUpdatePhysics = ExctractBytesFromOffset(fileBytes, CourseUpdatePhysicsOffset);
 
                 //Extract course ID suffix byte (from offset 0x1A to 0x1F)
                 int CourseIDsuffixbytesLength = CourseIDsuffixEndOffset - CourseIDsuffixStartOffset + 1;
@@ -294,10 +284,8 @@ namespace SMM_D4TA_EDITOR
                 //Convert bytes to string using ASCII encode
                 string CourseStyle = Encoding.ASCII.GetString(CourseStyleBytes);
 
-                //Extract course physics setting byte (offset 0x6D)
-                byte[] CourseThemeByte = new byte[1];
-                Array.Copy(fileBytes, CourseThemeOffset, CourseThemeByte, 0, 1);
-                int CourseTheme = Convert.ToInt32(CourseThemeByte[0]);
+                //Extract course theme setting byte (offset 0x6D)
+                ushort CourseTheme = ExctractBytesFromOffset(fileBytes, CourseThemeOffset);
 
                 //Extract course timer bytes (from offset 0x70 to 0x71)
                 int CourseTimerBytesLength = CourseTimerEndOffset - CourseTimerStartOffset + 1;
@@ -306,9 +294,7 @@ namespace SMM_D4TA_EDITOR
                 ushort CourseTimer = (ushort)((CourseTimerBytes[0] << 8) | CourseTimerBytes[1]);
 
                 //Extract course autoscroll setting byte (offset 0x72)
-                byte[] CourseScrollByte = new byte[1];
-                Array.Copy(fileBytes, CourseScrollSettingsOffset, CourseScrollByte, 0, 1);
-                int CourseScroll = Convert.ToInt32(CourseScrollByte[0]);
+                ushort CourseScroll = ExctractBytesFromOffset(fileBytes, CourseScrollSettingsOffset);
 
                 //Extract course creator bytes (from offset 0x92 to 0xA4)
                 int CourseCreatorBytesLength = CourseCreatorEndOffset - CourseCreatorStartOffset;                   //TRUST ME, IF THE "+ 1" IS IN THIS LINE INSTEAD OF NEXT ONE CRASHES THANKS TO WHATEVER I DID, BUT HOPEFULLY WORKS RIGHT NOW
@@ -320,9 +306,7 @@ namespace SMM_D4TA_EDITOR
                 string CourseCreator = new string(charCreatorArray); //I did exactly the same thing as course name  //I was also thinking these parts could be a function because do almost the same thing with different values, but nahhhh, it works right now so I shouldn't change this
 
                 //Extract creator country bytes (offset 0xDB)
-                byte[] CourseCountryBytes = new byte[1];
-                Array.Copy(fileBytes, CourseCountryOffset, CourseCountryBytes, 0, 1);
-                ushort CourseCountry = (ushort)(CourseCountryBytes[0]);
+                ushort CourseCountry = ExctractBytesFromOffset(fileBytes, CourseCountryOffset);
 
                 int Jump0x20 = 0x20;  //Basically because there's a 0x20 sized space between each item placed
                 int lastItemOffset = -1; //Will throw a -1 if this value doesn't change
@@ -682,30 +666,23 @@ namespace SMM_D4TA_EDITOR
             else
             {
                 //I literally copy and pasted some of the same lines from select file section, so... Later I'll create a function or something
+                //November 14th 2025 EDIT: I created the function, but could be better
 
                 //Set file path and read data
                 currentFilePath = OpenFileDialog_cdtFile.FileName;
                 byte[] fileBytes = File.ReadAllBytes(currentFilePath);
 
                 //Extract date month bytes offset 0x12)
-                byte[] CourseDateMonthByte = new byte[1];
-                Array.Copy(fileBytes, CourseDateMonthOffset, CourseDateMonthByte, 0, 1);
-                ushort CourseDateMonth = (ushort)(CourseDateMonthByte[0]);
+                ushort CourseDateMonth = ExctractBytesFromOffset(fileBytes, CourseDateMonthOffset);
 
                 //Extract date day bytes offset 0x13)
-                byte[] CourseDateDayByte = new byte[1];
-                Array.Copy(fileBytes, CourseDateDayOffset, CourseDateDayByte, 0, 1);
-                ushort CourseDateDay = (ushort)(CourseDateDayByte[0]);
+                ushort CourseDateDay = ExctractBytesFromOffset(fileBytes, CourseDateDayOffset);
 
                 //Extract date hour bytes offset 0x14)
-                byte[] CourseDateHourByte = new byte[1];
-                Array.Copy(fileBytes, CourseDateHourOffset, CourseDateHourByte, 0, 1);
-                ushort CourseDateHour = (ushort)(CourseDateHourByte[0]);
+                ushort CourseDateHour = ExctractBytesFromOffset(fileBytes, CourseDateHourOffset);
 
                 //Extract date minute bytes offset 0x15)
-                byte[] CourseDateMinuteByte = new byte[1];
-                Array.Copy(fileBytes, CourseDateMinuteOffset, CourseDateMonthByte, 0, 1);
-                ushort CourseDateMinute = (ushort)(CourseDateMonthByte[0]);
+                ushort CourseDateMinute = ExctractBytesFromOffset(fileBytes, CourseDateMinuteOffset);
 
                 NUMERIC_CourseMonth.Enabled = true;
                 NUMERIC_CourseDay.Enabled = true;
@@ -717,6 +694,15 @@ namespace SMM_D4TA_EDITOR
                 NUMERIC_CourseHour.Value = CourseDateHour;
                 NUMERIC_CourseMinute.Value = CourseDateMinute;
             }
+        }
+
+        public byte ExctractBytesFromOffset(byte [] fileBytes, int Offset) //I'll improve this function later
+        {
+            byte[] EntryByte = new byte[1];
+            Array.Copy(fileBytes, Offset, EntryByte, 0, 1);
+            ushort ResultByte = (ushort)(EntryByte[0]);
+
+            return (byte)ResultByte; //Why am I creating a "Result Byte" as "ushort" type and then converting it to byte?!
         }
 
         private void BUTTON_CopyID_Click(object sender, EventArgs e)

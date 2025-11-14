@@ -93,6 +93,7 @@
     <Compile Include="LanguageManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VersionControl.cs" />
     <EmbeddedResource Include="FORM_About.resx">
       <DependentUpon>FORM_About.cs</DependentUpon>
     </EmbeddedResource>

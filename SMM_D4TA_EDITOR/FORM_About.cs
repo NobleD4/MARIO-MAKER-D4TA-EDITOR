@@ -18,6 +18,7 @@ namespace SMM_D4TA_EDITOR
         public FORM_About()
         {
             InitializeComponent();
+            LABEL_Version.Text = VersionControl.GetString();
         }
 
         private void COMBOBOX_Language_Settings_SelectedIndexChanged(object sender, EventArgs e)
