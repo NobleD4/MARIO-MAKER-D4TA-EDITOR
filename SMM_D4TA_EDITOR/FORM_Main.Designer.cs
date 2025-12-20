@@ -1,6 +1,4 @@
-﻿using SLN_SMM_D4TA_EDITOR;
-
-namespace SMM_D4TA_EDITOR
+﻿namespace SMM_D4TA_EDITOR
 {
     partial class FORM_Main
     {

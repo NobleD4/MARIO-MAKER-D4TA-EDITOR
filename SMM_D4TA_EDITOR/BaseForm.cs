@@ -1,8 +1,7 @@
-﻿using SMM_D4TA_EDITOR;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows.Forms;
 
-namespace SLN_SMM_D4TA_EDITOR
+namespace SMM_D4TA_EDITOR
 {
     public class BaseForm : Form
     {

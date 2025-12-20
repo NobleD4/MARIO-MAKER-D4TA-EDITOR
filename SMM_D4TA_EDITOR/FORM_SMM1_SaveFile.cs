@@ -1,5 +1,4 @@
-﻿using SMM_D4TA_EDITOR;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SLN_SMM_D4TA_EDITOR
+namespace SMM_D4TA_EDITOR
 {
     public partial class FORM_SMM1_SaveFile : BaseForm
     {
@@ -141,6 +140,8 @@ namespace SLN_SMM_D4TA_EDITOR
                 Array.Copy(fileBytes, Settings_NotifyMyCoursesOffset, SettingsNotifyMyCoursesByte, 0, 1);
                 int SettingsNotifyMyCourses = Convert.ToInt32(SettingsNotifyMyCoursesByte[0]);
 
+                UIstate(true);
+
                 if (SettingsControl == 0) RADIO_DashJump.Checked = true;
                 else if (SettingsControl == 1) RADIO_JumpDash.Checked = true;
 
@@ -155,8 +156,6 @@ namespace SLN_SMM_D4TA_EDITOR
 
                 RADIO_SortByCourseNumber.Checked = true;
             }
-
-            UIstate(true);
         }
 
         private void BUTTON_SaveFile_Click(object sender, EventArgs e)
@@ -406,7 +405,6 @@ namespace SLN_SMM_D4TA_EDITOR
                 
                 return itemText1;
             }
-
         }
     }
 }
