@@ -10,7 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace SLN_SMM_D4TA_EDITOR
 {
@@ -95,6 +94,7 @@ namespace SLN_SMM_D4TA_EDITOR
                 byte[] fileBytes = File.ReadAllBytes(currentFilePath);
 
                 //Extract Item bytes (from offset 0x4230 to ???) Idk, I don't want to do this right now
+                //EDIT: I don't remember what I was actually going to do here but I found a bug sorting courses when there's an empty slot with 0xFF value
 
                 //Extract Coursebot 120 bytes (from offset 0x4340 to 0x43B7)
                 int CoursebotBytesLength = CoursebotEndOffset - CoursebotStartOffset + 1;
@@ -203,6 +203,7 @@ namespace SLN_SMM_D4TA_EDITOR
             MessageBox.Show(text + currentFilePath, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             UIstate(false);
+            LISTBOX_Coursebot.Items.Clear();
         }
 
         private void UIstate(bool state)
@@ -389,12 +390,23 @@ namespace SLN_SMM_D4TA_EDITOR
             string CoursebotWorld = LanguageManager.Get("FORM_SMM1_SaveFile", "LISTBOX_CoursebotWorld");
             string CoursebotSlot = LanguageManager.Get("FORM_SMM1_SaveFile", "LISTBOX_CoursebotSlot");
             string CoursebotMemory = LanguageManager.Get("FORM_SMM1_SaveFile", "LISTBOX_CoursebotMemory");
+            string CoursebotNoData = LanguageManager.Get("FORM_SMM1_SaveFile", "LISTBOX_CoursebotNoData");
 
-            string itemText = $"{CoursebotWorld}{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
-            $"{CoursebotSlot} {memoryValue + 1:000}: course{courseIndex:000}   " +
-            $"{CoursebotMemory} 0x{memoryValue:X2} ({memoryValue})";
+            if (memoryValue == 0xFF) {
+                string itemText2 = $"{CoursebotNoData}    " +
+                $"course{courseIndex:000}    " +
+                $"{CoursebotMemory} 0x{memoryValue:X2} ({memoryValue})";
 
-            return itemText;
+                return itemText2;
+            }
+            else {
+                string itemText1 = $"{CoursebotWorld}{(memoryValue / 4) + 1}-{(memoryValue % 4) + 1}\t" +
+                $"{CoursebotSlot} {memoryValue + 1:000}: course{courseIndex:000}   " +
+                $"{CoursebotMemory} 0x{memoryValue:X2} ({memoryValue})";
+                
+                return itemText1;
+            }
+
         }
     }
 }
