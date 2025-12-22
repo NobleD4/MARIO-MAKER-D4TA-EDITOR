@@ -74,10 +74,10 @@ namespace SMM_D4TA_EDITOR
         const int CourseCountryOffset = 0xDB; //From 000 to 195 represents a country
 
         const int CourseFirstItemOffset = 0x108;
-        const int CourseLastItemOffset = 0x145E9;
+        const int CourseLastItemOffset = 0x145EF;
 
         const int CourseFirstSoundOffset = 0x145F0;
-        const int CourseLastSoundOffset = 0x14F50;
+        const int CourseLastSoundOffset = 0x14F4F;
 
         private void ToolStripMenuItem_BYML_To_XML_Click(object sender, EventArgs e)
         {
@@ -225,6 +225,46 @@ namespace SMM_D4TA_EDITOR
             NUMERIC_CourseTimer.Value = 65535;
         }
 
+        //Is now a function because Items and Sounds are separated inside .cdt but both works very similar
+        //I used to have to do only once the for loop to get both values returned at the end
+        //But after adding SFX section I have to call this function 4 times and would be epic to reduce it to 2 calls
+        private int GetLastPlacedOffset(byte[] fileBytes, int FirstOffset, int LastOffset, int JumpToNextOffsetValue, int NullValueCompare, bool ReturnOffsetOrID)
+        {
+            int lastObjectOffset = -1; //Will throw a -1 if this value doesn't change
+            int objectID = -1;
+
+            for (int j = FirstOffset; FirstOffset < LastOffset; FirstOffset += JumpToNextOffsetValue) //Feels like use glue and tape because I don't see any "j" increment, but I made it work
+            {
+                bool isEmpty = true;
+
+                //Check only a couple of times if current offset value equals entirely NullValueCompare
+                for (int i = 0; i < 2; i++)
+                {
+                    if (fileBytes[FirstOffset + i] != NullValueCompare)
+                    {
+                        isEmpty = false;
+                        break;
+                    }
+                }
+
+                //Stop if there's an empty block
+                if (isEmpty) break;
+
+                //Update if isn't empty
+                objectID = fileBytes[FirstOffset];
+                lastObjectOffset = FirstOffset;
+            }
+
+            if (ReturnOffsetOrID)
+            {
+                return lastObjectOffset;
+            }
+            else
+            {
+                return objectID;
+            }
+        }
+
         private void ToolStripMenuItem_SelectFile_Click(object sender, EventArgs e)
         {
             if (OpenFileDialog_cdtFile.ShowDialog() == DialogResult.OK)
@@ -307,38 +347,34 @@ namespace SMM_D4TA_EDITOR
                 //Extract creator country bytes (offset 0xDB)
                 ushort CourseCountry = ExctractBytesFromOffset(fileBytes, CourseCountryOffset);
 
-                int Jump0x20 = 0x20;  //Basically because there's a 0x20 sized space between each item placed
+                const int Jump0x20 = 0x20;  //Basically because there's a 0x20 sized space between each item placed
                 int lastItemOffset = -1; //Will throw a -1 if this value doesn't change
                 int itemID = -1;
 
-                for (int offset = CourseFirstItemOffset; offset < CourseLastItemOffset; offset += Jump0x20)
-                {
-                    bool isEmpty = true;
+                lastItemOffset = GetLastPlacedOffset(fileBytes, CourseFirstItemOffset, CourseLastItemOffset, Jump0x20, 0x00, true);
+                itemID = GetLastPlacedOffset(fileBytes, CourseFirstItemOffset, CourseLastItemOffset, Jump0x20, 0x00, false);
 
-                    // Check if the 0x20-sized block is entirely 0
-                    for (int i = 0; i < Jump0x20; i++)
-                    {
-                        if (fileBytes[offset + i] != 0x00)
-                        {
-                            isEmpty = false;
-                            break;
-                        }
-                    }
-
-                    //Stop if there's an empty block
-                    if (isEmpty) break;
-
-                    //Update if isn't empty
-                    itemID = fileBytes[offset];
-                    lastItemOffset = offset;
-                }
-
-                if (lastItemOffset != -1)
+                if (lastItemOffset >= -1)
                 {
                     string lastItemPlacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
                     string lastItemOffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
-                    LABEL_LastItemPlaced.Text = lastItemPlacedLang + $" {itemID} (0x{itemID:X2})";
-                    LABEL_LastItemOffset.Text = lastItemOffsetLang + $" 0x{lastItemOffset:X2}"; //OH WOW, THIS WASN'T HEX IN PREVIOUS RELEASE
+                    LABEL_LastItemPlaced.Text = $"{lastItemPlacedLang} {itemID:000} (0x{itemID:X2})    "
+                    + $"{lastItemOffsetLang} 0x{lastItemOffset:X2}";
+                }
+
+                const int Jump0x08 = 0x08;  //Basically because there's a 0x08 sized space between each sound placed
+                int lastSFXoffset = -1; //Will throw a -1 if this value doesn't change
+                int SoundID = -1;
+
+                lastSFXoffset = GetLastPlacedOffset(fileBytes, CourseFirstSoundOffset, CourseLastSoundOffset, Jump0x08, 0xFF, true);
+                SoundID = GetLastPlacedOffset(fileBytes, CourseFirstSoundOffset, CourseLastSoundOffset, Jump0x08, 0xFF, false);
+
+                if (lastSFXoffset >= -1)
+                {
+                    string lastSFXplacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastSFXplaced");
+                    string lastSFXoffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastSFXoffset");
+                    LABEL_LastSFXplaced.Text = $"{lastSFXplacedLang} {SoundID:000} (0x{SoundID:X2})    "
+                    + $"{lastSFXoffsetLang} 0x{lastSFXoffset:X2}";
                 }
 
                 UIstate(true);
@@ -617,7 +653,7 @@ namespace SMM_D4TA_EDITOR
                 TB_CourseIDsuffix2.Text = "";
                 TB_CourseIDsuffix3.Text = "";
                 LABEL_LastItemPlaced.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
-                LABEL_LastItemOffset.Text = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
+                LABEL_LastSFXplaced.Text = LanguageManager.Get("FORM_Main", "LABEL_LastSFXplaced");
                 NUMERIC_CountryCode.Value = 0;
                 NUMERIC_CourseTimer.Value = 0;
                 NUMERIC_CourseYear.Value = 0;

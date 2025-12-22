@@ -69,7 +69,6 @@
             this.LABEL_Style = new System.Windows.Forms.Label();
             this.ComboBox_Theme_Settings = new System.Windows.Forms.ComboBox();
             this.LABEL_Theme = new System.Windows.Forms.Label();
-            this.LABEL_LastItemOffset = new System.Windows.Forms.Label();
             this.LABEL_CourseCreator = new System.Windows.Forms.Label();
             this.TB_CourseCreator = new System.Windows.Forms.TextBox();
             this.NUMERIC_CourseMonth = new System.Windows.Forms.NumericUpDown();
@@ -346,9 +345,9 @@
             this.LABEL_LastItemPlaced.AutoSize = true;
             this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(176, 276);
             this.LABEL_LastItemPlaced.Name = "LABEL_LastItemPlaced";
-            this.LABEL_LastItemPlaced.Size = new System.Drawing.Size(144, 13);
-            this.LABEL_LastItemPlaced.TabIndex = 12;
-            this.LABEL_LastItemPlaced.Text = "<Last item placed (memory):>";
+            this.LABEL_LastItemPlaced.Size = new System.Drawing.Size(141, 13);
+            this.LABEL_LastItemPlaced.TabIndex = 0;
+            this.LABEL_LastItemPlaced.Text = "<Last item placed (memory)>";
             // 
             // LABEL_ClearCheckStatus
             // 
@@ -458,15 +457,6 @@
             this.LABEL_Theme.Size = new System.Drawing.Size(52, 13);
             this.LABEL_Theme.TabIndex = 20;
             this.LABEL_Theme.Text = "<Theme>";
-            // 
-            // LABEL_LastItemOffset
-            // 
-            this.LABEL_LastItemOffset.AutoSize = true;
-            this.LABEL_LastItemOffset.Location = new System.Drawing.Point(176, 295);
-            this.LABEL_LastItemOffset.Name = "LABEL_LastItemOffset";
-            this.LABEL_LastItemOffset.Size = new System.Drawing.Size(93, 13);
-            this.LABEL_LastItemOffset.TabIndex = 21;
-            this.LABEL_LastItemOffset.Text = "<Last item offset:>";
             // 
             // LABEL_CourseCreator
             // 
@@ -698,12 +688,11 @@
             // LABEL_LastSFXplaced
             // 
             this.LABEL_LastSFXplaced.AutoSize = true;
-            this.LABEL_LastSFXplaced.Location = new System.Drawing.Point(325, 295);
+            this.LABEL_LastSFXplaced.Location = new System.Drawing.Point(176, 296);
             this.LABEL_LastSFXplaced.Name = "LABEL_LastSFXplaced";
-            this.LABEL_LastSFXplaced.Size = new System.Drawing.Size(145, 13);
-            this.LABEL_LastSFXplaced.TabIndex = 44;
-            this.LABEL_LastSFXplaced.Text = "<Last SFX placed (memory):>";
-            this.LABEL_LastSFXplaced.Visible = false;
+            this.LABEL_LastSFXplaced.Size = new System.Drawing.Size(97, 13);
+            this.LABEL_LastSFXplaced.TabIndex = 0;
+            this.LABEL_LastSFXplaced.Text = "<Last SFX placed>";
             // 
             // BUTTON_CopyID
             // 
@@ -769,7 +758,6 @@
             this.Controls.Add(this.NUMERIC_CourseMonth);
             this.Controls.Add(this.LABEL_CourseCreator);
             this.Controls.Add(this.TB_CourseCreator);
-            this.Controls.Add(this.LABEL_LastItemOffset);
             this.Controls.Add(this.LABEL_Theme);
             this.Controls.Add(this.ComboBox_Theme_Settings);
             this.Controls.Add(this.LABEL_Style);
@@ -816,7 +804,6 @@
             this.Controls.SetChildIndex(this.LABEL_Style, 0);
             this.Controls.SetChildIndex(this.ComboBox_Theme_Settings, 0);
             this.Controls.SetChildIndex(this.LABEL_Theme, 0);
-            this.Controls.SetChildIndex(this.LABEL_LastItemOffset, 0);
             this.Controls.SetChildIndex(this.TB_CourseCreator, 0);
             this.Controls.SetChildIndex(this.LABEL_CourseCreator, 0);
             this.Controls.SetChildIndex(this.NUMERIC_CourseMonth, 0);
@@ -901,7 +888,6 @@
         private System.Windows.Forms.Label LABEL_Style;
         private System.Windows.Forms.ComboBox ComboBox_Theme_Settings;
         private System.Windows.Forms.Label LABEL_Theme;
-        private System.Windows.Forms.Label LABEL_LastItemOffset;
         private System.Windows.Forms.Label LABEL_CourseCreator;
         private System.Windows.Forms.TextBox TB_CourseCreator;
         private System.Windows.Forms.NumericUpDown NUMERIC_CourseMonth;
