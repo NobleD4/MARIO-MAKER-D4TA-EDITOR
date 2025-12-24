@@ -53,6 +53,42 @@ namespace SMM_D4TA_EDITOR
 
         List<CoursebotEntry> CoursebotCoursesList = new List<CoursebotEntry>();
 
+        List<byte> GetFreeMemoryValues(List<CoursebotEntry> list)
+        {
+            var used = list
+                .Where(e => e.MemoryValue != 0xFF)
+                .Select(e => e.MemoryValue)
+                .ToHashSet();
+
+            List<byte> free = new List<byte>();
+
+            for (byte i = 0x00; i <= 0x77; i++) //0x00 to 0x77 (0 to 119)
+            {
+                if (!used.Contains(i))
+                    free.Add(i);
+            }
+
+            return free;
+        }
+
+        void MoveCourseToEmptySlot(CoursebotEntry entry, byte targetFreeValue)
+        {
+            if (entry.MemoryValue == 0xFF)
+                return; //Don't move empty slots
+
+            entry.MemoryValue = targetFreeValue;
+        }
+
+        void SwapCourses(CoursebotEntry a, CoursebotEntry b)
+        {
+            if (a.MemoryValue == 0xFF || b.MemoryValue == 0xFF)
+                return; //Don't swap empty slots
+
+            byte temp = a.MemoryValue;
+            a.MemoryValue = b.MemoryValue;
+            b.MemoryValue = temp;
+        }
+
         private void LISTBOX_Coursebot_DragOver(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
@@ -60,28 +96,46 @@ namespace SMM_D4TA_EDITOR
 
         private void LISTBOX_Coursebot_MouseDown(object sender, MouseEventArgs e)
         {
-            if (this.LISTBOX_Coursebot.SelectedItem == null) return;
-            this.LISTBOX_Coursebot.DoDragDrop(this.LISTBOX_Coursebot.SelectedItem, DragDropEffects.Move);
+            int index = LISTBOX_Coursebot.IndexFromPoint(e.Location);
+            if (index < 0) return;
+
+            LISTBOX_Coursebot.SelectedIndex = index;
+            LISTBOX_Coursebot.DoDragDrop(index, DragDropEffects.Move);
         }
 
         private void LISTBOX_Coursebot_DragDrop(object sender, DragEventArgs e)
         {
             Point point = LISTBOX_Coursebot.PointToClient(new Point(e.X, e.Y));
-            int index = this.LISTBOX_Coursebot.IndexFromPoint(point);
-            if (index < 0) index = this.LISTBOX_Coursebot.Items.Count - 1;
+            int targetIndex = LISTBOX_Coursebot.IndexFromPoint(point);
+            if (targetIndex < 0) return;
 
-            int oldIndex = this.LISTBOX_Coursebot.SelectedIndex;
-            if (oldIndex == index) return;
+            int sourceIndex = (int)e.Data.GetData(typeof(int));
+            if (sourceIndex == targetIndex) return;
 
-            //Update LISTBOX_Coursebot
-            object data = e.Data.GetData(typeof(string));
-            this.LISTBOX_Coursebot.Items.Remove(data);
-            this.LISTBOX_Coursebot.Items.Insert(index, data);
+            var source = CoursebotCoursesList[sourceIndex];
+            var target = CoursebotCoursesList[targetIndex];
 
-            //Update CoursebotCoursesList
-            var movedItem = CoursebotCoursesList[oldIndex];
-            CoursebotCoursesList.RemoveAt(oldIndex);
-            CoursebotCoursesList.Insert(index, movedItem);
+            // Case 1: empty origin → don't move
+            if (source.MemoryValue == 0xFF)
+                return;
+
+            // Case 2: empty destiny → move course
+            if (target.MemoryValue == 0xFF)
+            {
+                var freeValues = GetFreeMemoryValues(CoursebotCoursesList);
+                byte newValue = freeValues.First();
+
+                source.MemoryValue = newValue;
+            }
+            // Case 3: courses swap
+            else
+            {
+                byte temp = source.MemoryValue;
+                source.MemoryValue = target.MemoryValue;
+                target.MemoryValue = temp;
+            }
+
+            RefreshCoursebotList();
         }
 
         private void ToolStripMenuItem_SelectFile_Click(object sender, EventArgs e)
@@ -96,13 +150,14 @@ namespace SMM_D4TA_EDITOR
                 //EDIT: I don't remember what I was actually going to do here but I found a bug sorting courses when there's an empty slot with 0xFF value
 
                 //Extract Coursebot 120 bytes (from offset 0x4340 to 0x43B7)
-                int CoursebotBytesLength = CoursebotEndOffset - CoursebotStartOffset + 1;
-                byte[] CoursebotBytes = new byte[CoursebotBytesLength];
+                const int CoursebotBytesLength = CoursebotEndOffset - CoursebotStartOffset + 1;
+                //byte[] CoursebotBytes = new byte[CoursebotBytesLength];
 
                 LISTBOX_Coursebot.Items.Clear();
+                CoursebotCoursesList.Clear();
 
                 // Read every slot
-                for (int i = 0; i < 120; i++) //120 slots/levels
+                for (int i = 0; i < CoursebotBytesLength; i++) //120 slots/levels
                 {
                     int offset = CoursebotStartOffset + i;
                     byte memoryValue = fileBytes[offset]; //Level number in memory (from 0x00 to 0x77)
@@ -189,11 +244,7 @@ namespace SMM_D4TA_EDITOR
             //Insert notify my courses byte value to the file
             fileBytes[Settings_NotifyMyCoursesOffset] = notifyMyCoursesValue;
 
-            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
-            Crc32 crc32 = new Crc32();
-            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
-            Array.Reverse(checksum); //Parse to big-endian order
-            Array.Copy(checksum, 0, fileBytes, 0x08, 4);
+            TempCrc32Function(fileBytes);
 
             //Save and overwrites .dat file
             File.WriteAllBytes(currentFilePath, fileBytes);
@@ -289,44 +340,18 @@ namespace SMM_D4TA_EDITOR
         {
             byte[] fileBytes = File.ReadAllBytes(currentFilePath);
 
-            // Reescribir sección del Coursebot
-            for (int i = 0; i < CoursebotCoursesList.Count; i++)
-            {
-                int offset = CoursebotStartOffset + i;
-                fileBytes[offset] = CoursebotCoursesList[i].MemoryValue;
-            }
-
-            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
-            Crc32 crc32 = new Crc32();
-            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
-            Array.Reverse(checksum); //Parse to big-endian order
-            Array.Copy(checksum, 0, fileBytes, 0x08, 4);
-
-            File.WriteAllBytes(currentFilePath, fileBytes);
-
-            MessageBox.Show("Order overwrited\n" + currentFilePath, "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            //Update LISTBOX_Coursebot with overwrited data
-            LISTBOX_Coursebot.Items.Clear();
-            CoursebotCoursesList.Clear();
-
+            //Rewrite coursebot section
             for (int i = 0; i < 120; i++)
             {
-                int offset = CoursebotStartOffset + i;
-                byte memoryValue = fileBytes[offset];
-                string itemText = null;
-
-                itemText = ListBoxText(i, memoryValue);
-
-                CoursebotCoursesList.Add(new CoursebotEntry
-                {
-                    CourseIndex = i,
-                    MemoryValue = memoryValue,
-                    DisplayText = itemText
-                });
-
-                LISTBOX_Coursebot.Items.Add(itemText);
+                fileBytes[CoursebotStartOffset + i] = CoursebotCoursesList[i].MemoryValue;
             }
+
+            TempCrc32Function(fileBytes);
+
+            File.WriteAllBytes(currentFilePath, fileBytes);
+            MessageBox.Show("Order overwrited\n" + currentFilePath, "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            UpdateListBoxCoursebot(fileBytes);
         }
 
         private void BUTTON_RemoveCourse_Click(object sender, EventArgs e)
@@ -351,16 +376,26 @@ namespace SMM_D4TA_EDITOR
                 entry.DisplayText = ListBoxText(entry.CourseIndex, entry.MemoryValue);
             }
 
+            TempCrc32Function(fileBytes);
+
+            File.WriteAllBytes(currentFilePath, fileBytes);
+            MessageBox.Show("Course Removed from coursebot\n" + currentFilePath, "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            UpdateListBoxCoursebot(fileBytes);
+        }
+
+        //Actual plan is to create this as a global function but I don't exactly know right now how to use modules here in C#
+        private void TempCrc32Function(byte[] fileBytes)
+        {
             //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
             Crc32 crc32 = new Crc32();
             byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
             Array.Reverse(checksum); //Parse to big-endian order
             Array.Copy(checksum, 0, fileBytes, 0x08, 4);
+        }
 
-            File.WriteAllBytes(currentFilePath, fileBytes);
-
-            MessageBox.Show("Course Removed from coursebot\n" + currentFilePath, "Save", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+        private void UpdateListBoxCoursebot(byte[] fileBytes)
+        {
             //Update LISTBOX_Coursebot with overwrited data
             LISTBOX_Coursebot.Items.Clear();
             CoursebotCoursesList.Clear();
@@ -381,6 +416,18 @@ namespace SMM_D4TA_EDITOR
                 });
 
                 LISTBOX_Coursebot.Items.Add(itemText);
+            }
+        }
+
+        void RefreshCoursebotList()
+        {
+            LISTBOX_Coursebot.Items.Clear();
+
+            for (int i = 0; i < CoursebotCoursesList.Count; i++)
+            {
+                var entry = CoursebotCoursesList[i];
+                entry.DisplayText = ListBoxText(entry.CourseIndex, entry.MemoryValue);
+                LISTBOX_Coursebot.Items.Add(entry.DisplayText);
             }
         }
 
