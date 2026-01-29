@@ -71,24 +71,6 @@ namespace SMM_D4TA_EDITOR
             return free;
         }
 
-        void MoveCourseToEmptySlot(CoursebotEntry entry, byte targetFreeValue)
-        {
-            if (entry.MemoryValue == 0xFF)
-                return; //Don't move empty slots
-
-            entry.MemoryValue = targetFreeValue;
-        }
-
-        void SwapCourses(CoursebotEntry a, CoursebotEntry b)
-        {
-            if (a.MemoryValue == 0xFF || b.MemoryValue == 0xFF)
-                return; //Don't swap empty slots
-
-            byte temp = a.MemoryValue;
-            a.MemoryValue = b.MemoryValue;
-            b.MemoryValue = temp;
-        }
-
         private void LISTBOX_Coursebot_DragOver(object sender, DragEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
@@ -303,7 +285,7 @@ namespace SMM_D4TA_EDITOR
 
         private void BUTTON_DESC_Sort_Click(object sender, EventArgs e)
         {
-            LISTBOX_Coursebot.Items.Clear();
+                        LISTBOX_Coursebot.Items.Clear();
 
             if (RADIO_SortByCourseNumber.Checked)
             {

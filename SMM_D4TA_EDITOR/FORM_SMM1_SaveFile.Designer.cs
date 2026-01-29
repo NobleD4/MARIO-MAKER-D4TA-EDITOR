@@ -79,7 +79,7 @@
             this.LISTBOX_Coursebot.FormattingEnabled = true;
             this.LISTBOX_Coursebot.Location = new System.Drawing.Point(138, 51);
             this.LISTBOX_Coursebot.Name = "LISTBOX_Coursebot";
-            this.LISTBOX_Coursebot.Size = new System.Drawing.Size(266, 121);
+            this.LISTBOX_Coursebot.Size = new System.Drawing.Size(292, 121);
             this.LISTBOX_Coursebot.TabIndex = 4;
             this.LISTBOX_Coursebot.DragDrop += new System.Windows.Forms.DragEventHandler(this.LISTBOX_Coursebot_DragDrop);
             this.LISTBOX_Coursebot.DragOver += new System.Windows.Forms.DragEventHandler(this.LISTBOX_Coursebot_DragOver);
@@ -88,9 +88,9 @@
             // BUTTON_DESC_Sort
             // 
             this.BUTTON_DESC_Sort.Enabled = false;
-            this.BUTTON_DESC_Sort.Location = new System.Drawing.Point(32, 153);
+            this.BUTTON_DESC_Sort.Location = new System.Drawing.Point(12, 153);
             this.BUTTON_DESC_Sort.Name = "BUTTON_DESC_Sort";
-            this.BUTTON_DESC_Sort.Size = new System.Drawing.Size(100, 23);
+            this.BUTTON_DESC_Sort.Size = new System.Drawing.Size(120, 23);
             this.BUTTON_DESC_Sort.TabIndex = 3;
             this.BUTTON_DESC_Sort.Text = "<Desc. Sort>";
             this.BUTTON_DESC_Sort.UseVisualStyleBackColor = true;
@@ -99,9 +99,9 @@
             // BUTTON_ASC_Sort
             // 
             this.BUTTON_ASC_Sort.Enabled = false;
-            this.BUTTON_ASC_Sort.Location = new System.Drawing.Point(32, 124);
+            this.BUTTON_ASC_Sort.Location = new System.Drawing.Point(12, 124);
             this.BUTTON_ASC_Sort.Name = "BUTTON_ASC_Sort";
-            this.BUTTON_ASC_Sort.Size = new System.Drawing.Size(100, 23);
+            this.BUTTON_ASC_Sort.Size = new System.Drawing.Size(120, 23);
             this.BUTTON_ASC_Sort.TabIndex = 2;
             this.BUTTON_ASC_Sort.Text = "<Asc. Sort>";
             this.BUTTON_ASC_Sort.UseVisualStyleBackColor = true;
@@ -131,9 +131,9 @@
             // BUTTON_RemoveCourse
             // 
             this.BUTTON_RemoveCourse.Enabled = false;
-            this.BUTTON_RemoveCourse.Location = new System.Drawing.Point(410, 124);
+            this.BUTTON_RemoveCourse.Location = new System.Drawing.Point(436, 149);
             this.BUTTON_RemoveCourse.Name = "BUTTON_RemoveCourse";
-            this.BUTTON_RemoveCourse.Size = new System.Drawing.Size(100, 23);
+            this.BUTTON_RemoveCourse.Size = new System.Drawing.Size(76, 23);
             this.BUTTON_RemoveCourse.TabIndex = 5;
             this.BUTTON_RemoveCourse.Text = "<Remove>";
             this.BUTTON_RemoveCourse.UseVisualStyleBackColor = true;
@@ -420,12 +420,13 @@
             // BUTTON_ConfirmSort
             // 
             this.BUTTON_ConfirmSort.Enabled = false;
-            this.BUTTON_ConfirmSort.Location = new System.Drawing.Point(410, 153);
+            this.BUTTON_ConfirmSort.Location = new System.Drawing.Point(138, 149);
             this.BUTTON_ConfirmSort.Name = "BUTTON_ConfirmSort";
             this.BUTTON_ConfirmSort.Size = new System.Drawing.Size(100, 23);
             this.BUTTON_ConfirmSort.TabIndex = 6;
             this.BUTTON_ConfirmSort.Text = "<Confirm order>";
             this.BUTTON_ConfirmSort.UseVisualStyleBackColor = true;
+            this.BUTTON_ConfirmSort.Visible = false;
             this.BUTTON_ConfirmSort.Click += new System.EventHandler(this.BUTTON_ConfirmSort_Click);
             // 
             // GroupBox_SortCoursebot
