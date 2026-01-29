@@ -1,13 +1,15 @@
 **CREDITS**
-- exelix11 - TheFourthDimension (BYML Converter)
-- RoadrunnerWMC  - (Python script in which TNL Converter was based)
-- MammaMiaTeam & Dirbaio - NSMB-Editor (Language settings)
-- HerobrineTV - SMM1-Level-Downloader
-- aboood40091 - PointlessMaker (SMM1 Level Editor)
-- kinnay - NintendoClients (SMM1 Access Key)
+- exelix11 - [TheFourthDimension (BYML Converter)](https://github.com/exelix11/TheFourthDimension)
+- RoadrunnerWMC  - [(Python script in which TNL Converter was based)](https://gist.github.com/RoadrunnerWMC/33c28d6d13b411f1e55471936d36c990)
+- MammaMiaTeam & Dirbaio - [NSMB-Editor (Language settings)](https://github.com/MammaMiaTeam/NSMB-Editor)
+- HerobrineTV - [SMM1-Level-Downloader](https://github.com/HerobrineTV/SMM1-Level-Downloader)
+- aboood40091 - [PointlessMaker (SMM1 Level Editor)](https://github.com/aboood40091/PointlessMaker)
+- kinnay - [NintendoClients (SMM1 Access Key)](https://github.com/kinnay/NintendoClients/wiki/Data-Store-Codes#super-mario-maker)
 
+## Country flag
+Allows you to visually know which value represents any flag in Mario Maker.
 <details>
-  <summary>Country flags</summary>
+  <summary>Click to open</summary>
   <table>
     <thead>
       <tr>
@@ -186,7 +188,7 @@
       </tr>
       <tr>
         <td>42</td>
-        <td><img width="60" height="40" alt="NF_042^q bflim" src="https://github.com/user-attachments/assets/c17bd4be-55d3-4132-b53b-56eaec926145" /></td>
+        <td><img width="60" height="40" alt="NF_042^q bflim" src="https://github.com/user-attachments/assets/0df807bb-94fe-4983-a28e-893710bb7f06" /></td>
       </tr>
       <tr>
         <td>43</td>
