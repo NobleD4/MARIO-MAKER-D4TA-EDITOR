@@ -95,6 +95,10 @@
             this.BUTTON_CopyID = new System.Windows.Forms.Button();
             this.NUMERIC_CountryCode = new System.Windows.Forms.NumericUpDown();
             this.LABEL_Country = new System.Windows.Forms.Label();
+            this.CHECK_OfficialCourseStatus = new System.Windows.Forms.CheckBox();
+            this.LABEL_Length = new System.Windows.Forms.Label();
+            this.NUMERIC_Length = new System.Windows.Forms.NumericUpDown();
+            this.LABEL_CourseLengthDisplay = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             this.GroupBox_Scroll_Settings.SuspendLayout();
@@ -104,6 +108,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseMinute)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseYear)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CountryCode)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Length)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -235,7 +240,7 @@
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(187, 248);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(187, 251);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(101, 17);
             this.CHECK_UploadReady.TabIndex = 18;
@@ -656,7 +661,7 @@
             // 
             this.CHECK_CourseStatusDownloaded.AutoSize = true;
             this.CHECK_CourseStatusDownloaded.Enabled = false;
-            this.CHECK_CourseStatusDownloaded.Location = new System.Drawing.Point(187, 192);
+            this.CHECK_CourseStatusDownloaded.Location = new System.Drawing.Point(187, 203);
             this.CHECK_CourseStatusDownloaded.Name = "CHECK_CourseStatusDownloaded";
             this.CHECK_CourseStatusDownloaded.Size = new System.Drawing.Size(98, 17);
             this.CHECK_CourseStatusDownloaded.TabIndex = 15;
@@ -667,7 +672,7 @@
             // 
             this.CHECK_CourseStatusUploaded.AutoSize = true;
             this.CHECK_CourseStatusUploaded.Enabled = false;
-            this.CHECK_CourseStatusUploaded.Location = new System.Drawing.Point(187, 211);
+            this.CHECK_CourseStatusUploaded.Location = new System.Drawing.Point(187, 219);
             this.CHECK_CourseStatusUploaded.Name = "CHECK_CourseStatusUploaded";
             this.CHECK_CourseStatusUploaded.Size = new System.Drawing.Size(84, 17);
             this.CHECK_CourseStatusUploaded.TabIndex = 16;
@@ -678,7 +683,7 @@
             // 
             this.CHECK_CourseStatusRemoved.AutoSize = true;
             this.CHECK_CourseStatusRemoved.Enabled = false;
-            this.CHECK_CourseStatusRemoved.Location = new System.Drawing.Point(187, 230);
+            this.CHECK_CourseStatusRemoved.Location = new System.Drawing.Point(187, 235);
             this.CHECK_CourseStatusRemoved.Name = "CHECK_CourseStatusRemoved";
             this.CHECK_CourseStatusRemoved.Size = new System.Drawing.Size(84, 17);
             this.CHECK_CourseStatusRemoved.TabIndex = 17;
@@ -727,11 +732,73 @@
             this.LABEL_Country.TabIndex = 46;
             this.LABEL_Country.Text = "<Country>";
             // 
+            // CHECK_OfficialCourseStatus
+            // 
+            this.CHECK_OfficialCourseStatus.AutoSize = true;
+            this.CHECK_OfficialCourseStatus.Enabled = false;
+            this.CHECK_OfficialCourseStatus.Location = new System.Drawing.Point(187, 187);
+            this.CHECK_OfficialCourseStatus.Name = "CHECK_OfficialCourseStatus";
+            this.CHECK_OfficialCourseStatus.Size = new System.Drawing.Size(105, 17);
+            this.CHECK_OfficialCourseStatus.TabIndex = 47;
+            this.CHECK_OfficialCourseStatus.Text = "<Official course>";
+            this.CHECK_OfficialCourseStatus.UseVisualStyleBackColor = true;
+            // 
+            // LABEL_Length
+            // 
+            this.LABEL_Length.AutoSize = true;
+            this.LABEL_Length.Location = new System.Drawing.Point(7, 313);
+            this.LABEL_Length.Name = "LABEL_Length";
+            this.LABEL_Length.Size = new System.Drawing.Size(52, 13);
+            this.LABEL_Length.TabIndex = 49;
+            this.LABEL_Length.Text = "<Length>";
+            // 
+            // NUMERIC_Length
+            // 
+            this.NUMERIC_Length.Enabled = false;
+            this.NUMERIC_Length.Increment = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.NUMERIC_Length.Location = new System.Drawing.Point(10, 329);
+            this.NUMERIC_Length.Maximum = new decimal(new int[] {
+            3840,
+            0,
+            0,
+            0});
+            this.NUMERIC_Length.Minimum = new decimal(new int[] {
+            384,
+            0,
+            0,
+            0});
+            this.NUMERIC_Length.Name = "NUMERIC_Length";
+            this.NUMERIC_Length.Size = new System.Drawing.Size(60, 20);
+            this.NUMERIC_Length.TabIndex = 48;
+            this.NUMERIC_Length.Value = new decimal(new int[] {
+            384,
+            0,
+            0,
+            0});
+            this.NUMERIC_Length.ValueChanged += new System.EventHandler(this.NUMERIC_Length_ValueChanged);
+            // 
+            // LABEL_CourseLengthDisplay
+            // 
+            this.LABEL_CourseLengthDisplay.AutoSize = true;
+            this.LABEL_CourseLengthDisplay.Location = new System.Drawing.Point(76, 331);
+            this.LABEL_CourseLengthDisplay.Name = "LABEL_CourseLengthDisplay";
+            this.LABEL_CourseLengthDisplay.Size = new System.Drawing.Size(36, 13);
+            this.LABEL_CourseLengthDisplay.TabIndex = 50;
+            this.LABEL_CourseLengthDisplay.Text = "0x180";
+            // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 361);
+            this.Controls.Add(this.LABEL_CourseLengthDisplay);
+            this.Controls.Add(this.LABEL_Length);
+            this.Controls.Add(this.NUMERIC_Length);
+            this.Controls.Add(this.CHECK_OfficialCourseStatus);
             this.Controls.Add(this.LABEL_Country);
             this.Controls.Add(this.NUMERIC_CountryCode);
             this.Controls.Add(this.BUTTON_CopyID);
@@ -830,6 +897,10 @@
             this.Controls.SetChildIndex(this.BUTTON_CopyID, 0);
             this.Controls.SetChildIndex(this.NUMERIC_CountryCode, 0);
             this.Controls.SetChildIndex(this.LABEL_Country, 0);
+            this.Controls.SetChildIndex(this.CHECK_OfficialCourseStatus, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_Length, 0);
+            this.Controls.SetChildIndex(this.LABEL_Length, 0);
+            this.Controls.SetChildIndex(this.LABEL_CourseLengthDisplay, 0);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
@@ -841,6 +912,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseMinute)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseYear)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CountryCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Length)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -914,6 +986,10 @@
         private System.Windows.Forms.Button BUTTON_CopyID;
         private System.Windows.Forms.NumericUpDown NUMERIC_CountryCode;
         private System.Windows.Forms.Label LABEL_Country;
+        private System.Windows.Forms.CheckBox CHECK_OfficialCourseStatus;
+        private System.Windows.Forms.Label LABEL_Length;
+        private System.Windows.Forms.NumericUpDown NUMERIC_Length;
+        private System.Windows.Forms.Label LABEL_CourseLengthDisplay;
     }
 }
 

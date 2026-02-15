@@ -63,6 +63,10 @@ namespace SMM_D4TA_EDITOR
 
         const int CourseScrollSettingsOffset = 0x72;
 
+        const int CourseLengthStartOffset = 0x76;
+        const int CourseLengthEndOffset = 0x77;
+
+        const int OfficialCourseStatusOffset = 0x17; //00 or 0x1D
         const int DownloadedCourseOffset = 0x20;
         const int RemovedCourseOffset = 0x21;
         const int UploadedCourseOffset = 0x6E;
@@ -332,6 +336,12 @@ namespace SMM_D4TA_EDITOR
                 Array.Copy(fileBytes, CourseTimerStartOffset, CourseTimerBytes, 0, CourseTimerBytesLength);
                 ushort CourseTimer = (ushort)((CourseTimerBytes[0] << 8) | CourseTimerBytes[1]);
 
+                //Extract course length bytes (from offset 0x76 to 0x77)
+                int CourseLengthBytesLENGTH = CourseLengthEndOffset - CourseLengthStartOffset + 1;
+                byte[] CourseLengthBytes = new byte[CourseLengthBytesLENGTH];
+                Array.Copy(fileBytes, CourseLengthStartOffset, CourseLengthBytes, 0, CourseLengthBytesLENGTH);
+                ushort CourseLength = (ushort)((CourseLengthBytes[0] << 8) | CourseLengthBytes[1]);
+
                 //Extract course autoscroll setting byte (offset 0x72)
                 ushort CourseScroll = ExctractBytesFromOffset(fileBytes, CourseScrollSettingsOffset);
 
@@ -417,9 +427,12 @@ namespace SMM_D4TA_EDITOR
 
                 //This course status section used to be for only read, but not for write at all
                 //The problem was basically every status is a completely different byte offset
-                //Every of them from 00 to 01 to set status, probably not very efficient but works in the game
+                //Every of them from 00 to 01 to set status (except OfficialCourse), probably not very efficient but works in the game
                 //I don't know yet what would happen if I set all of these bytes offsets to 01 at the same time
-                if(fileBytes[DownloadedCourseOffset] == 0x01) CHECK_CourseStatusDownloaded.Checked = true;
+                //EDIT: You can overlap every status and works in the game
+                if (fileBytes[OfficialCourseStatusOffset] == 0x1D) CHECK_OfficialCourseStatus.Checked = true;
+                else CHECK_OfficialCourseStatus.Checked = false;
+                if (fileBytes[DownloadedCourseOffset] == 0x01) CHECK_CourseStatusDownloaded.Checked = true;
                 else CHECK_CourseStatusDownloaded.Checked = false;
                 if (fileBytes[UploadedCourseOffset] == 0x01) CHECK_CourseStatusUploaded.Checked = true;
                 else CHECK_CourseStatusUploaded.Checked = false;
@@ -434,6 +447,8 @@ namespace SMM_D4TA_EDITOR
                 TB_CourseIDsuffix3.Text = CourseID.Substring(12, 4);
                 NUMERIC_CountryCode.Value = CourseCountry;
                 NUMERIC_CourseTimer.Value = CourseTimer;
+                NUMERIC_Length.Value = CourseLength;
+                LABEL_CourseLengthDisplay.Text = $"0x{CourseLength:X3}";
                 NUMERIC_CourseYear.Value = CourseDateYear;
                 NUMERIC_CourseMonth.Value = CourseDateMonth;
                 NUMERIC_CourseDay.Value = CourseDateDay;
@@ -522,6 +537,10 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseTimerStartOffset] = (byte)(NewCourseTimer >> 8); //MSB
             fileBytes[CourseTimerEndOffset] = (byte)(NewCourseTimer & 0xFF); //LSB
 
+            ushort NewCourseLength = (ushort)NUMERIC_Length.Value;
+            fileBytes[CourseLengthStartOffset] = (byte)(NewCourseLength >> 8); //MSB
+            fileBytes[CourseLengthEndOffset] = (byte)(NewCourseLength & 0xFF); //LSB
+
             ushort NewCourseCountry = (ushort)NUMERIC_CountryCode.Value;
             fileBytes[CourseCountryOffset] = (byte)(NewCourseCountry);
 
@@ -592,6 +611,8 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseStyleStartOffset] = styleBytes[0];
             fileBytes[CourseStyleEndOffset] = styleBytes[1];
 
+            if (CHECK_OfficialCourseStatus.Checked) fileBytes[OfficialCourseStatusOffset] = 0x1D;
+            else fileBytes[OfficialCourseStatusOffset] = 0x00;
             if (CHECK_CourseStatusDownloaded.Checked) fileBytes[DownloadedCourseOffset] = 0x01;
             else fileBytes[DownloadedCourseOffset] = 0x00;
             if (CHECK_CourseStatusUploaded.Checked) fileBytes[UploadedCourseOffset] = 0x01;
@@ -623,6 +644,7 @@ namespace SMM_D4TA_EDITOR
             TB_CourseIDsuffix3.Enabled = state;
             NUMERIC_CountryCode.Enabled = state;
             NUMERIC_CourseTimer.Enabled = state;
+            NUMERIC_Length.Enabled = state;
             NUMERIC_CourseYear.Enabled = state;
             NUMERIC_CourseMonth.Enabled = state;
             NUMERIC_CourseDay.Enabled = state;
@@ -636,6 +658,7 @@ namespace SMM_D4TA_EDITOR
             GroupBox_Scroll_Settings.Enabled = state;
             BUTTON_TimerMinimum.Enabled = state;
             BUTTON_TimerMaximum.Enabled = state;
+            CHECK_OfficialCourseStatus.Enabled = state;
             CHECK_CourseStatusDownloaded.Enabled = state;
             CHECK_CourseStatusUploaded.Enabled = state;
             CHECK_CourseStatusRemoved.Enabled = state;
@@ -661,12 +684,14 @@ namespace SMM_D4TA_EDITOR
                 NUMERIC_CourseDay.Value = 0;
                 NUMERIC_CourseHour.Value = 0;
                 NUMERIC_CourseMinute.Value = 0;
-                CHECK_UploadReady.Checked = false;
-                CHECK_SetDateTimeNow.Checked = false;
-                CHECK_UploadReady.Checked = false;
-                CHECK_CourseStatusDownloaded.Checked = false;
-                CHECK_CourseStatusUploaded.Checked = false;
-                CHECK_CourseStatusRemoved.Checked = false;
+                NUMERIC_Length.Value = 384;
+                LABEL_CourseLengthDisplay.Text = "0x180";
+                CHECK_SetDateTimeNow.Checked = state;
+                CHECK_UploadReady.Checked = state;
+                CHECK_OfficialCourseStatus.Checked = state;
+                CHECK_CourseStatusDownloaded.Checked = state;
+                CHECK_CourseStatusUploaded.Checked = state;
+                CHECK_CourseStatusRemoved.Checked = state;
             }
         }
 
@@ -757,6 +782,11 @@ namespace SMM_D4TA_EDITOR
                 thread.Start();
                 thread.Join();
             }
+        }
+
+        private void NUMERIC_Length_ValueChanged(object sender, EventArgs e)
+        {
+            LABEL_CourseLengthDisplay.Text = $"0X{Convert.ToInt32(NUMERIC_Length.Value):X3}";
         }
     }
 }

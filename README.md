@@ -2,8 +2,10 @@
 - exelix11 - [TheFourthDimension (BYML Converter)](https://github.com/exelix11/TheFourthDimension)
 - RoadrunnerWMC  - [(Python script in which TNL Converter was based)](https://gist.github.com/RoadrunnerWMC/33c28d6d13b411f1e55471936d36c990)
 - MammaMiaTeam & Dirbaio - [NSMB-Editor (Language settings)](https://github.com/MammaMiaTeam/NSMB-Editor)
+- just_add_a_3 - [SMM1 Uploading Errors](https://pastebin.com/y3Xnsm6S)
 - HerobrineTV - [SMM1-Level-Downloader](https://github.com/HerobrineTV/SMM1-Level-Downloader)
 - aboood40091 - [PointlessMaker (SMM1 Level Editor)](https://github.com/aboood40091/PointlessMaker)
+- RoadrunnerWMC - [MetaMaker (SMM1 Level Editor)](https://github.com/RoadrunnerWMC/Metamaker)
 - kinnay - [NintendoClients (SMM1 Access Key)](https://github.com/kinnay/NintendoClients/wiki/Data-Store-Codes#super-mario-maker)
 
 ## Country flag
