@@ -27,6 +27,7 @@ namespace SMM_D4TA_EDITOR
             ComboBox_Physics_Settings.Items.Clear();
             ComboBox_Physics_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Physics").ToArray());
             ComboBox_Theme_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Theme").ToArray());
+            ComboBox_Scroll_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Scroll").ToArray());
             Activate();
         }
 
@@ -389,11 +390,11 @@ namespace SMM_D4TA_EDITOR
 
                 UIstate(true);
 
-                if (CourseScroll == 0) RADIO_Scroll_None.Checked = true;
-                else if (CourseScroll == 1) RADIO_Scroll_Turtle.Checked = true;
-                else if (CourseScroll == 2) RADIO_Scroll_Rabbit.Checked = true;
-                else if (CourseScroll == 3) RADIO_Scroll_Cheetah.Checked = true;
-                else if (CourseScroll == 4) RADIO_Scroll_Lock.Checked = true;
+                if (CourseScroll == 0) ComboBox_Scroll_Settings.SelectedIndex = 0;
+                else if (CourseScroll == 1) ComboBox_Scroll_Settings.SelectedIndex = 1;
+                else if (CourseScroll == 2) ComboBox_Scroll_Settings.SelectedIndex = 2;
+                else if (CourseScroll == 3) ComboBox_Scroll_Settings.SelectedIndex = 3;
+                else if (CourseScroll == 4) ComboBox_Scroll_Settings.SelectedIndex = 4;
                 else CourseScroll = 0;
 
                 if (CourseUpdatePhysics == 0) ComboBox_Physics_Settings.SelectedIndex = 0;
@@ -566,8 +567,7 @@ namespace SMM_D4TA_EDITOR
             }
 
             byte physicsValue = 0;
-            if (ComboBox_Physics_Settings.SelectedIndex == 0) physicsValue = 0;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 1) physicsValue = 1;
+            if (ComboBox_Physics_Settings.SelectedIndex == 1) physicsValue = 1;
             else if (ComboBox_Physics_Settings.SelectedIndex == 2) physicsValue = 2;
             else if (ComboBox_Physics_Settings.SelectedIndex == 3) physicsValue = 3;
             else if (ComboBox_Physics_Settings.SelectedIndex == 4) physicsValue = 4;
@@ -579,18 +579,16 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseUpdatePhysicsOffset] = physicsValue;
 
             byte scrollValue = 0;
-            if (RADIO_Scroll_Turtle.Checked) scrollValue = 1;
-            else if (RADIO_Scroll_Rabbit.Checked) scrollValue = 2;
-            else if (RADIO_Scroll_Cheetah.Checked) scrollValue = 3;
-            else if (RADIO_Scroll_Lock.Checked) scrollValue = 4;
+            if (ComboBox_Physics_Settings.SelectedIndex == 1) scrollValue = 1;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 2) scrollValue = 2;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 3) scrollValue = 3;
+            else if (ComboBox_Physics_Settings.SelectedIndex == 4) scrollValue = 4;
             else scrollValue = 0;
             //Insert scroll byte value to the file
             fileBytes[CourseScrollSettingsOffset] = scrollValue;
 
             byte themeValue = 0;
-
-            if (ComboBox_Theme_Settings.SelectedIndex == 0) themeValue = 0;
-            else if (ComboBox_Theme_Settings.SelectedIndex == 1) themeValue = 1;
+            if (ComboBox_Theme_Settings.SelectedIndex == 1) themeValue = 1;
             else if (ComboBox_Theme_Settings.SelectedIndex == 2) themeValue = 2;
             else if (ComboBox_Theme_Settings.SelectedIndex == 3) themeValue = 3;
             else if (ComboBox_Theme_Settings.SelectedIndex == 4) themeValue = 4;
@@ -655,7 +653,7 @@ namespace SMM_D4TA_EDITOR
             ComboBox_Physics_Settings.Enabled = state;
             ComboBox_Style_Settings.Enabled = state;
             ComboBox_Theme_Settings.Enabled = state;
-            GroupBox_Scroll_Settings.Enabled = state;
+            ComboBox_Scroll_Settings.Enabled = state;
             BUTTON_TimerMinimum.Enabled = state;
             BUTTON_TimerMaximum.Enabled = state;
             CHECK_OfficialCourseStatus.Enabled = state;
