@@ -48,6 +48,7 @@
             this.BUTTON_PreviousPage = new System.Windows.Forms.Button();
             this.BUTTON_NextPage = new System.Windows.Forms.Button();
             this.TB_DisplayPage = new System.Windows.Forms.TextBox();
+            this.SaveFileDialog_SMM1Level = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_LevelResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail1)).BeginInit();
@@ -199,6 +200,7 @@
             this.BUTTON_DownloadLevel.TabIndex = 19;
             this.BUTTON_DownloadLevel.Text = "<Download level>";
             this.BUTTON_DownloadLevel.UseVisualStyleBackColor = true;
+            this.BUTTON_DownloadLevel.Click += new System.EventHandler(this.BUTTON_DownloadLevel_Click);
             // 
             // BUTTON_PreviousPage
             // 
@@ -227,6 +229,10 @@
             this.TB_DisplayPage.ReadOnly = true;
             this.TB_DisplayPage.Size = new System.Drawing.Size(25, 20);
             this.TB_DisplayPage.TabIndex = 22;
+            // 
+            // SaveFileDialog_SMM1Level
+            // 
+            this.SaveFileDialog_SMM1Level.Filter = "File|*.*";
             // 
             // FORM_SMM1_DownloadLevel
             // 
@@ -298,5 +304,6 @@
         private System.Windows.Forms.Button BUTTON_PreviousPage;
         private System.Windows.Forms.Button BUTTON_NextPage;
         private System.Windows.Forms.TextBox TB_DisplayPage;
+        private System.Windows.Forms.SaveFileDialog SaveFileDialog_SMM1Level;
     }
 }

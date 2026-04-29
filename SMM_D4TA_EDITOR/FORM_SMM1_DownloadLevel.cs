@@ -29,7 +29,6 @@ namespace SMM_D4TA_EDITOR
         const string API_LevelDownloaderSMM1 = "https://api.bobac-analytics.com/smm1/";
         const string API_EndpointSearchRandom = "searchRandomLevels/";
         const string API_EndpointSearchLevels = "searchLevels/";
-        const string WebArchiveSMM1FileString1 = "https://web.archive.org/__wb/sparkline?output=json&url=$"; string UrlLevelObjSMM1 = null; const string WebArchiveSMM1FileString2 = "&collection=web";
 
         byte SearchPageNUM = 1;
 
@@ -117,13 +116,65 @@ namespace SMM_D4TA_EDITOR
                     return null;
                 }
             }
+
+            public async Task<string> GetArchiveTimestamp(string SMM1_LvlObjUrl)
+            {
+                string encodedUrl = Uri.EscapeDataString(SMM1_LvlObjUrl); //uri stuff is just in case to avoid errors from spaces/symbols
+                string waybackURL = $"https://web.archive.org/__wb/sparkline?output=json&url={encodedUrl}&collection=web";
+
+                var request = new HttpRequestMessage(HttpMethod.Get, waybackURL);
+
+                request.Headers.Add("User-Agent", "Mozilla/5.0");
+                request.Headers.Add("Accept", "*/*");
+                request.Headers.Add("Referer", $"https://web.archive.org/web/*/{SMM1_LvlObjUrl}");
+                request.Headers.Add("Cache-Control", "no-cache");
+
+                var response = await client.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                string json = await response.Content.ReadAsStringAsync();
+
+                dynamic data = JsonConvert.DeserializeObject(json);
+
+                return data?.first_ts;
+            }
+
+            public async Task DownloadLevelFile(string archiveUrl, string outputPath)
+            {
+                var response = await client.GetAsync(archiveUrl);
+                response.EnsureSuccessStatusCode();
+
+                byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+
+                File.WriteAllBytes(outputPath, fileBytes);
+            }
+
+            public string BuildArchiveDownloadUrl(string timestamp, string SMM1_LvlObjUrl)
+            {
+                return $"https://web.archive.org/web/{timestamp}if_/{SMM1_LvlObjUrl}";
+            }
+
+            public async Task DownloadLevel(MODEL_LevelDownloaderSMM1 level, string outputPath)
+            {
+                string timestamp = await GetArchiveTimestamp(level.url);
+
+                if (string.IsNullOrEmpty(timestamp))
+                {
+                    string text = LanguageManager.Get("FORM_LevelDownloader", "msgNotFound");
+                    MessageBox.Show(text);
+                    return;
+                }
+
+                string archiveUrl = BuildArchiveDownloadUrl(timestamp, level.url);
+
+                string fileName = Path.GetFileName(new Uri(level.url).AbsolutePath);
+
+                await DownloadLevelFile(archiveUrl, outputPath);
+
+                MessageBox.Show("Level downloaded successfully");
+            }
         }
-
-        //The main idea is to have a filter to choose between Nintendo Network, Pretendo Network and SMMDB
-
-        //https://api.bobac-analytics.com/smm1/ping
-        //https://api.bobac-analytics.com/smm1/searchRandomLevels/18118278
-        //https://api.bobac-analytics.com/smm1/searchLevels/Idiom/1?coursename=1&courseid=0&creatorname=0&creatorid=0&searchexact=1
 
         private async void SMM1_GetRndLvl()
         {
@@ -143,7 +194,7 @@ namespace SMM_D4TA_EDITOR
                     level.levelid,
                     level.creator,
                     level.creatorid,
-                    level.clearrate
+                    level.clearrate * 100
                 );
             }
         }
@@ -161,13 +212,15 @@ namespace SMM_D4TA_EDITOR
 
             foreach (var level in levels)
             {
-                DataGridView_LevelResults.Rows.Add(
+                int rowIndex = DataGridView_LevelResults.Rows.Add(
                     level.name,
                     level.levelid,
                     level.creator,
                     level.creatorid,
                     level.clearrate * 100
                 );
+
+                DataGridView_LevelResults.Rows[rowIndex].Tag = level;
             }
         }
 
@@ -196,11 +249,11 @@ namespace SMM_D4TA_EDITOR
             {
                 if (ComboBox_FilterSearch.SelectedIndex == 0)
                 {
-                    SMM1_GetLvlsSearch(TB_LevelSearch.Text, SearchPageNUM, 1, 0, 0, 0, 1);
+                    SMM1_GetLvlsSearch(Uri.EscapeDataString(TB_LevelSearch.Text), SearchPageNUM, 1, 0, 0, 0, 1);
                 }
                 else if (ComboBox_FilterSearch.SelectedIndex == 1)
                 {
-                    SMM1_GetLvlsSearch(TB_LevelSearch.Text, SearchPageNUM, 0, 1, 0, 0, 1);
+                    SMM1_GetLvlsSearch(Uri.EscapeDataString(TB_LevelSearch.Text), SearchPageNUM, 0, 1, 0, 0, 1);
                 }
                 else if (ComboBox_FilterSearch.SelectedIndex == 2)
                 {
@@ -210,13 +263,38 @@ namespace SMM_D4TA_EDITOR
                     }
                     else
                     {
-                        SMM1_GetLvlsSearch(TB_LevelSearch.Text, SearchPageNUM, 0, 0, 1, 0, 1);
+                        SMM1_GetLvlsSearch(Uri.EscapeDataString(TB_LevelSearch.Text), SearchPageNUM, 0, 0, 1, 0, 1);
                     }
                 }
                 else if (ComboBox_FilterSearch.SelectedIndex == 3)
                 {
-                    SMM1_GetLvlsSearch(TB_LevelSearch.Text, SearchPageNUM, 0, 0, 0, 1, 1);
+                    SMM1_GetLvlsSearch(Uri.EscapeDataString(TB_LevelSearch.Text), SearchPageNUM, 0, 0, 0, 1, 1);
                 }
+            }
+        }
+
+        private async void BUTTON_DownloadLevel_Click(object sender, EventArgs e)
+        {
+            var row = DataGridView_LevelResults.CurrentRow;
+
+            if (row == null || row.Tag == null)
+            {
+                MessageBox.Show("There's no selected row");
+                return;
+            }
+
+            var level = (MODEL_LevelDownloaderSMM1)row.Tag;
+
+            if (level == null)
+            {
+                string text = LanguageManager.Get("FORM_LevelDownloader", "msgNotFound");
+                MessageBox.Show(text);
+                return;
+            }
+
+            if (SaveFileDialog_SMM1Level.ShowDialog() == DialogResult.OK)
+            {
+                await ControllerLevelDownloaderSMM1.DownloadLevel(level, SaveFileDialog_SMM1Level.FileName);
             }
         }
     }
