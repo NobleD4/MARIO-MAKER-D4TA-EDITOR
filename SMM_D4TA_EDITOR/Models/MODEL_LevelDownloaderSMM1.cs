@@ -18,7 +18,7 @@ namespace SMM_D4TA_EDITOR
         public int total_attempts { get; set; }
         public double clearrate { get; set; }
         public DateTime uploadTime { get; set; }
-        public int world_record_ms { get; set; }
+        public string world_record_ms { get; set; } //Sometimes the API throws "null" here, but Int32 doesn't knows what is "null"
         public string world_record_holder_nnid { get; set; }
         public int stars { get; set; }
     }
