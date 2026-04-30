@@ -3,8 +3,9 @@
 - RoadrunnerWMC  - [(Python script in which TNL Converter was based)](https://gist.github.com/RoadrunnerWMC/33c28d6d13b411f1e55471936d36c990)
 - MammaMiaTeam & Dirbaio - [NSMB-Editor (Language settings)](https://github.com/MammaMiaTeam/NSMB-Editor)
 - HerobrineTV - [SMM1-Level-Downloader](https://github.com/HerobrineTV/SMM1-Level-Downloader)
-- aboood40091 - [PointlessMaker (SMM1 Level Editor)](https://github.com/aboood40091/PointlessMaker)
+- Aboood40091 - [PointlessMaker (SMM1 Level Editor)](https://github.com/aboood40091/PointlessMaker)
 - kinnay - [NintendoClients (SMM1 Access Key)](https://github.com/kinnay/NintendoClients/wiki/Data-Store-Codes#super-mario-maker)
+- crediar - [ASH Extractor](http://wiibrew.org/wiki/ASH_Extractor)
 
 ## Country flag
 Allows you to visually know which value represents any flag in Mario Maker.

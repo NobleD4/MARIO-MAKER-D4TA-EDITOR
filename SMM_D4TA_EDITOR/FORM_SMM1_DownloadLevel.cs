@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -45,7 +47,7 @@ namespace SMM_D4TA_EDITOR
             TB_DisplayPage.Text = SearchPageNUM.ToString();
 
             var isAPIworking = await ControllerLevelDownloaderSMM1.IsAPIWorking();
-            LABEL_IsAPIWorking.Text = isAPIworking;
+            LABEL_IsLevelAPIWorking.Text = isAPIworking;
         }
 
         public class CONTROLLER_LevelDownloaderSMM1
@@ -140,19 +142,57 @@ namespace SMM_D4TA_EDITOR
                 return data?.first_ts;
             }
 
-            public async Task DownloadLevelFile(string archiveUrl, string outputPath)
+            public List<byte[]> SplitAshFile(byte[] data)
             {
-                var response = await client.GetAsync(archiveUrl);
-                response.EnsureSuccessStatusCode();
+                byte[] separator = new byte[] { 0x41, 0x53, 0x48, 0x30 }; // "ASH0"
 
-                byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+                List<byte[]> parts = new List<byte[]>();
 
-                File.WriteAllBytes(outputPath, fileBytes);
+                int lastIndex = 0;
+
+                while (true)
+                {
+                    int index = FindPattern(data, separator, lastIndex);
+                    if (index == -1)
+                        break;
+
+                    int nextIndex = FindPattern(data, separator, index + separator.Length);
+                    if (nextIndex == -1)
+                        nextIndex = data.Length;
+
+                    int length = nextIndex - index;
+
+                    byte[] part = new byte[length];
+                    Array.Copy(data, index, part, 0, length);
+
+                    parts.Add(part);
+
+                    lastIndex = nextIndex;
+                }
+
+                return parts;
             }
 
-            public string BuildArchiveDownloadUrl(string timestamp, string SMM1_LvlObjUrl)
+            private int FindPattern(byte[] data, byte[] pattern, int startIndex)
             {
-                return $"https://web.archive.org/web/{timestamp}if_/{SMM1_LvlObjUrl}";
+                for (int i = startIndex; i <= data.Length - pattern.Length; i++)
+                {
+                    bool match = true;
+
+                    for (int j = 0; j < pattern.Length; j++)
+                    {
+                        if (data[i + j] != pattern[j])
+                        {
+                            match = false;
+                            break;
+                        }
+                    }
+
+                    if (match)
+                        return i;
+                }
+
+                return -1;
             }
 
             public async Task DownloadLevel(MODEL_LevelDownloaderSMM1 level, string outputPath)
@@ -166,13 +206,96 @@ namespace SMM_D4TA_EDITOR
                     return;
                 }
 
-                string archiveUrl = BuildArchiveDownloadUrl(timestamp, level.url);
+                string archiveUrl = $"https://web.archive.org/web/{timestamp}if_/{level.url}";
 
                 string fileName = Path.GetFileName(new Uri(level.url).AbsolutePath);
 
-                await DownloadLevelFile(archiveUrl, outputPath);
+                var response = await client.GetAsync(archiveUrl);
+                response.EnsureSuccessStatusCode();
+
+                //1. Download ASH0
+                byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+
+                //2. Save
+                File.WriteAllBytes(outputPath, fileBytes);
+
+                //3. Create a new directory with the same name without extension
+                string folderPath = Path.Combine(
+                    Path.GetDirectoryName(outputPath),
+                    Path.GetFileNameWithoutExtension(outputPath)
+                );
+
+                Directory.CreateDirectory(folderPath);
+
+                //4. SPLIT
+                var parts = SplitAshFile(fileBytes);
+
+                string[] partNamesFirst = {
+                    "thumbnail0",
+                    "course_data",
+                    "course_data_sub",
+                    "thumbnail1"
+                };
+
+                string[] finalNames = {
+                    "thumbnail0.tnl",
+                    "course_data.cdt",
+                    "course_data_sub.cdt",
+                    "thumbnail1.tnl"
+                };
+
+                //5. Save parts
+                for (int i = 0; i < parts.Count && i < partNamesFirst.Length; i++)
+                {
+                    string path = Path.Combine(folderPath, partNamesFirst[i]);
+                    File.WriteAllBytes(path, parts[i]);
+                }
+
+                //6. Execute ASH Extractor
+                for (int i = 0; i < partNamesFirst.Length; i++)
+                {
+                    string inputPath = Path.Combine(folderPath, partNamesFirst[i]);
+
+                    var process = new Process();
+                    process.StartInfo.FileName = "ASH.exe";
+                    process.StartInfo.Arguments = $"\"{inputPath}\"";
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.UseShellExecute = false;
+
+                    process.Start();
+                    process.WaitForExit();
+
+                    string arcFile = inputPath + ".arc";
+
+                    if (File.Exists(arcFile))
+                    {
+                        string finalPath = Path.Combine(folderPath, finalNames[i]);
+                        File.Move(arcFile, finalPath);
+
+                        File.Delete(inputPath);
+                    }
+                }
+
+                //7. Create sound.bwv
+                CreateSoundbwvFile(Path.Combine(folderPath, "sound.bwv"));
+
+                //8. Delete original ASH0
+                File.Delete(outputPath);
 
                 MessageBox.Show("Level downloaded successfully");
+            }
+
+            //A "sound.bwv" file halways as only the first 4 bytes filled with the same thing, so I don't need a whole "sound.bwv" file to copy and paste to downloaded level
+            //After writing header, this function fill with zeros skiping directly to the end
+            public void CreateSoundbwvFile(string outputPath)
+            {
+                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(new byte[] { 0x76, 0x24, 0x6A, 0xAE }, 0, 4);
+
+                    //Size of "sound.bwv" is 0xD808
+                    fs.SetLength(0xD808);
+                }
             }
         }
 
@@ -294,7 +417,7 @@ namespace SMM_D4TA_EDITOR
 
             if (SaveFileDialog_SMM1Level.ShowDialog() == DialogResult.OK)
             {
-                await ControllerLevelDownloaderSMM1.DownloadLevel(level, SaveFileDialog_SMM1Level.FileName);
+                await ControllerLevelDownloaderSMM1.DownloadLevel(level, (SaveFileDialog_SMM1Level.FileName + ".tmp"));
             }
         }
     }

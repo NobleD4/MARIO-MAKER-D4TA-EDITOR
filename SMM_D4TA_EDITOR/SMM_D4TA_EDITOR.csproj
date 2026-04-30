@@ -158,6 +158,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ASH.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="World-Maker-Icon.ico" />
   </ItemGroup>
   <ItemGroup>

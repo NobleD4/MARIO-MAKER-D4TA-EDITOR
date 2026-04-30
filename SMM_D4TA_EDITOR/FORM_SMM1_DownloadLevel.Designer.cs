@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FORM_SMM1_DownloadLevel));
             this.DataGridView_LevelResults = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -43,12 +44,14 @@
             this.ComboBox_FilterSearch = new System.Windows.Forms.ComboBox();
             this.LABEL_FilterSearch = new System.Windows.Forms.Label();
             this.BUTTON_SearchRandom = new System.Windows.Forms.Button();
-            this.LABEL_IsAPIWorking = new System.Windows.Forms.Label();
+            this.LABEL_IsLevelAPIWorking = new System.Windows.Forms.Label();
             this.BUTTON_DownloadLevel = new System.Windows.Forms.Button();
             this.BUTTON_PreviousPage = new System.Windows.Forms.Button();
             this.BUTTON_NextPage = new System.Windows.Forms.Button();
             this.TB_DisplayPage = new System.Windows.Forms.TextBox();
             this.SaveFileDialog_SMM1Level = new System.Windows.Forms.SaveFileDialog();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_LevelResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail1)).BeginInit();
@@ -122,7 +125,7 @@
             // 
             // TB_LevelSearch
             // 
-            this.TB_LevelSearch.Location = new System.Drawing.Point(139, 41);
+            this.TB_LevelSearch.Location = new System.Drawing.Point(12, 67);
             this.TB_LevelSearch.Name = "TB_LevelSearch";
             this.TB_LevelSearch.Size = new System.Drawing.Size(210, 20);
             this.TB_LevelSearch.TabIndex = 4;
@@ -138,7 +141,7 @@
             // 
             // BUTTON_Search
             // 
-            this.BUTTON_Search.Location = new System.Drawing.Point(355, 39);
+            this.BUTTON_Search.Location = new System.Drawing.Point(228, 65);
             this.BUTTON_Search.Name = "BUTTON_Search";
             this.BUTTON_Search.Size = new System.Drawing.Size(75, 23);
             this.BUTTON_Search.TabIndex = 6;
@@ -159,7 +162,7 @@
             // 
             this.ComboBox_FilterSearch.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_FilterSearch.FormattingEnabled = true;
-            this.ComboBox_FilterSearch.Location = new System.Drawing.Point(12, 80);
+            this.ComboBox_FilterSearch.Location = new System.Drawing.Point(139, 40);
             this.ComboBox_FilterSearch.Name = "ComboBox_FilterSearch";
             this.ComboBox_FilterSearch.Size = new System.Drawing.Size(121, 21);
             this.ComboBox_FilterSearch.TabIndex = 4;
@@ -167,7 +170,7 @@
             // LABEL_FilterSearch
             // 
             this.LABEL_FilterSearch.AutoSize = true;
-            this.LABEL_FilterSearch.Location = new System.Drawing.Point(12, 64);
+            this.LABEL_FilterSearch.Location = new System.Drawing.Point(139, 24);
             this.LABEL_FilterSearch.Name = "LABEL_FilterSearch";
             this.LABEL_FilterSearch.Size = new System.Drawing.Size(41, 13);
             this.LABEL_FilterSearch.TabIndex = 14;
@@ -175,7 +178,7 @@
             // 
             // BUTTON_SearchRandom
             // 
-            this.BUTTON_SearchRandom.Location = new System.Drawing.Point(139, 78);
+            this.BUTTON_SearchRandom.Location = new System.Drawing.Point(266, 38);
             this.BUTTON_SearchRandom.Name = "BUTTON_SearchRandom";
             this.BUTTON_SearchRandom.Size = new System.Drawing.Size(94, 23);
             this.BUTTON_SearchRandom.TabIndex = 15;
@@ -183,18 +186,18 @@
             this.BUTTON_SearchRandom.UseVisualStyleBackColor = true;
             this.BUTTON_SearchRandom.Click += new System.EventHandler(this.BUTTON_SearchRandom_Click);
             // 
-            // LABEL_IsAPIWorking
+            // LABEL_IsLevelAPIWorking
             // 
-            this.LABEL_IsAPIWorking.AutoSize = true;
-            this.LABEL_IsAPIWorking.Location = new System.Drawing.Point(436, 44);
-            this.LABEL_IsAPIWorking.Name = "LABEL_IsAPIWorking";
-            this.LABEL_IsAPIWorking.Size = new System.Drawing.Size(92, 13);
-            this.LABEL_IsAPIWorking.TabIndex = 18;
-            this.LABEL_IsAPIWorking.Text = "<API WORKING>";
+            this.LABEL_IsLevelAPIWorking.AutoSize = true;
+            this.LABEL_IsLevelAPIWorking.Location = new System.Drawing.Point(366, 43);
+            this.LABEL_IsLevelAPIWorking.Name = "LABEL_IsLevelAPIWorking";
+            this.LABEL_IsLevelAPIWorking.Size = new System.Drawing.Size(92, 13);
+            this.LABEL_IsLevelAPIWorking.TabIndex = 18;
+            this.LABEL_IsLevelAPIWorking.Text = "<API WORKING>";
             // 
             // BUTTON_DownloadLevel
             // 
-            this.BUTTON_DownloadLevel.Location = new System.Drawing.Point(239, 78);
+            this.BUTTON_DownloadLevel.Location = new System.Drawing.Point(309, 65);
             this.BUTTON_DownloadLevel.Name = "BUTTON_DownloadLevel";
             this.BUTTON_DownloadLevel.Size = new System.Drawing.Size(110, 23);
             this.BUTTON_DownloadLevel.TabIndex = 19;
@@ -204,7 +207,7 @@
             // 
             // BUTTON_PreviousPage
             // 
-            this.BUTTON_PreviousPage.Location = new System.Drawing.Point(355, 78);
+            this.BUTTON_PreviousPage.Location = new System.Drawing.Point(425, 65);
             this.BUTTON_PreviousPage.Name = "BUTTON_PreviousPage";
             this.BUTTON_PreviousPage.Size = new System.Drawing.Size(20, 23);
             this.BUTTON_PreviousPage.TabIndex = 20;
@@ -214,7 +217,7 @@
             // 
             // BUTTON_NextPage
             // 
-            this.BUTTON_NextPage.Location = new System.Drawing.Point(412, 78);
+            this.BUTTON_NextPage.Location = new System.Drawing.Point(482, 65);
             this.BUTTON_NextPage.Name = "BUTTON_NextPage";
             this.BUTTON_NextPage.Size = new System.Drawing.Size(20, 23);
             this.BUTTON_NextPage.TabIndex = 21;
@@ -224,7 +227,7 @@
             // 
             // TB_DisplayPage
             // 
-            this.TB_DisplayPage.Location = new System.Drawing.Point(381, 80);
+            this.TB_DisplayPage.Location = new System.Drawing.Point(451, 67);
             this.TB_DisplayPage.Name = "TB_DisplayPage";
             this.TB_DisplayPage.ReadOnly = true;
             this.TB_DisplayPage.Size = new System.Drawing.Size(25, 20);
@@ -234,16 +237,38 @@
             // 
             this.SaveFileDialog_SMM1Level.Filter = "File|*.*";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(12, 88);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(116, 17);
+            this.checkBox1.TabIndex = 23;
+            this.checkBox1.Text = "Decompress ASH0";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(134, 88);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(90, 17);
+            this.checkBox2.TabIndex = 24;
+            this.checkBox2.Text = "Download Mii";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
             // FORM_SMM1_DownloadLevel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 361);
+            this.Controls.Add(this.checkBox2);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.TB_DisplayPage);
             this.Controls.Add(this.BUTTON_NextPage);
             this.Controls.Add(this.BUTTON_PreviousPage);
             this.Controls.Add(this.BUTTON_DownloadLevel);
-            this.Controls.Add(this.LABEL_IsAPIWorking);
+            this.Controls.Add(this.LABEL_IsLevelAPIWorking);
             this.Controls.Add(this.BUTTON_SearchRandom);
             this.Controls.Add(this.LABEL_FilterSearch);
             this.Controls.Add(this.ComboBox_FilterSearch);
@@ -254,6 +279,8 @@
             this.Controls.Add(this.PICTURE_thumbnail1);
             this.Controls.Add(this.PICTURE_thumbnail0);
             this.Controls.Add(this.DataGridView_LevelResults);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FORM_SMM1_DownloadLevel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -269,11 +296,13 @@
             this.Controls.SetChildIndex(this.ComboBox_FilterSearch, 0);
             this.Controls.SetChildIndex(this.LABEL_FilterSearch, 0);
             this.Controls.SetChildIndex(this.BUTTON_SearchRandom, 0);
-            this.Controls.SetChildIndex(this.LABEL_IsAPIWorking, 0);
+            this.Controls.SetChildIndex(this.LABEL_IsLevelAPIWorking, 0);
             this.Controls.SetChildIndex(this.BUTTON_DownloadLevel, 0);
             this.Controls.SetChildIndex(this.BUTTON_PreviousPage, 0);
             this.Controls.SetChildIndex(this.BUTTON_NextPage, 0);
             this.Controls.SetChildIndex(this.TB_DisplayPage, 0);
+            this.Controls.SetChildIndex(this.checkBox1, 0);
+            this.Controls.SetChildIndex(this.checkBox2, 0);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_LevelResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail1)).EndInit();
@@ -294,7 +323,7 @@
         private System.Windows.Forms.ComboBox ComboBox_FilterSearch;
         private System.Windows.Forms.Label LABEL_FilterSearch;
         private System.Windows.Forms.Button BUTTON_SearchRandom;
-        private System.Windows.Forms.Label LABEL_IsAPIWorking;
+        private System.Windows.Forms.Label LABEL_IsLevelAPIWorking;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
@@ -305,5 +334,7 @@
         private System.Windows.Forms.Button BUTTON_NextPage;
         private System.Windows.Forms.TextBox TB_DisplayPage;
         private System.Windows.Forms.SaveFileDialog SaveFileDialog_SMM1Level;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
     }
 }
