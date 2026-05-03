@@ -50,8 +50,9 @@
             this.BUTTON_NextPage = new System.Windows.Forms.Button();
             this.TB_DisplayPage = new System.Windows.Forms.TextBox();
             this.SaveFileDialog_SMM1Level = new System.Windows.Forms.SaveFileDialog();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.CHECK_DecompressASH0 = new System.Windows.Forms.CheckBox();
+            this.CHECK_DownloadMii = new System.Windows.Forms.CheckBox();
+            this.LABEL_IsMiiAPIWorking = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_LevelResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail1)).BeginInit();
@@ -73,7 +74,7 @@
             this.DataGridView_LevelResults.ReadOnly = true;
             this.DataGridView_LevelResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DataGridView_LevelResults.Size = new System.Drawing.Size(500, 186);
-            this.DataGridView_LevelResults.TabIndex = 1;
+            this.DataGridView_LevelResults.TabIndex = 11;
             // 
             // Column1
             // 
@@ -128,7 +129,7 @@
             this.TB_LevelSearch.Location = new System.Drawing.Point(12, 67);
             this.TB_LevelSearch.Name = "TB_LevelSearch";
             this.TB_LevelSearch.Size = new System.Drawing.Size(210, 20);
-            this.TB_LevelSearch.TabIndex = 4;
+            this.TB_LevelSearch.TabIndex = 3;
             // 
             // ComboBox_ServerSearch
             // 
@@ -137,14 +138,14 @@
             this.ComboBox_ServerSearch.Location = new System.Drawing.Point(12, 40);
             this.ComboBox_ServerSearch.Name = "ComboBox_ServerSearch";
             this.ComboBox_ServerSearch.Size = new System.Drawing.Size(121, 21);
-            this.ComboBox_ServerSearch.TabIndex = 5;
+            this.ComboBox_ServerSearch.TabIndex = 0;
             // 
             // BUTTON_Search
             // 
             this.BUTTON_Search.Location = new System.Drawing.Point(228, 65);
             this.BUTTON_Search.Name = "BUTTON_Search";
             this.BUTTON_Search.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_Search.TabIndex = 6;
+            this.BUTTON_Search.TabIndex = 4;
             this.BUTTON_Search.Text = "<Search>";
             this.BUTTON_Search.UseVisualStyleBackColor = true;
             this.BUTTON_Search.Click += new System.EventHandler(this.BUTTON_Search_Click);
@@ -165,7 +166,7 @@
             this.ComboBox_FilterSearch.Location = new System.Drawing.Point(139, 40);
             this.ComboBox_FilterSearch.Name = "ComboBox_FilterSearch";
             this.ComboBox_FilterSearch.Size = new System.Drawing.Size(121, 21);
-            this.ComboBox_FilterSearch.TabIndex = 4;
+            this.ComboBox_FilterSearch.TabIndex = 1;
             // 
             // LABEL_FilterSearch
             // 
@@ -181,7 +182,7 @@
             this.BUTTON_SearchRandom.Location = new System.Drawing.Point(266, 38);
             this.BUTTON_SearchRandom.Name = "BUTTON_SearchRandom";
             this.BUTTON_SearchRandom.Size = new System.Drawing.Size(94, 23);
-            this.BUTTON_SearchRandom.TabIndex = 15;
+            this.BUTTON_SearchRandom.TabIndex = 2;
             this.BUTTON_SearchRandom.Text = "<Random level>";
             this.BUTTON_SearchRandom.UseVisualStyleBackColor = true;
             this.BUTTON_SearchRandom.Click += new System.EventHandler(this.BUTTON_SearchRandom_Click);
@@ -200,7 +201,7 @@
             this.BUTTON_DownloadLevel.Location = new System.Drawing.Point(309, 65);
             this.BUTTON_DownloadLevel.Name = "BUTTON_DownloadLevel";
             this.BUTTON_DownloadLevel.Size = new System.Drawing.Size(110, 23);
-            this.BUTTON_DownloadLevel.TabIndex = 19;
+            this.BUTTON_DownloadLevel.TabIndex = 5;
             this.BUTTON_DownloadLevel.Text = "<Download level>";
             this.BUTTON_DownloadLevel.UseVisualStyleBackColor = true;
             this.BUTTON_DownloadLevel.Click += new System.EventHandler(this.BUTTON_DownloadLevel_Click);
@@ -210,7 +211,7 @@
             this.BUTTON_PreviousPage.Location = new System.Drawing.Point(425, 65);
             this.BUTTON_PreviousPage.Name = "BUTTON_PreviousPage";
             this.BUTTON_PreviousPage.Size = new System.Drawing.Size(20, 23);
-            this.BUTTON_PreviousPage.TabIndex = 20;
+            this.BUTTON_PreviousPage.TabIndex = 6;
             this.BUTTON_PreviousPage.Text = "<";
             this.BUTTON_PreviousPage.UseVisualStyleBackColor = true;
             this.BUTTON_PreviousPage.Click += new System.EventHandler(this.BUTTON_PreviousPage_Click);
@@ -220,7 +221,7 @@
             this.BUTTON_NextPage.Location = new System.Drawing.Point(482, 65);
             this.BUTTON_NextPage.Name = "BUTTON_NextPage";
             this.BUTTON_NextPage.Size = new System.Drawing.Size(20, 23);
-            this.BUTTON_NextPage.TabIndex = 21;
+            this.BUTTON_NextPage.TabIndex = 8;
             this.BUTTON_NextPage.Text = ">";
             this.BUTTON_NextPage.UseVisualStyleBackColor = true;
             this.BUTTON_NextPage.Click += new System.EventHandler(this.BUTTON_NextPage_Click);
@@ -231,39 +232,50 @@
             this.TB_DisplayPage.Name = "TB_DisplayPage";
             this.TB_DisplayPage.ReadOnly = true;
             this.TB_DisplayPage.Size = new System.Drawing.Size(25, 20);
-            this.TB_DisplayPage.TabIndex = 22;
+            this.TB_DisplayPage.TabIndex = 7;
             // 
             // SaveFileDialog_SMM1Level
             // 
             this.SaveFileDialog_SMM1Level.Filter = "File|*.*";
             // 
-            // checkBox1
+            // CHECK_DecompressASH0
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(12, 88);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(116, 17);
-            this.checkBox1.TabIndex = 23;
-            this.checkBox1.Text = "Decompress ASH0";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.CHECK_DecompressASH0.AutoSize = true;
+            this.CHECK_DecompressASH0.Enabled = false;
+            this.CHECK_DecompressASH0.Location = new System.Drawing.Point(12, 88);
+            this.CHECK_DecompressASH0.Name = "CHECK_DecompressASH0";
+            this.CHECK_DecompressASH0.Size = new System.Drawing.Size(116, 17);
+            this.CHECK_DecompressASH0.TabIndex = 9;
+            this.CHECK_DecompressASH0.Text = "Decompress ASH0";
+            this.CHECK_DecompressASH0.UseVisualStyleBackColor = true;
             // 
-            // checkBox2
+            // CHECK_DownloadMii
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(134, 88);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(90, 17);
-            this.checkBox2.TabIndex = 24;
-            this.checkBox2.Text = "Download Mii";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.CHECK_DownloadMii.AutoSize = true;
+            this.CHECK_DownloadMii.Location = new System.Drawing.Point(134, 88);
+            this.CHECK_DownloadMii.Name = "CHECK_DownloadMii";
+            this.CHECK_DownloadMii.Size = new System.Drawing.Size(90, 17);
+            this.CHECK_DownloadMii.TabIndex = 10;
+            this.CHECK_DownloadMii.Text = "Download Mii";
+            this.CHECK_DownloadMii.UseVisualStyleBackColor = true;
+            // 
+            // LABEL_IsMiiAPIWorking
+            // 
+            this.LABEL_IsMiiAPIWorking.AutoSize = true;
+            this.LABEL_IsMiiAPIWorking.Location = new System.Drawing.Point(230, 89);
+            this.LABEL_IsMiiAPIWorking.Name = "LABEL_IsMiiAPIWorking";
+            this.LABEL_IsMiiAPIWorking.Size = new System.Drawing.Size(92, 13);
+            this.LABEL_IsMiiAPIWorking.TabIndex = 25;
+            this.LABEL_IsMiiAPIWorking.Text = "<API WORKING>";
             // 
             // FORM_SMM1_DownloadLevel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 361);
-            this.Controls.Add(this.checkBox2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.LABEL_IsMiiAPIWorking);
+            this.Controls.Add(this.CHECK_DownloadMii);
+            this.Controls.Add(this.CHECK_DecompressASH0);
             this.Controls.Add(this.TB_DisplayPage);
             this.Controls.Add(this.BUTTON_NextPage);
             this.Controls.Add(this.BUTTON_PreviousPage);
@@ -301,8 +313,9 @@
             this.Controls.SetChildIndex(this.BUTTON_PreviousPage, 0);
             this.Controls.SetChildIndex(this.BUTTON_NextPage, 0);
             this.Controls.SetChildIndex(this.TB_DisplayPage, 0);
-            this.Controls.SetChildIndex(this.checkBox1, 0);
-            this.Controls.SetChildIndex(this.checkBox2, 0);
+            this.Controls.SetChildIndex(this.CHECK_DecompressASH0, 0);
+            this.Controls.SetChildIndex(this.CHECK_DownloadMii, 0);
+            this.Controls.SetChildIndex(this.LABEL_IsMiiAPIWorking, 0);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_LevelResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail1)).EndInit();
@@ -334,7 +347,8 @@
         private System.Windows.Forms.Button BUTTON_NextPage;
         private System.Windows.Forms.TextBox TB_DisplayPage;
         private System.Windows.Forms.SaveFileDialog SaveFileDialog_SMM1Level;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox CHECK_DecompressASH0;
+        private System.Windows.Forms.CheckBox CHECK_DownloadMii;
+        private System.Windows.Forms.Label LABEL_IsMiiAPIWorking;
     }
 }

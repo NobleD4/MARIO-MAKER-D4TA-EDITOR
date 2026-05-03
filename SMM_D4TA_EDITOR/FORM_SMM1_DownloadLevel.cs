@@ -11,10 +11,12 @@ using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SMM_D4TA_EDITOR
 {
@@ -24,15 +26,19 @@ namespace SMM_D4TA_EDITOR
         {
             InitializeComponent();
             ControllerLevelDownloaderSMM1 = new CONTROLLER_LevelDownloaderSMM1();
+            ControllerMiiData = new CONTROLLER_MiiData();
         }
 
         private CONTROLLER_LevelDownloaderSMM1 ControllerLevelDownloaderSMM1;
+        private CONTROLLER_MiiData ControllerMiiData;
 
         const string API_LevelDownloaderSMM1 = "https://api.bobac-analytics.com/smm1/";
         const string API_EndpointSearchRandom = "searchRandomLevels/";
         const string API_EndpointSearchLevels = "searchLevels/";
 
         byte SearchPageNUM = 1;
+
+        const string API_SMM1_Mii = "https://mii-unsecure.ariankordi.net/";
 
         private async void FORM_SMM1_DownloadLevel_Load(object sender, EventArgs e)
         {
@@ -46,8 +52,13 @@ namespace SMM_D4TA_EDITOR
 
             TB_DisplayPage.Text = SearchPageNUM.ToString();
 
+            CHECK_DecompressASH0.Checked = true;
+            CHECK_DownloadMii.Checked = true;
+
             var isAPIworking = await ControllerLevelDownloaderSMM1.IsAPIWorking();
+            var isMiiAPIworking = await ControllerMiiData.IsAPIWorking();
             LABEL_IsLevelAPIWorking.Text = isAPIworking;
+            LABEL_IsMiiAPIWorking.Text = isMiiAPIworking;
         }
 
         public class CONTROLLER_LevelDownloaderSMM1
@@ -73,7 +84,6 @@ namespace SMM_D4TA_EDITOR
                     return statusFalse;
                 }
             }
-
 
             public async Task<List<MODEL_LevelDownloaderSMM1>> SMM1_GetRandomLevel()
             {
@@ -216,16 +226,16 @@ namespace SMM_D4TA_EDITOR
                 //1. Download ASH0
                 byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
 
-                //2. Save
-                File.WriteAllBytes(outputPath, fileBytes);
-
-                //3. Create a new directory with the same name without extension
+                //2. Create a new directory with the same name without extension
                 string folderPath = Path.Combine(
                     Path.GetDirectoryName(outputPath),
                     Path.GetFileNameWithoutExtension(outputPath)
                 );
 
                 Directory.CreateDirectory(folderPath);
+
+                //3. Save
+                File.WriteAllBytes(outputPath, fileBytes);
 
                 //4. SPLIT
                 var parts = SplitAshFile(fileBytes);
@@ -297,6 +307,102 @@ namespace SMM_D4TA_EDITOR
                     fs.SetLength(0xD808);
                 }
             }
+        }
+
+        public class CONTROLLER_MiiData
+        {
+            private HttpClient client;
+            public CONTROLLER_MiiData()
+            {
+                client = new HttpClient();
+            }
+
+            public async Task<string> IsAPIWorking()
+            {
+                HttpResponseMessage response = await client.GetAsync(API_SMM1_Mii + "jobs");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string statusTrue = LanguageManager.Get("FORM_LevelDownloader", "API_StatusTrue");
+                    return statusTrue;
+                }
+
+                else
+                {
+                    string statusFalse = LanguageManager.Get("FORM_LevelDownloader", "API_StatusFalse");
+                    return statusFalse;
+                }
+            }
+
+            public async Task<MODEL_MiiData> GetMiiDataFromLevel(string NNID)
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, API_SMM1_Mii + "mii_data/" + NNID);
+
+                var response = await client.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                string responseJson = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<MODEL_MiiData>(responseJson);
+            }
+        }
+
+        public async Task DownloadMiiForLevel(int levelid, string MiiBase64, string outputPath)
+        {
+            byte[] MiiBytes = Convert.FromBase64String(MiiBase64);
+
+            string levelidHex = levelid.ToString("X12");
+            byte[] levelidBytes = Enumerable.Range(0, levelidHex.Length).Where(x => x % 2 == 0)
+            .Select(x => Convert.ToByte(levelidHex.Substring(x, 2), 16)).ToArray();
+
+            string file1 = Path.Combine(outputPath, "course_data.cdt");
+            string file2 = Path.Combine(outputPath, "course_data_sub.cdt");
+
+            if (!File.Exists(file1) || !File.Exists(file2))
+            {
+                MessageBox.Show("course_data.cdt or course_data_sub.cdt doesn't exist");
+            }
+
+            byte[] fileBytes = File.ReadAllBytes(file1);
+            byte[] fileBytes2 = File.ReadAllBytes(file2);
+
+            fileBytes[0x1A] = levelidBytes[0];
+            fileBytes[0x1B] = levelidBytes[1];
+            fileBytes[0x1C] = levelidBytes[2];
+            fileBytes[0x1D] = levelidBytes[3];
+            fileBytes[0x1E] = levelidBytes[4];
+            fileBytes[0x1F] = levelidBytes[5];
+
+            fileBytes2[0x1A] = levelidBytes[0];
+            fileBytes2[0x1B] = levelidBytes[1];
+            fileBytes2[0x1C] = levelidBytes[2];
+            fileBytes2[0x1D] = levelidBytes[3];
+            fileBytes2[0x1E] = levelidBytes[4];
+            fileBytes2[0x1F] = levelidBytes[5];
+
+            //Downloaded status 01
+            fileBytes[0x20] = 0x01;
+            fileBytes2[0x20] = 0x01;
+
+            //Add Mii bytes to the file
+            Array.Copy(MiiBytes, 0, fileBytes, 0x78, 96);
+            Array.Copy(MiiBytes, 0, fileBytes2, 0x78, 96);
+
+            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
+            Crc32 crc32 = new Crc32();
+            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
+            Array.Reverse(checksum); //Parse to big-endian order
+            Array.Copy(checksum, 0, fileBytes, 0x08, 4);
+
+            Crc32 crc32_2 = new Crc32();
+            byte[] checksum_2 = crc32_2.ComputeChecksumBytes(fileBytes2, 0x10, fileBytes2.Length - 0x10);
+            Array.Reverse(checksum_2); //Parse to big-endian order
+            Array.Copy(checksum_2, 0, fileBytes2, 0x08, 4);
+
+            //Save and overwrites .cdt file
+            File.WriteAllBytes(file1, fileBytes);
+            File.WriteAllBytes(file2, fileBytes2);
         }
 
         private async void SMM1_GetRndLvl()
@@ -417,7 +523,13 @@ namespace SMM_D4TA_EDITOR
 
             if (SaveFileDialog_SMM1Level.ShowDialog() == DialogResult.OK)
             {
-                await ControllerLevelDownloaderSMM1.DownloadLevel(level, (SaveFileDialog_SMM1Level.FileName + ".tmp"));
+                //I added an extension to avoid errors at the part of the code which creates a folder with exactly the same name
+                await ControllerLevelDownloaderSMM1.DownloadLevel(level, SaveFileDialog_SMM1Level.FileName + ".tmp");
+
+                if (CHECK_DownloadMii.Checked == true) {
+                    var MiiData = await ControllerMiiData.GetMiiDataFromLevel(level.creator);
+                    await DownloadMiiForLevel(level.levelid, MiiData.data, SaveFileDialog_SMM1Level.FileName);
+                }
             }
         }
     }
