@@ -747,6 +747,7 @@
             this.ComboBox_SelectMii.Name = "ComboBox_SelectMii";
             this.ComboBox_SelectMii.Size = new System.Drawing.Size(100, 21);
             this.ComboBox_SelectMii.TabIndex = 54;
+            this.ComboBox_SelectMii.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectMii_SelectedIndexChanged);
             // 
             // LABEL_SelectMii
             // 
