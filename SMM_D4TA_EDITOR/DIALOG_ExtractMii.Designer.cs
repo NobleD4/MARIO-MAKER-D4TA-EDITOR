@@ -35,6 +35,7 @@
             this.CHECK_SaveMiiAsFFSD = new System.Windows.Forms.CheckBox();
             this.NUMERIC_CountryCode = new System.Windows.Forms.NumericUpDown();
             this.LABEL_Country = new System.Windows.Forms.Label();
+            this.SaveFileDialog_ffsdFile = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CountryCode)).BeginInit();
             this.SuspendLayout();
             // 
@@ -90,6 +91,11 @@
             // NUMERIC_CountryCode
             // 
             this.NUMERIC_CountryCode.Location = new System.Drawing.Point(15, 64);
+            this.NUMERIC_CountryCode.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
             this.NUMERIC_CountryCode.Name = "NUMERIC_CountryCode";
             this.NUMERIC_CountryCode.Size = new System.Drawing.Size(60, 20);
             this.NUMERIC_CountryCode.TabIndex = 1;
@@ -102,6 +108,10 @@
             this.LABEL_Country.Size = new System.Drawing.Size(55, 13);
             this.LABEL_Country.TabIndex = 8;
             this.LABEL_Country.Text = "<Country>";
+            // 
+            // SaveFileDialog_ffsdFile
+            // 
+            this.SaveFileDialog_ffsdFile.Filter = "Mii data|*.ffsd|All files|*.*";
             // 
             // DIALOG_ExtractMii
             // 
@@ -137,5 +147,6 @@
         private System.Windows.Forms.CheckBox CHECK_SaveMiiAsFFSD;
         private System.Windows.Forms.NumericUpDown NUMERIC_CountryCode;
         private System.Windows.Forms.Label LABEL_Country;
+        private System.Windows.Forms.SaveFileDialog SaveFileDialog_ffsdFile;
     }
 }

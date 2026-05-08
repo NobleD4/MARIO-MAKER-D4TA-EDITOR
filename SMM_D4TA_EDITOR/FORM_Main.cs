@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +6,8 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,6 +22,8 @@ namespace SMM_D4TA_EDITOR
             InitializeComponent();
         }
 
+        DataTable MiiData_XML;
+
         private void FORM_Main_Load(object sender, EventArgs e)
         {
             LanguageManager.ApplyToContainer(this, "FORM_Main");
@@ -29,11 +32,26 @@ namespace SMM_D4TA_EDITOR
             ComboBox_Theme_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Theme").ToArray());
             ComboBox_Scroll_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Scroll").ToArray());
             ComboBox_OfficialCourse.Items.AddRange(LanguageManager.GetList("ComboBox_OfficialCourse").ToArray());
-            ComboBox_SelectMii.Items.AddRange(LanguageManager.GetList("ComboBox_SelectMii").ToArray());
+            LoadComboSelectMii();
+
             Activate();
         }
 
-        DataTable MiiData_XML;
+        public void LoadComboSelectMii()
+        {
+            ComboBox_SelectMii.Items.Clear();
+            ComboBox_SelectMii.Items.AddRange(LanguageManager.GetList("ComboBox_SelectMii").ToArray());
+            ComboBox_SelectMii.SelectedIndex = 0;
+
+            MiiData_XML = new DataTable("MiiData");
+            MiiData_XML.Columns.Add("SaveName");
+            MiiData_XML.Columns.Add("MiiBase64");
+            MiiData_XML.Columns.Add("CountryID");
+            MiiData_XML.ReadXml("Data.xml");
+
+            for (int i = 0, loopTo = MiiData_XML.Rows.Count - 1; i <= loopTo; i++)
+            ComboBox_SelectMii.Items.Add(MiiData_XML.Rows[i][0]);
+        }
 
         public static Encoding DefEnc = Encoding.GetEncoding("Shift-JIS");
         private string currentFilePath = "";
@@ -822,18 +840,39 @@ namespace SMM_D4TA_EDITOR
 
         private void BUTTON_ExtractMii_Click(object sender, EventArgs e)
         {
+            byte[] fileBytes = File.ReadAllBytes(OpenFileDialog_cdtFile.FileName);
+            byte[] MiiFileBytes = new byte[CourseMiiSize];
+            Array.Copy(fileBytes, CourseMiiOffset, MiiFileBytes, 0, CourseMiiSize);
 
+            string MiiBase64 = Convert.ToBase64String(MiiFileBytes);
+
+            var x = new DIALOG_ExtractMii(MiiBase64, TB_CourseCreator.Text, (ushort)NUMERIC_CountryCode.Value, true);
+            x.ShowDialog();
+
+            LoadComboSelectMii();
         }
 
         private void ToolStripMenuItem_ImportFFSD_Click(object sender, EventArgs e)
         {
             if (OpenFileDialog_ffsdFile.ShowDialog() == DialogResult.OK)
-            {
+            {   
                 byte[] MiiFileBytes = File.ReadAllBytes(OpenFileDialog_ffsdFile.FileName);
-                string MiiBase64 = Convert.ToBase64String(MiiFileBytes);
 
-                var x = new DIALOG_ExtractMii(MiiBase64, OpenFileDialog_ffsdFile.SafeFileName, (ushort)NUMERIC_CountryCode.Value, false);
-                x.ShowDialog();
+                if(MiiFileBytes.Length != CourseMiiSize)
+                {
+                    string text = LanguageManager.Get("FORM_Main", "msgInvalidMiiFile");
+                    MessageBox.Show(text);
+                    ToolStripMenuItem_ImportFFSD_Click(sender, e); //First time in my life using recursive function while knowing what I'm doing
+                }
+                else
+                {
+                    string MiiBase64 = Convert.ToBase64String(MiiFileBytes);
+
+                    var x = new DIALOG_ExtractMii(MiiBase64, OpenFileDialog_ffsdFile.SafeFileName, (ushort)NUMERIC_CountryCode.Value, false);
+                    x.ShowDialog();
+
+                    LoadComboSelectMii();
+                }
             }
         }
     }

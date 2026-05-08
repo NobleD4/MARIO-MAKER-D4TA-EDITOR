@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 
 namespace SMM_D4TA_EDITOR
@@ -25,7 +26,11 @@ namespace SMM_D4TA_EDITOR
         private void BUTTON_Save_Click(object sender, EventArgs e)
         {
             if (CHECK_SaveMiiAsFFSD.Checked) {
-
+                if (SaveFileDialog_ffsdFile.ShowDialog() == DialogResult.OK)
+                {
+                    byte[] MiiFileBytes = Convert.FromBase64String(MiiBytesBase64);
+                    File.WriteAllBytes(SaveFileDialog_ffsdFile.FileName, MiiFileBytes);
+                }
             }
             else {
                 //Create "Data.xml" manually in the same path as .exe file to avoid a crash
@@ -35,7 +40,7 @@ namespace SMM_D4TA_EDITOR
                 MiiData_XML.Columns.Add("CountryID");
                 MiiData_XML.ReadXml("Data.xml");
 
-                MiiData_XML.Rows.Add(TB_MiiName.Text, MiiBytesBase64, NUMERIC_CountryCode.Value);
+                MiiData_XML.Rows.Add(TB_MiiName.Text.Trim(), MiiBytesBase64, NUMERIC_CountryCode.Value);
 
                 MiiData_XML.GetChanges().WriteXml("Data.xml");
             }
