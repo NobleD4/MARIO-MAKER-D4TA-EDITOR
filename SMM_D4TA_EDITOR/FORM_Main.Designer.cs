@@ -37,6 +37,7 @@
             this.ToolStripMenuItem_TNLConverter = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_IMAGE_To_TNL = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolStripMenuItem_TNL_To_IMAGE = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItem_ImportFFSD = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveFileDialog_BYML_To_XML = new System.Windows.Forms.SaveFileDialog();
             this.OpenFileDialog_BYML_To_XML = new System.Windows.Forms.OpenFileDialog();
             this.SaveFileDialog_XML_To_BYML = new System.Windows.Forms.SaveFileDialog();
@@ -89,12 +90,17 @@
             this.BUTTON_CopyID = new System.Windows.Forms.Button();
             this.NUMERIC_CountryCode = new System.Windows.Forms.NumericUpDown();
             this.LABEL_Country = new System.Windows.Forms.Label();
-            this.CHECK_OfficialCourseStatus = new System.Windows.Forms.CheckBox();
-            this.LABEL_Length = new System.Windows.Forms.Label();
+            this.LABEL_CourseLength = new System.Windows.Forms.Label();
             this.NUMERIC_Length = new System.Windows.Forms.NumericUpDown();
             this.LABEL_CourseLengthDisplay = new System.Windows.Forms.Label();
             this.LABEL_Scroll = new System.Windows.Forms.Label();
             this.ComboBox_Scroll_Settings = new System.Windows.Forms.ComboBox();
+            this.ComboBox_SelectMii = new System.Windows.Forms.ComboBox();
+            this.LABEL_SelectMii = new System.Windows.Forms.Label();
+            this.BUTTON_ExtractMii = new System.Windows.Forms.Button();
+            this.ComboBox_OfficialCourse = new System.Windows.Forms.ComboBox();
+            this.LABEL_OfficialCourse = new System.Windows.Forms.Label();
+            this.OpenFileDialog_ffsdFile = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseMonth)).BeginInit();
@@ -111,7 +117,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripMenuItem_SelectFile,
             this.ToolStripMenuItem_BYMLConverter,
-            this.ToolStripMenuItem_TNLConverter});
+            this.ToolStripMenuItem_TNLConverter,
+            this.ToolStripMenuItem_ImportFFSD});
             this.menuStrip1.Location = new System.Drawing.Point(0, 24);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(524, 24);
@@ -170,6 +177,13 @@
             this.ToolStripMenuItem_TNL_To_IMAGE.Size = new System.Drawing.Size(164, 22);
             this.ToolStripMenuItem_TNL_To_IMAGE.Text = "<TNL → IMAGE>";
             this.ToolStripMenuItem_TNL_To_IMAGE.Click += new System.EventHandler(this.ToolStripMenuItem_TNL_To_IMAGE_Click);
+            // 
+            // ToolStripMenuItem_ImportFFSD
+            // 
+            this.ToolStripMenuItem_ImportFFSD.Name = "ToolStripMenuItem_ImportFFSD";
+            this.ToolStripMenuItem_ImportFFSD.Size = new System.Drawing.Size(120, 20);
+            this.ToolStripMenuItem_ImportFFSD.Text = "<Import FFSD Mii>";
+            this.ToolStripMenuItem_ImportFFSD.Click += new System.EventHandler(this.ToolStripMenuItem_ImportFFSD_Click);
             // 
             // SaveFileDialog_BYML_To_XML
             // 
@@ -235,7 +249,7 @@
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(10, 282);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(151, 279);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(101, 17);
             this.CHECK_UploadReady.TabIndex = 18;
@@ -251,7 +265,7 @@
             0,
             0,
             0});
-            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(323, 112);
+            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(257, 190);
             this.NUMERIC_CourseTimer.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -264,7 +278,7 @@
             // LABEL_Timer
             // 
             this.LABEL_Timer.AutoSize = true;
-            this.LABEL_Timer.Location = new System.Drawing.Point(320, 96);
+            this.LABEL_Timer.Location = new System.Drawing.Point(254, 174);
             this.LABEL_Timer.Name = "LABEL_Timer";
             this.LABEL_Timer.Size = new System.Drawing.Size(45, 13);
             this.LABEL_Timer.TabIndex = 6;
@@ -273,7 +287,7 @@
             // LABEL_LastItemPlaced
             // 
             this.LABEL_LastItemPlaced.AutoSize = true;
-            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(176, 276);
+            this.LABEL_LastItemPlaced.Location = new System.Drawing.Point(10, 296);
             this.LABEL_LastItemPlaced.Name = "LABEL_LastItemPlaced";
             this.LABEL_LastItemPlaced.Size = new System.Drawing.Size(141, 13);
             this.LABEL_LastItemPlaced.TabIndex = 0;
@@ -291,7 +305,7 @@
             // BUTTON_TimerMaximum
             // 
             this.BUTTON_TimerMaximum.Enabled = false;
-            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(445, 109);
+            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(379, 188);
             this.BUTTON_TimerMaximum.Name = "BUTTON_TimerMaximum";
             this.BUTTON_TimerMaximum.Size = new System.Drawing.Size(50, 23);
             this.BUTTON_TimerMaximum.TabIndex = 6;
@@ -302,7 +316,7 @@
             // BUTTON_TimerMinimum
             // 
             this.BUTTON_TimerMinimum.Enabled = false;
-            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(389, 109);
+            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(323, 188);
             this.BUTTON_TimerMinimum.Name = "BUTTON_TimerMinimum";
             this.BUTTON_TimerMinimum.Size = new System.Drawing.Size(50, 23);
             this.BUTTON_TimerMinimum.TabIndex = 5;
@@ -391,7 +405,7 @@
             // LABEL_CourseCreator
             // 
             this.LABEL_CourseCreator.AutoSize = true;
-            this.LABEL_CourseCreator.Location = new System.Drawing.Point(148, 95);
+            this.LABEL_CourseCreator.Location = new System.Drawing.Point(148, 135);
             this.LABEL_CourseCreator.Name = "LABEL_CourseCreator";
             this.LABEL_CourseCreator.Size = new System.Drawing.Size(53, 13);
             this.LABEL_CourseCreator.TabIndex = 22;
@@ -400,16 +414,17 @@
             // TB_CourseCreator
             // 
             this.TB_CourseCreator.Enabled = false;
-            this.TB_CourseCreator.Location = new System.Drawing.Point(151, 111);
+            this.TB_CourseCreator.Location = new System.Drawing.Point(151, 151);
             this.TB_CourseCreator.MaxLength = 10;
             this.TB_CourseCreator.Name = "TB_CourseCreator";
+            this.TB_CourseCreator.ReadOnly = true;
             this.TB_CourseCreator.Size = new System.Drawing.Size(100, 20);
             this.TB_CourseCreator.TabIndex = 3;
             // 
             // NUMERIC_CourseMonth
             // 
             this.NUMERIC_CourseMonth.Enabled = false;
-            this.NUMERIC_CourseMonth.Location = new System.Drawing.Point(360, 192);
+            this.NUMERIC_CourseMonth.Location = new System.Drawing.Point(395, 233);
             this.NUMERIC_CourseMonth.Maximum = new decimal(new int[] {
             255,
             0,
@@ -422,7 +437,7 @@
             // NUMERIC_CourseDay
             // 
             this.NUMERIC_CourseDay.Enabled = false;
-            this.NUMERIC_CourseDay.Location = new System.Drawing.Point(426, 192);
+            this.NUMERIC_CourseDay.Location = new System.Drawing.Point(462, 233);
             this.NUMERIC_CourseDay.Maximum = new decimal(new int[] {
             255,
             0,
@@ -435,7 +450,7 @@
             // NUMERIC_CourseHour
             // 
             this.NUMERIC_CourseHour.Enabled = false;
-            this.NUMERIC_CourseHour.Location = new System.Drawing.Point(360, 231);
+            this.NUMERIC_CourseHour.Location = new System.Drawing.Point(395, 274);
             this.NUMERIC_CourseHour.Maximum = new decimal(new int[] {
             255,
             0,
@@ -448,7 +463,7 @@
             // NUMERIC_CourseMinute
             // 
             this.NUMERIC_CourseMinute.Enabled = false;
-            this.NUMERIC_CourseMinute.Location = new System.Drawing.Point(426, 231);
+            this.NUMERIC_CourseMinute.Location = new System.Drawing.Point(461, 274);
             this.NUMERIC_CourseMinute.Maximum = new decimal(new int[] {
             255,
             0,
@@ -462,7 +477,7 @@
             // 
             this.CHECK_SetDateTimeNow.AutoSize = true;
             this.CHECK_SetDateTimeNow.Enabled = false;
-            this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(360, 257);
+            this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(380, 300);
             this.CHECK_SetDateTimeNow.Name = "CHECK_SetDateTimeNow";
             this.CHECK_SetDateTimeNow.Size = new System.Drawing.Size(120, 17);
             this.CHECK_SetDateTimeNow.TabIndex = 23;
@@ -473,7 +488,7 @@
             // LABEL_CourseMonth
             // 
             this.LABEL_CourseMonth.AutoSize = true;
-            this.LABEL_CourseMonth.Location = new System.Drawing.Point(361, 176);
+            this.LABEL_CourseMonth.Location = new System.Drawing.Point(396, 217);
             this.LABEL_CourseMonth.Name = "LABEL_CourseMonth";
             this.LABEL_CourseMonth.Size = new System.Drawing.Size(49, 13);
             this.LABEL_CourseMonth.TabIndex = 29;
@@ -482,7 +497,7 @@
             // LABEL_CourseDay
             // 
             this.LABEL_CourseDay.AutoSize = true;
-            this.LABEL_CourseDay.Location = new System.Drawing.Point(428, 176);
+            this.LABEL_CourseDay.Location = new System.Drawing.Point(464, 217);
             this.LABEL_CourseDay.Name = "LABEL_CourseDay";
             this.LABEL_CourseDay.Size = new System.Drawing.Size(38, 13);
             this.LABEL_CourseDay.TabIndex = 30;
@@ -491,7 +506,7 @@
             // TwoDots
             // 
             this.TwoDots.AutoSize = true;
-            this.TwoDots.Location = new System.Drawing.Point(413, 234);
+            this.TwoDots.Location = new System.Drawing.Point(448, 277);
             this.TwoDots.Name = "TwoDots";
             this.TwoDots.Size = new System.Drawing.Size(10, 13);
             this.TwoDots.TabIndex = 31;
@@ -500,7 +515,7 @@
             // LABEL_CourseHour
             // 
             this.LABEL_CourseHour.AutoSize = true;
-            this.LABEL_CourseHour.Location = new System.Drawing.Point(361, 215);
+            this.LABEL_CourseHour.Location = new System.Drawing.Point(396, 258);
             this.LABEL_CourseHour.Name = "LABEL_CourseHour";
             this.LABEL_CourseHour.Size = new System.Drawing.Size(42, 13);
             this.LABEL_CourseHour.TabIndex = 32;
@@ -509,7 +524,7 @@
             // LABEL_CourseMinute
             // 
             this.LABEL_CourseMinute.AutoSize = true;
-            this.LABEL_CourseMinute.Location = new System.Drawing.Point(429, 215);
+            this.LABEL_CourseMinute.Location = new System.Drawing.Point(464, 258);
             this.LABEL_CourseMinute.Name = "LABEL_CourseMinute";
             this.LABEL_CourseMinute.Size = new System.Drawing.Size(51, 13);
             this.LABEL_CourseMinute.TabIndex = 33;
@@ -518,7 +533,7 @@
             // NUMERIC_CourseYear
             // 
             this.NUMERIC_CourseYear.Enabled = false;
-            this.NUMERIC_CourseYear.Location = new System.Drawing.Point(416, 151);
+            this.NUMERIC_CourseYear.Location = new System.Drawing.Point(451, 190);
             this.NUMERIC_CourseYear.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -531,7 +546,7 @@
             // LABEL_CourseYear
             // 
             this.LABEL_CourseYear.AutoSize = true;
-            this.LABEL_CourseYear.Location = new System.Drawing.Point(417, 135);
+            this.LABEL_CourseYear.Location = new System.Drawing.Point(452, 174);
             this.LABEL_CourseYear.Name = "LABEL_CourseYear";
             this.LABEL_CourseYear.Size = new System.Drawing.Size(41, 13);
             this.LABEL_CourseYear.TabIndex = 35;
@@ -540,7 +555,7 @@
             // TB_CourseIDprefix
             // 
             this.TB_CourseIDprefix.Enabled = false;
-            this.TB_CourseIDprefix.Location = new System.Drawing.Point(151, 151);
+            this.TB_CourseIDprefix.Location = new System.Drawing.Point(151, 111);
             this.TB_CourseIDprefix.MaxLength = 4;
             this.TB_CourseIDprefix.Name = "TB_CourseIDprefix";
             this.TB_CourseIDprefix.Size = new System.Drawing.Size(40, 20);
@@ -549,7 +564,7 @@
             // TB_CourseIDsuffix1
             // 
             this.TB_CourseIDsuffix1.Enabled = false;
-            this.TB_CourseIDsuffix1.Location = new System.Drawing.Point(197, 151);
+            this.TB_CourseIDsuffix1.Location = new System.Drawing.Point(197, 111);
             this.TB_CourseIDsuffix1.MaxLength = 4;
             this.TB_CourseIDsuffix1.Name = "TB_CourseIDsuffix1";
             this.TB_CourseIDsuffix1.Size = new System.Drawing.Size(40, 20);
@@ -558,7 +573,7 @@
             // TB_CourseIDsuffix2
             // 
             this.TB_CourseIDsuffix2.Enabled = false;
-            this.TB_CourseIDsuffix2.Location = new System.Drawing.Point(243, 151);
+            this.TB_CourseIDsuffix2.Location = new System.Drawing.Point(243, 111);
             this.TB_CourseIDsuffix2.MaxLength = 4;
             this.TB_CourseIDsuffix2.Name = "TB_CourseIDsuffix2";
             this.TB_CourseIDsuffix2.Size = new System.Drawing.Size(40, 20);
@@ -567,7 +582,7 @@
             // TB_CourseIDsuffix3
             // 
             this.TB_CourseIDsuffix3.Enabled = false;
-            this.TB_CourseIDsuffix3.Location = new System.Drawing.Point(289, 151);
+            this.TB_CourseIDsuffix3.Location = new System.Drawing.Point(289, 111);
             this.TB_CourseIDsuffix3.MaxLength = 4;
             this.TB_CourseIDsuffix3.Name = "TB_CourseIDsuffix3";
             this.TB_CourseIDsuffix3.Size = new System.Drawing.Size(40, 20);
@@ -576,7 +591,7 @@
             // LABEL_CourseID
             // 
             this.LABEL_CourseID.AutoSize = true;
-            this.LABEL_CourseID.Location = new System.Drawing.Point(148, 135);
+            this.LABEL_CourseID.Location = new System.Drawing.Point(148, 95);
             this.LABEL_CourseID.Name = "LABEL_CourseID";
             this.LABEL_CourseID.Size = new System.Drawing.Size(66, 13);
             this.LABEL_CourseID.TabIndex = 40;
@@ -586,7 +601,7 @@
             // 
             this.CHECK_CourseStatusDownloaded.AutoSize = true;
             this.CHECK_CourseStatusDownloaded.Enabled = false;
-            this.CHECK_CourseStatusDownloaded.Location = new System.Drawing.Point(10, 234);
+            this.CHECK_CourseStatusDownloaded.Location = new System.Drawing.Point(151, 231);
             this.CHECK_CourseStatusDownloaded.Name = "CHECK_CourseStatusDownloaded";
             this.CHECK_CourseStatusDownloaded.Size = new System.Drawing.Size(98, 17);
             this.CHECK_CourseStatusDownloaded.TabIndex = 15;
@@ -597,7 +612,7 @@
             // 
             this.CHECK_CourseStatusUploaded.AutoSize = true;
             this.CHECK_CourseStatusUploaded.Enabled = false;
-            this.CHECK_CourseStatusUploaded.Location = new System.Drawing.Point(10, 250);
+            this.CHECK_CourseStatusUploaded.Location = new System.Drawing.Point(151, 247);
             this.CHECK_CourseStatusUploaded.Name = "CHECK_CourseStatusUploaded";
             this.CHECK_CourseStatusUploaded.Size = new System.Drawing.Size(84, 17);
             this.CHECK_CourseStatusUploaded.TabIndex = 16;
@@ -608,7 +623,7 @@
             // 
             this.CHECK_CourseStatusRemoved.AutoSize = true;
             this.CHECK_CourseStatusRemoved.Enabled = false;
-            this.CHECK_CourseStatusRemoved.Location = new System.Drawing.Point(10, 266);
+            this.CHECK_CourseStatusRemoved.Location = new System.Drawing.Point(151, 263);
             this.CHECK_CourseStatusRemoved.Name = "CHECK_CourseStatusRemoved";
             this.CHECK_CourseStatusRemoved.Size = new System.Drawing.Size(84, 17);
             this.CHECK_CourseStatusRemoved.TabIndex = 17;
@@ -618,7 +633,7 @@
             // LABEL_LastSFXplaced
             // 
             this.LABEL_LastSFXplaced.AutoSize = true;
-            this.LABEL_LastSFXplaced.Location = new System.Drawing.Point(176, 296);
+            this.LABEL_LastSFXplaced.Location = new System.Drawing.Point(10, 310);
             this.LABEL_LastSFXplaced.Name = "LABEL_LastSFXplaced";
             this.LABEL_LastSFXplaced.Size = new System.Drawing.Size(97, 13);
             this.LABEL_LastSFXplaced.TabIndex = 0;
@@ -627,9 +642,9 @@
             // BUTTON_CopyID
             // 
             this.BUTTON_CopyID.Enabled = false;
-            this.BUTTON_CopyID.Location = new System.Drawing.Point(335, 148);
+            this.BUTTON_CopyID.Location = new System.Drawing.Point(335, 109);
             this.BUTTON_CopyID.Name = "BUTTON_CopyID";
-            this.BUTTON_CopyID.Size = new System.Drawing.Size(75, 23);
+            this.BUTTON_CopyID.Size = new System.Drawing.Size(71, 23);
             this.BUTTON_CopyID.TabIndex = 12;
             this.BUTTON_CopyID.Text = "<Copy ID>";
             this.BUTTON_CopyID.UseVisualStyleBackColor = true;
@@ -638,7 +653,7 @@
             // NUMERIC_CountryCode
             // 
             this.NUMERIC_CountryCode.Enabled = false;
-            this.NUMERIC_CountryCode.Location = new System.Drawing.Point(257, 112);
+            this.NUMERIC_CountryCode.Location = new System.Drawing.Point(257, 151);
             this.NUMERIC_CountryCode.Maximum = new decimal(new int[] {
             255,
             0,
@@ -651,31 +666,20 @@
             // LABEL_Country
             // 
             this.LABEL_Country.AutoSize = true;
-            this.LABEL_Country.Location = new System.Drawing.Point(254, 96);
+            this.LABEL_Country.Location = new System.Drawing.Point(254, 135);
             this.LABEL_Country.Name = "LABEL_Country";
             this.LABEL_Country.Size = new System.Drawing.Size(55, 13);
             this.LABEL_Country.TabIndex = 46;
             this.LABEL_Country.Text = "<Country>";
             // 
-            // CHECK_OfficialCourseStatus
+            // LABEL_CourseLength
             // 
-            this.CHECK_OfficialCourseStatus.AutoSize = true;
-            this.CHECK_OfficialCourseStatus.Enabled = false;
-            this.CHECK_OfficialCourseStatus.Location = new System.Drawing.Point(10, 218);
-            this.CHECK_OfficialCourseStatus.Name = "CHECK_OfficialCourseStatus";
-            this.CHECK_OfficialCourseStatus.Size = new System.Drawing.Size(105, 17);
-            this.CHECK_OfficialCourseStatus.TabIndex = 47;
-            this.CHECK_OfficialCourseStatus.Text = "<Official course>";
-            this.CHECK_OfficialCourseStatus.UseVisualStyleBackColor = true;
-            // 
-            // LABEL_Length
-            // 
-            this.LABEL_Length.AutoSize = true;
-            this.LABEL_Length.Location = new System.Drawing.Point(148, 176);
-            this.LABEL_Length.Name = "LABEL_Length";
-            this.LABEL_Length.Size = new System.Drawing.Size(52, 13);
-            this.LABEL_Length.TabIndex = 49;
-            this.LABEL_Length.Text = "<Length>";
+            this.LABEL_CourseLength.AutoSize = true;
+            this.LABEL_CourseLength.Location = new System.Drawing.Point(148, 174);
+            this.LABEL_CourseLength.Name = "LABEL_CourseLength";
+            this.LABEL_CourseLength.Size = new System.Drawing.Size(52, 13);
+            this.LABEL_CourseLength.TabIndex = 49;
+            this.LABEL_CourseLength.Text = "<Length>";
             // 
             // NUMERIC_Length
             // 
@@ -685,7 +689,7 @@
             0,
             0,
             0});
-            this.NUMERIC_Length.Location = new System.Drawing.Point(151, 192);
+            this.NUMERIC_Length.Location = new System.Drawing.Point(151, 190);
             this.NUMERIC_Length.Maximum = new decimal(new int[] {
             3840,
             0,
@@ -709,7 +713,7 @@
             // LABEL_CourseLengthDisplay
             // 
             this.LABEL_CourseLengthDisplay.AutoSize = true;
-            this.LABEL_CourseLengthDisplay.Location = new System.Drawing.Point(217, 194);
+            this.LABEL_CourseLengthDisplay.Location = new System.Drawing.Point(216, 192);
             this.LABEL_CourseLengthDisplay.Name = "LABEL_CourseLengthDisplay";
             this.LABEL_CourseLengthDisplay.Size = new System.Drawing.Size(36, 13);
             this.LABEL_CourseLengthDisplay.TabIndex = 50;
@@ -729,22 +733,79 @@
             this.ComboBox_Scroll_Settings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_Scroll_Settings.Enabled = false;
             this.ComboBox_Scroll_Settings.FormattingEnabled = true;
-            this.ComboBox_Scroll_Settings.Location = new System.Drawing.Point(10, 191);
+            this.ComboBox_Scroll_Settings.Location = new System.Drawing.Point(10, 190);
             this.ComboBox_Scroll_Settings.Name = "ComboBox_Scroll_Settings";
             this.ComboBox_Scroll_Settings.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_Scroll_Settings.TabIndex = 53;
+            // 
+            // ComboBox_SelectMii
+            // 
+            this.ComboBox_SelectMii.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_SelectMii.Enabled = false;
+            this.ComboBox_SelectMii.FormattingEnabled = true;
+            this.ComboBox_SelectMii.Location = new System.Drawing.Point(411, 150);
+            this.ComboBox_SelectMii.Name = "ComboBox_SelectMii";
+            this.ComboBox_SelectMii.Size = new System.Drawing.Size(100, 21);
+            this.ComboBox_SelectMii.TabIndex = 54;
+            // 
+            // LABEL_SelectMii
+            // 
+            this.LABEL_SelectMii.AutoSize = true;
+            this.LABEL_SelectMii.Location = new System.Drawing.Point(411, 134);
+            this.LABEL_SelectMii.Name = "LABEL_SelectMii";
+            this.LABEL_SelectMii.Size = new System.Drawing.Size(65, 13);
+            this.LABEL_SelectMii.TabIndex = 55;
+            this.LABEL_SelectMii.Text = "<Select Mii>";
+            // 
+            // BUTTON_ExtractMii
+            // 
+            this.BUTTON_ExtractMii.Enabled = false;
+            this.BUTTON_ExtractMii.Location = new System.Drawing.Point(323, 149);
+            this.BUTTON_ExtractMii.Name = "BUTTON_ExtractMii";
+            this.BUTTON_ExtractMii.Size = new System.Drawing.Size(82, 23);
+            this.BUTTON_ExtractMii.TabIndex = 56;
+            this.BUTTON_ExtractMii.Text = "<Extract Mii>";
+            this.BUTTON_ExtractMii.UseVisualStyleBackColor = true;
+            this.BUTTON_ExtractMii.Click += new System.EventHandler(this.BUTTON_ExtractMii_Click);
+            // 
+            // ComboBox_OfficialCourse
+            // 
+            this.ComboBox_OfficialCourse.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ComboBox_OfficialCourse.Enabled = false;
+            this.ComboBox_OfficialCourse.FormattingEnabled = true;
+            this.ComboBox_OfficialCourse.Location = new System.Drawing.Point(10, 231);
+            this.ComboBox_OfficialCourse.Name = "ComboBox_OfficialCourse";
+            this.ComboBox_OfficialCourse.Size = new System.Drawing.Size(135, 21);
+            this.ComboBox_OfficialCourse.TabIndex = 57;
+            // 
+            // LABEL_OfficialCourse
+            // 
+            this.LABEL_OfficialCourse.AutoSize = true;
+            this.LABEL_OfficialCourse.Location = new System.Drawing.Point(12, 215);
+            this.LABEL_OfficialCourse.Name = "LABEL_OfficialCourse";
+            this.LABEL_OfficialCourse.Size = new System.Drawing.Size(86, 13);
+            this.LABEL_OfficialCourse.TabIndex = 58;
+            this.LABEL_OfficialCourse.Text = "<Official course>";
+            // 
+            // OpenFileDialog_ffsdFile
+            // 
+            this.OpenFileDialog_ffsdFile.Filter = "Mii data|*.FFSD;*.ffsd;*.CFSD;*.cfsd|All files|*.*";
             // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 361);
+            this.Controls.Add(this.LABEL_OfficialCourse);
+            this.Controls.Add(this.ComboBox_OfficialCourse);
+            this.Controls.Add(this.BUTTON_ExtractMii);
+            this.Controls.Add(this.LABEL_SelectMii);
+            this.Controls.Add(this.ComboBox_SelectMii);
             this.Controls.Add(this.ComboBox_Scroll_Settings);
             this.Controls.Add(this.LABEL_Scroll);
             this.Controls.Add(this.LABEL_CourseLengthDisplay);
-            this.Controls.Add(this.LABEL_Length);
+            this.Controls.Add(this.LABEL_CourseLength);
             this.Controls.Add(this.NUMERIC_Length);
-            this.Controls.Add(this.CHECK_OfficialCourseStatus);
             this.Controls.Add(this.LABEL_Country);
             this.Controls.Add(this.NUMERIC_CountryCode);
             this.Controls.Add(this.BUTTON_CopyID);
@@ -841,12 +902,16 @@
             this.Controls.SetChildIndex(this.BUTTON_CopyID, 0);
             this.Controls.SetChildIndex(this.NUMERIC_CountryCode, 0);
             this.Controls.SetChildIndex(this.LABEL_Country, 0);
-            this.Controls.SetChildIndex(this.CHECK_OfficialCourseStatus, 0);
             this.Controls.SetChildIndex(this.NUMERIC_Length, 0);
-            this.Controls.SetChildIndex(this.LABEL_Length, 0);
+            this.Controls.SetChildIndex(this.LABEL_CourseLength, 0);
             this.Controls.SetChildIndex(this.LABEL_CourseLengthDisplay, 0);
             this.Controls.SetChildIndex(this.LABEL_Scroll, 0);
             this.Controls.SetChildIndex(this.ComboBox_Scroll_Settings, 0);
+            this.Controls.SetChildIndex(this.ComboBox_SelectMii, 0);
+            this.Controls.SetChildIndex(this.LABEL_SelectMii, 0);
+            this.Controls.SetChildIndex(this.BUTTON_ExtractMii, 0);
+            this.Controls.SetChildIndex(this.ComboBox_OfficialCourse, 0);
+            this.Controls.SetChildIndex(this.LABEL_OfficialCourse, 0);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
@@ -924,12 +989,18 @@
         private System.Windows.Forms.Button BUTTON_CopyID;
         private System.Windows.Forms.NumericUpDown NUMERIC_CountryCode;
         private System.Windows.Forms.Label LABEL_Country;
-        private System.Windows.Forms.CheckBox CHECK_OfficialCourseStatus;
-        private System.Windows.Forms.Label LABEL_Length;
+        private System.Windows.Forms.Label LABEL_CourseLength;
         private System.Windows.Forms.NumericUpDown NUMERIC_Length;
         private System.Windows.Forms.Label LABEL_CourseLengthDisplay;
         private System.Windows.Forms.Label LABEL_Scroll;
         private System.Windows.Forms.ComboBox ComboBox_Scroll_Settings;
+        private System.Windows.Forms.ComboBox ComboBox_SelectMii;
+        private System.Windows.Forms.Label LABEL_SelectMii;
+        private System.Windows.Forms.Button BUTTON_ExtractMii;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_ImportFFSD;
+        private System.Windows.Forms.ComboBox ComboBox_OfficialCourse;
+        private System.Windows.Forms.Label LABEL_OfficialCourse;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog_ffsdFile;
     }
 }
 

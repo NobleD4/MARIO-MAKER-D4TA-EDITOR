@@ -28,8 +28,12 @@ namespace SMM_D4TA_EDITOR
             ComboBox_Physics_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Physics").ToArray());
             ComboBox_Theme_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Theme").ToArray());
             ComboBox_Scroll_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Scroll").ToArray());
+            ComboBox_OfficialCourse.Items.AddRange(LanguageManager.GetList("ComboBox_OfficialCourse").ToArray());
+            ComboBox_SelectMii.Items.AddRange(LanguageManager.GetList("ComboBox_SelectMii").ToArray());
             Activate();
         }
+
+        DataTable MiiData_XML;
 
         public static Encoding DefEnc = Encoding.GetEncoding("Shift-JIS");
         private string currentFilePath = "";
@@ -55,6 +59,9 @@ namespace SMM_D4TA_EDITOR
         const int CourseCreatorStartOffset = 0x92;
         const int CourseCreatorEndOffset = 0xA5;
 
+        const int CourseMiiOffset = 0x78;
+        const int CourseMiiSize = 96;
+
         //VALUES: [4D 31 = M1] [4D 33 = M3] [4D 57 = MW] [57 55 = WU]
         const int CourseStyleStartOffset = 0x6A;
         const int CourseStyleEndOffset = 0x6B;
@@ -67,7 +74,7 @@ namespace SMM_D4TA_EDITOR
         const int CourseLengthStartOffset = 0x76;
         const int CourseLengthEndOffset = 0x77;
 
-        const int OfficialCourseStatusOffset = 0x17; //00 or 0x1D
+        const int OfficialCourseStatusOffset = 0x17; //00 to 08 or 0x1D
         const int DownloadedCourseOffset = 0x20;
         const int RemovedCourseOffset = 0x21;
         const int UploadedCourseOffset = 0x6E;
@@ -431,8 +438,17 @@ namespace SMM_D4TA_EDITOR
                 //Every of them from 00 to 01 to set status (except OfficialCourse), probably not very efficient but works in the game
                 //I don't know yet what would happen if I set all of these bytes offsets to 01 at the same time
                 //EDIT: You can overlap every status and works in the game
-                if (fileBytes[OfficialCourseStatusOffset] == 0x1D) CHECK_OfficialCourseStatus.Checked = true;
-                else CHECK_OfficialCourseStatus.Checked = false;
+                if (fileBytes[OfficialCourseStatusOffset] == 1) ComboBox_OfficialCourse.SelectedIndex = 1;
+                else if (fileBytes[OfficialCourseStatusOffset] == 2) ComboBox_OfficialCourse.SelectedIndex = 2;
+                else if (fileBytes[OfficialCourseStatusOffset] == 3) ComboBox_OfficialCourse.SelectedIndex = 3;
+                else if (fileBytes[OfficialCourseStatusOffset] == 4) ComboBox_OfficialCourse.SelectedIndex = 4;
+                else if (fileBytes[OfficialCourseStatusOffset] == 5) ComboBox_OfficialCourse.SelectedIndex = 5;
+                else if (fileBytes[OfficialCourseStatusOffset] == 6) ComboBox_OfficialCourse.SelectedIndex = 6;
+                else if (fileBytes[OfficialCourseStatusOffset] == 7) ComboBox_OfficialCourse.SelectedIndex = 7;
+                else if (fileBytes[OfficialCourseStatusOffset] == 8) ComboBox_OfficialCourse.SelectedIndex = 8;
+                else if (fileBytes[OfficialCourseStatusOffset] == 0x1D) ComboBox_OfficialCourse.SelectedIndex = 9;
+                else ComboBox_OfficialCourse.SelectedIndex = 0;
+
                 if (fileBytes[DownloadedCourseOffset] == 0x01) CHECK_CourseStatusDownloaded.Checked = true;
                 else CHECK_CourseStatusDownloaded.Checked = false;
                 if (fileBytes[UploadedCourseOffset] == 0x01) CHECK_CourseStatusUploaded.Checked = true;
@@ -609,8 +625,17 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseStyleStartOffset] = styleBytes[0];
             fileBytes[CourseStyleEndOffset] = styleBytes[1];
 
-            if (CHECK_OfficialCourseStatus.Checked) fileBytes[OfficialCourseStatusOffset] = 0x1D;
-            else fileBytes[OfficialCourseStatusOffset] = 0x00;
+            if (ComboBox_Theme_Settings.SelectedIndex == 1) fileBytes[OfficialCourseStatusOffset] = 1;
+            else if (ComboBox_Theme_Settings.SelectedIndex == 2) fileBytes[OfficialCourseStatusOffset] = 2;
+            else if(ComboBox_Theme_Settings.SelectedIndex == 3) fileBytes[OfficialCourseStatusOffset] = 3;
+            else if(ComboBox_Theme_Settings.SelectedIndex == 4) fileBytes[OfficialCourseStatusOffset] = 4;
+            else if(ComboBox_Theme_Settings.SelectedIndex == 5) fileBytes[OfficialCourseStatusOffset] = 5;
+            else if(ComboBox_Theme_Settings.SelectedIndex == 6) fileBytes[OfficialCourseStatusOffset] = 6;
+            else if(ComboBox_Theme_Settings.SelectedIndex == 7) fileBytes[OfficialCourseStatusOffset] = 7;
+            else if(ComboBox_Theme_Settings.SelectedIndex == 8) fileBytes[OfficialCourseStatusOffset] = 8;
+            else if(ComboBox_Theme_Settings.SelectedIndex == 9) fileBytes[OfficialCourseStatusOffset] = 0x1D;
+            else fileBytes[OfficialCourseStatusOffset] = 0x0;
+
             if (CHECK_CourseStatusDownloaded.Checked) fileBytes[DownloadedCourseOffset] = 0x01;
             else fileBytes[DownloadedCourseOffset] = 0x00;
             if (CHECK_CourseStatusUploaded.Checked) fileBytes[UploadedCourseOffset] = 0x01;
@@ -654,9 +679,11 @@ namespace SMM_D4TA_EDITOR
             ComboBox_Style_Settings.Enabled = state;
             ComboBox_Theme_Settings.Enabled = state;
             ComboBox_Scroll_Settings.Enabled = state;
+            ComboBox_OfficialCourse.Enabled = state;
+            ComboBox_SelectMii.Enabled = state;
+            BUTTON_ExtractMii.Enabled = state;
             BUTTON_TimerMinimum.Enabled = state;
             BUTTON_TimerMaximum.Enabled = state;
-            CHECK_OfficialCourseStatus.Enabled = state;
             CHECK_CourseStatusDownloaded.Enabled = state;
             CHECK_CourseStatusUploaded.Enabled = state;
             CHECK_CourseStatusRemoved.Enabled = state;
@@ -684,9 +711,14 @@ namespace SMM_D4TA_EDITOR
                 NUMERIC_CourseMinute.Value = 0;
                 NUMERIC_Length.Value = 384;
                 LABEL_CourseLengthDisplay.Text = "0x180";
+                //ComboBox_Physics_Settings.Text = ""; //I don't have idea why this doesn't cleans the text, so I commented it
+                //ComboBox_Style_Settings.Text = "";
+                //ComboBox_Theme_Settings.Text = "";
+                //ComboBox_Scroll_Settings.Text = "";
+                //ComboBox_OfficialCourse.Text = "";
+                //ComboBox_SelectMii.Text = "";
                 CHECK_SetDateTimeNow.Checked = state;
                 CHECK_UploadReady.Checked = state;
-                CHECK_OfficialCourseStatus.Checked = state;
                 CHECK_CourseStatusDownloaded.Checked = state;
                 CHECK_CourseStatusUploaded.Checked = state;
                 CHECK_CourseStatusRemoved.Checked = state;
@@ -724,7 +756,8 @@ namespace SMM_D4TA_EDITOR
             else
             {
                 //I literally copy and pasted some of the same lines from select file section, so... Later I'll create a function or something
-                //November 14th 2025 EDIT: I created the function, but could be better
+                //November 14th 2025: I created the function, but could be better
+                //May 5th 2026: What is this??? I'm not going to optimize this right now
 
                 //Set file path and read data
                 currentFilePath = OpenFileDialog_cdtFile.FileName;
@@ -785,6 +818,23 @@ namespace SMM_D4TA_EDITOR
         private void NUMERIC_Length_ValueChanged(object sender, EventArgs e)
         {
             LABEL_CourseLengthDisplay.Text = $"0X{Convert.ToInt32(NUMERIC_Length.Value):X3}";
+        }
+
+        private void BUTTON_ExtractMii_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ToolStripMenuItem_ImportFFSD_Click(object sender, EventArgs e)
+        {
+            if (OpenFileDialog_ffsdFile.ShowDialog() == DialogResult.OK)
+            {
+                byte[] MiiFileBytes = File.ReadAllBytes(OpenFileDialog_ffsdFile.FileName);
+                string MiiBase64 = Convert.ToBase64String(MiiFileBytes);
+
+                var x = new DIALOG_ExtractMii(MiiBase64, OpenFileDialog_ffsdFile.SafeFileName, (ushort)NUMERIC_CountryCode.Value, false);
+                x.ShowDialog();
+            }
         }
     }
 }
