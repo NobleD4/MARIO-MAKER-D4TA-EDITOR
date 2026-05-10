@@ -1,0 +1,546 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.IO.Ports;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Reflection.Emit;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace SMM_D4TA_EDITOR
+{
+    public partial class FORM_SMM1_DownloadLevel : BaseForm
+    {
+        public FORM_SMM1_DownloadLevel()
+        {
+            InitializeComponent();
+            ControllerLevelDownloaderSMM1 = new CONTROLLER_LevelDownloaderSMM1();
+            ControllerMiiData = new CONTROLLER_MiiData();
+        }
+
+        private CONTROLLER_LevelDownloaderSMM1 ControllerLevelDownloaderSMM1;
+        private CONTROLLER_MiiData ControllerMiiData;
+
+        const string API_LevelDownloaderSMM1 = "https://api.bobac-analytics.com/smm1/";
+        const string API_EndpointSearchRandom = "searchRandomLevels/";
+        const string API_EndpointSearchLevels = "searchLevels/";
+
+        byte SearchPageNUM = 1;
+
+        const string API_SMM1_Mii = "https://mii-unsecure.ariankordi.net/";
+
+        private async void FORM_SMM1_DownloadLevel_Load(object sender, EventArgs e)
+        {
+            LanguageManager.ApplyToContainer(this, "FORM_LevelDownloader");
+            ComboBox_ServerSearch.Items.AddRange(LanguageManager.GetList("ComboBox_Server").ToArray());
+            ComboBox_FilterSearch.Items.AddRange(LanguageManager.GetList("ComboBox_Filter").ToArray());
+            Activate();
+
+            ComboBox_ServerSearch.SelectedIndex = 0;
+            ComboBox_FilterSearch.SelectedIndex = 0;
+
+            TB_DisplayPage.Text = SearchPageNUM.ToString();
+
+            CHECK_DecompressASH0.Checked = true;
+            CHECK_DownloadMii.Checked = true;
+
+            var isAPIworking = await ControllerLevelDownloaderSMM1.IsAPIWorking();
+            var isMiiAPIworking = await ControllerMiiData.IsAPIWorking();
+            LABEL_IsLevelAPIWorking.Text = isAPIworking;
+            LABEL_IsMiiAPIWorking.Text = isMiiAPIworking;
+        }
+
+        public class CONTROLLER_LevelDownloaderSMM1
+        {
+            private HttpClient client;
+            public CONTROLLER_LevelDownloaderSMM1()
+            {
+                client = new HttpClient();
+            }
+
+            public async Task<string> IsAPIWorking()
+            {
+                HttpResponseMessage response = await client.GetAsync(API_LevelDownloaderSMM1 + "ping");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string statusTrue = LanguageManager.Get("FORM_LevelDownloader", "API_StatusTrue");
+                    return statusTrue;
+                }
+
+                else {
+                    string statusFalse = LanguageManager.Get("FORM_LevelDownloader", "API_StatusFalse");
+                    return statusFalse;
+                }
+            }
+
+            public async Task<List<MODEL_LevelDownloaderSMM1>> SMM1_GetRandomLevel()
+            {
+                Random rnd = new Random();
+                int randomNum = rnd.Next(1, 18118278);
+
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(API_LevelDownloaderSMM1 + API_EndpointSearchRandom + randomNum);
+                    response.EnsureSuccessStatusCode();
+
+                    string responseJson = await response.Content.ReadAsStringAsync();
+
+                    if (responseJson.TrimStart().StartsWith("{"))
+                    {
+                        return new List<MODEL_LevelDownloaderSMM1>(); //Empty list
+                    }
+                    else
+                    {
+                        return JsonConvert.DeserializeObject<List<MODEL_LevelDownloaderSMM1>>(responseJson);
+                    }
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
+            public async Task<List<MODEL_LevelDownloaderSMM1>> SMM1_GetLevels(string LvlTxtSearch, byte pageNUM, byte coursename, byte courseid, byte creatorname, byte creatorid, byte searchexact)
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(API_LevelDownloaderSMM1 + API_EndpointSearchLevels + LvlTxtSearch + $"/{pageNUM}?coursename={coursename}&courseid={courseid}&creatorname={creatorname}&creatorid={creatorid}&searchexact={searchexact}");
+                    response.EnsureSuccessStatusCode();
+
+                    string responseJson = await response.Content.ReadAsStringAsync();
+                    
+                    return JsonConvert.DeserializeObject<List<MODEL_LevelDownloaderSMM1>>(responseJson);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+
+            public async Task<string> GetArchiveTimestamp(string SMM1_LvlObjUrl)
+            {
+                string encodedUrl = Uri.EscapeDataString(SMM1_LvlObjUrl); //uri stuff is just in case to avoid errors from spaces/symbols
+                string waybackURL = $"https://web.archive.org/__wb/sparkline?output=json&url={encodedUrl}&collection=web";
+
+                var request = new HttpRequestMessage(HttpMethod.Get, waybackURL);
+
+                request.Headers.Add("User-Agent", "Mozilla/5.0");
+                request.Headers.Add("Accept", "*/*");
+                request.Headers.Add("Referer", $"https://web.archive.org/web/*/{SMM1_LvlObjUrl}");
+                request.Headers.Add("Cache-Control", "no-cache");
+
+                var response = await client.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                string json = await response.Content.ReadAsStringAsync();
+
+                dynamic data = JsonConvert.DeserializeObject(json);
+
+                return data?.first_ts;
+            }
+
+            public List<byte[]> SplitAshFile(byte[] data)
+            {
+                byte[] separator = new byte[] { 0x41, 0x53, 0x48, 0x30 }; // "ASH0"
+
+                List<byte[]> parts = new List<byte[]>();
+
+                int lastIndex = 0;
+
+                while (true)
+                {
+                    int index = FindPattern(data, separator, lastIndex);
+                    if (index == -1)
+                        break;
+
+                    int nextIndex = FindPattern(data, separator, index + separator.Length);
+                    if (nextIndex == -1)
+                        nextIndex = data.Length;
+
+                    int length = nextIndex - index;
+
+                    byte[] part = new byte[length];
+                    Array.Copy(data, index, part, 0, length);
+
+                    parts.Add(part);
+
+                    lastIndex = nextIndex;
+                }
+
+                return parts;
+            }
+
+            private int FindPattern(byte[] data, byte[] pattern, int startIndex)
+            {
+                for (int i = startIndex; i <= data.Length - pattern.Length; i++)
+                {
+                    bool match = true;
+
+                    for (int j = 0; j < pattern.Length; j++)
+                    {
+                        if (data[i + j] != pattern[j])
+                        {
+                            match = false;
+                            break;
+                        }
+                    }
+
+                    if (match)
+                        return i;
+                }
+
+                return -1;
+            }
+
+            public async Task DownloadLevel(MODEL_LevelDownloaderSMM1 level, string outputPath)
+            {
+                string timestamp = await GetArchiveTimestamp(level.url);
+
+                if (string.IsNullOrEmpty(timestamp))
+                {
+                    string text = LanguageManager.Get("FORM_LevelDownloader", "msgNotFound");
+                    MessageBox.Show(text);
+                    return;
+                }
+
+                string archiveUrl = $"https://web.archive.org/web/{timestamp}if_/{level.url}";
+
+                string fileName = Path.GetFileName(new Uri(level.url).AbsolutePath);
+
+                var response = await client.GetAsync(archiveUrl);
+                response.EnsureSuccessStatusCode();
+
+                //1. Download ASH0
+                byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
+
+                //2. Create a new directory with the same name without extension
+                string folderPath = Path.Combine(
+                    Path.GetDirectoryName(outputPath),
+                    Path.GetFileNameWithoutExtension(outputPath)
+                );
+
+                Directory.CreateDirectory(folderPath);
+
+                //3. Save
+                File.WriteAllBytes(outputPath, fileBytes);
+
+                //4. SPLIT
+                var parts = SplitAshFile(fileBytes);
+
+                string[] partNamesFirst = {
+                    "thumbnail0",
+                    "course_data",
+                    "course_data_sub",
+                    "thumbnail1"
+                };
+
+                string[] finalNames = {
+                    "thumbnail0.tnl",
+                    "course_data.cdt",
+                    "course_data_sub.cdt",
+                    "thumbnail1.tnl"
+                };
+
+                //5. Save parts
+                for (int i = 0; i < parts.Count && i < partNamesFirst.Length; i++)
+                {
+                    string path = Path.Combine(folderPath, partNamesFirst[i]);
+                    File.WriteAllBytes(path, parts[i]);
+                }
+
+                //6. Execute ASH Extractor
+                for (int i = 0; i < partNamesFirst.Length; i++)
+                {
+                    string inputPath = Path.Combine(folderPath, partNamesFirst[i]);
+
+                    var process = new Process();
+                    process.StartInfo.FileName = "ASH.exe";
+                    process.StartInfo.Arguments = $"\"{inputPath}\"";
+                    process.StartInfo.CreateNoWindow = true;
+                    process.StartInfo.UseShellExecute = false;
+
+                    process.Start();
+                    process.WaitForExit();
+
+                    string arcFile = inputPath + ".arc";
+
+                    if (File.Exists(arcFile))
+                    {
+                        string finalPath = Path.Combine(folderPath, finalNames[i]);
+                        File.Move(arcFile, finalPath);
+
+                        File.Delete(inputPath);
+                    }
+                }
+
+                //7. Create sound.bwv
+                CreateSoundbwvFile(Path.Combine(folderPath, "sound.bwv"));
+
+                //8. Delete original ASH0
+                File.Delete(outputPath);
+
+                MessageBox.Show("Level downloaded successfully");
+            }
+
+            //A "sound.bwv" file halways as only the first 4 bytes filled with the same thing, so I don't need a whole "sound.bwv" file to copy and paste to downloaded level
+            //After writing header, this function fill with zeros skiping directly to the end
+            public void CreateSoundbwvFile(string outputPath)
+            {
+                using (var fs = new FileStream(outputPath, FileMode.Create, FileAccess.Write))
+                {
+                    fs.Write(new byte[] { 0x76, 0x24, 0x6A, 0xAE }, 0, 4);
+
+                    //Size of "sound.bwv" is 0xD808
+                    fs.SetLength(0xD808);
+                }
+            }
+        }
+
+        public class CONTROLLER_MiiData
+        {
+            private HttpClient client;
+            public CONTROLLER_MiiData()
+            {
+                client = new HttpClient();
+            }
+
+            public async Task<string> IsAPIWorking()
+            {
+                HttpResponseMessage response = await client.GetAsync(API_SMM1_Mii + "jobs");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string statusTrue = LanguageManager.Get("FORM_LevelDownloader", "API_StatusTrue");
+                    return statusTrue;
+                }
+
+                else
+                {
+                    string statusFalse = LanguageManager.Get("FORM_LevelDownloader", "API_StatusFalse");
+                    return statusFalse;
+                }
+            }
+
+            public async Task<MODEL_MiiData> GetMiiDataFromLevel(string NNID)
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, API_SMM1_Mii + "mii_data/" + NNID);
+
+                var response = await client.SendAsync(request);
+                if (!response.IsSuccessStatusCode)
+                    return null;
+
+                string responseJson = await response.Content.ReadAsStringAsync();
+
+                return JsonConvert.DeserializeObject<MODEL_MiiData>(responseJson);
+            }
+        }
+
+        public async Task DownloadMiiForLevel(int levelid, string MiiBase64, string outputPath)
+        {
+            byte[] MiiBytes = Convert.FromBase64String(MiiBase64);
+
+            string levelidHex = levelid.ToString("X12");
+            byte[] levelidBytes = Enumerable.Range(0, levelidHex.Length).Where(x => x % 2 == 0)
+            .Select(x => Convert.ToByte(levelidHex.Substring(x, 2), 16)).ToArray();
+
+            string file1 = Path.Combine(outputPath, "course_data.cdt");
+            string file2 = Path.Combine(outputPath, "course_data_sub.cdt");
+
+            if (!File.Exists(file1) || !File.Exists(file2))
+            {
+                MessageBox.Show("course_data.cdt or course_data_sub.cdt doesn't exist");
+            }
+
+            byte[] fileBytes = File.ReadAllBytes(file1);
+            byte[] fileBytes2 = File.ReadAllBytes(file2);
+
+            fileBytes[0x1A] = levelidBytes[0];
+            fileBytes[0x1B] = levelidBytes[1];
+            fileBytes[0x1C] = levelidBytes[2];
+            fileBytes[0x1D] = levelidBytes[3];
+            fileBytes[0x1E] = levelidBytes[4];
+            fileBytes[0x1F] = levelidBytes[5];
+
+            fileBytes2[0x1A] = levelidBytes[0];
+            fileBytes2[0x1B] = levelidBytes[1];
+            fileBytes2[0x1C] = levelidBytes[2];
+            fileBytes2[0x1D] = levelidBytes[3];
+            fileBytes2[0x1E] = levelidBytes[4];
+            fileBytes2[0x1F] = levelidBytes[5];
+
+            //Downloaded status 01
+            fileBytes[0x20] = 0x01;
+            fileBytes2[0x20] = 0x01;
+
+            //Add Mii bytes to the file
+            Array.Copy(MiiBytes, 0, fileBytes, 0x78, 96);
+            Array.Copy(MiiBytes, 0, fileBytes2, 0x78, 96);
+
+            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
+            Crc32 crc32 = new Crc32();
+            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
+            Array.Reverse(checksum); //Parse to big-endian order
+            Array.Copy(checksum, 0, fileBytes, 0x08, 4);
+
+            Crc32 crc32_2 = new Crc32();
+            byte[] checksum_2 = crc32_2.ComputeChecksumBytes(fileBytes2, 0x10, fileBytes2.Length - 0x10);
+            Array.Reverse(checksum_2); //Parse to big-endian order
+            Array.Copy(checksum_2, 0, fileBytes2, 0x08, 4);
+
+            //Save and overwrites .cdt file
+            File.WriteAllBytes(file1, fileBytes);
+            File.WriteAllBytes(file2, fileBytes2);
+        }
+
+        private async void SMM1_GetRndLvl()
+        {
+            var levels = await ControllerLevelDownloaderSMM1.SMM1_GetRandomLevel();
+
+            if (levels == null || levels.Count == 0)
+            {
+                string text = LanguageManager.Get("FORM_LevelDownloader", "msgNotFound");
+                MessageBox.Show(text);
+                return;
+            }
+
+            foreach (var level in levels)
+            {
+                DataGridView_LevelResults.Rows.Add(
+                    level.name,
+                    level.levelid,
+                    level.creator,
+                    level.creatorid,
+                    level.clearrate * 100
+                );
+            }
+        }
+
+        private async void SMM1_GetLvlsSearch(string SMM1_LvlTxtSearch, byte pageNUM, byte coursename, byte courseid, byte creatorname, byte creatorid, byte searchexact)
+        {
+            if (courseid == 1 && !SMM1_LvlTxtSearch.All(char.IsDigit))
+            {
+                SMM1_LvlTxtSearch = SMM1_LvlTxtSearch.Replace("%20", ""); //I'm using this instead of trim because gets into this function after uri escape data
+                SMM1_LvlTxtSearch = SMM1_LvlTxtSearch.Replace("-", ""); //Searching works by using numbers, so it's necessary remove the "-" before converting
+
+                if (SMM1_LvlTxtSearch.Length >= 16) //First 4 digits of a SMM1 ID doesn't matters for searching
+                SMM1_LvlTxtSearch = SMM1_LvlTxtSearch.Substring(SMM1_LvlTxtSearch.Length - 12);
+                
+                if(!SMM1_LvlTxtSearch.All(char.IsDigit))
+                SMM1_LvlTxtSearch = Convert.ToInt32(SMM1_LvlTxtSearch, 16).ToString();
+            }
+
+            var levels = await ControllerLevelDownloaderSMM1.SMM1_GetLevels(SMM1_LvlTxtSearch, pageNUM, coursename, courseid, creatorname, creatorid, searchexact);
+
+            if (levels == null || levels.Count == 0)
+            {
+                string text = LanguageManager.Get("FORM_LevelDownloader", "msgNotFound");
+                MessageBox.Show(text);
+                return;
+            }
+
+            foreach (var level in levels)
+            {
+                int rowIndex = DataGridView_LevelResults.Rows.Add(
+                    level.name,
+                    level.levelid,
+                    level.creator,
+                    level.creatorid,
+                    level.clearrate * 100
+                );
+
+                DataGridView_LevelResults.Rows[rowIndex].Tag = level;
+            }
+        }
+
+        private void BUTTON_SearchRandom_Click(object sender, EventArgs e)
+        {
+            SMM1_GetRndLvl();
+        }
+
+        private void BUTTON_PreviousPage_Click(object sender, EventArgs e)
+        {
+            SearchPageNUM--;
+            TB_DisplayPage.Text = SearchPageNUM.ToString();
+        }
+
+        private void BUTTON_NextPage_Click(object sender, EventArgs e)
+        {
+            SearchPageNUM++;
+            TB_DisplayPage.Text = SearchPageNUM.ToString();
+        }
+
+        private void BUTTON_Search_Click(object sender, EventArgs e)
+        {
+            DataGridView_LevelResults.Rows.Clear();
+
+            if (ComboBox_ServerSearch.SelectedIndex == 0)
+            {
+                if (ComboBox_FilterSearch.SelectedIndex == 0)
+                {
+                    SMM1_GetLvlsSearch(Uri.EscapeDataString(TB_LevelSearch.Text), SearchPageNUM, 1, 0, 0, 0, 1);
+                }
+                else if (ComboBox_FilterSearch.SelectedIndex == 1)
+                {
+                    SMM1_GetLvlsSearch(Uri.EscapeDataString(TB_LevelSearch.Text), SearchPageNUM, 0, 1, 0, 0, 1);
+                }
+                else if (ComboBox_FilterSearch.SelectedIndex == 2)
+                {
+                    if (TB_LevelSearch.Text == "NobleD4")
+                    {
+                        SMM1_GetLvlsSearch("D4Pro10", SearchPageNUM, 0, 0, 1, 0, 1);
+                    }
+                    else
+                    {
+                        SMM1_GetLvlsSearch(Uri.EscapeDataString(TB_LevelSearch.Text), SearchPageNUM, 0, 0, 1, 0, 1);
+                    }
+                }
+                else if (ComboBox_FilterSearch.SelectedIndex == 3)
+                {
+                    SMM1_GetLvlsSearch(Uri.EscapeDataString(TB_LevelSearch.Text), SearchPageNUM, 0, 0, 0, 1, 1);
+                }
+            }
+        }
+
+        private async void BUTTON_DownloadLevel_Click(object sender, EventArgs e)
+        {
+            var row = DataGridView_LevelResults.CurrentRow;
+
+            if (row == null || row.Tag == null)
+            {
+                MessageBox.Show("There's no selected row");
+                return;
+            }
+
+            var level = (MODEL_LevelDownloaderSMM1)row.Tag;
+
+            if (level == null)
+            {
+                string text = LanguageManager.Get("FORM_LevelDownloader", "msgNotFound");
+                MessageBox.Show(text);
+                return;
+            }
+
+            if (SaveFileDialog_SMM1Level.ShowDialog() == DialogResult.OK)
+            {
+                //I added an extension to avoid errors at the part of the code which creates a folder with exactly the same name
+                await ControllerLevelDownloaderSMM1.DownloadLevel(level, SaveFileDialog_SMM1Level.FileName + ".tmp");
+
+                if (CHECK_DownloadMii.Checked == true) {
+                    var MiiData = await ControllerMiiData.GetMiiDataFromLevel(level.creator);
+                    await DownloadMiiForLevel(level.levelid, MiiData.data, SaveFileDialog_SMM1Level.FileName);
+                }
+            }
+        }
+    }
+}
