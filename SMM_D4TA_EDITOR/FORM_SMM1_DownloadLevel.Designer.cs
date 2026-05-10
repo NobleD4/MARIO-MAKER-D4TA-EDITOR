@@ -127,6 +127,7 @@
             // TB_LevelSearch
             // 
             this.TB_LevelSearch.Location = new System.Drawing.Point(12, 67);
+            this.TB_LevelSearch.MaxLength = 32;
             this.TB_LevelSearch.Name = "TB_LevelSearch";
             this.TB_LevelSearch.Size = new System.Drawing.Size(210, 20);
             this.TB_LevelSearch.TabIndex = 3;

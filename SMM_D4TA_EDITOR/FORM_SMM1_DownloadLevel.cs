@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -16,7 +15,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SMM_D4TA_EDITOR
 {
@@ -430,6 +428,18 @@ namespace SMM_D4TA_EDITOR
 
         private async void SMM1_GetLvlsSearch(string SMM1_LvlTxtSearch, byte pageNUM, byte coursename, byte courseid, byte creatorname, byte creatorid, byte searchexact)
         {
+            if (courseid == 1 && !SMM1_LvlTxtSearch.All(char.IsDigit))
+            {
+                SMM1_LvlTxtSearch = SMM1_LvlTxtSearch.Replace("%20", ""); //I'm using this instead of trim because gets into this function after uri escape data
+                SMM1_LvlTxtSearch = SMM1_LvlTxtSearch.Replace("-", ""); //Searching works by using numbers, so it's necessary remove the "-" before converting
+
+                if (SMM1_LvlTxtSearch.Length >= 16) //First 4 digits of a SMM1 ID doesn't matters for searching
+                SMM1_LvlTxtSearch = SMM1_LvlTxtSearch.Substring(SMM1_LvlTxtSearch.Length - 12);
+                
+                if(!SMM1_LvlTxtSearch.All(char.IsDigit))
+                SMM1_LvlTxtSearch = Convert.ToInt32(SMM1_LvlTxtSearch, 16).ToString();
+            }
+
             var levels = await ControllerLevelDownloaderSMM1.SMM1_GetLevels(SMM1_LvlTxtSearch, pageNUM, coursename, courseid, creatorname, creatorid, searchexact);
 
             if (levels == null || levels.Count == 0)
