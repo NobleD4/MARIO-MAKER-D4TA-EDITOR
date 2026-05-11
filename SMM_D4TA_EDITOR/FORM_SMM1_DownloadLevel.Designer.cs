@@ -157,7 +157,7 @@
             this.LABEL_ServerSearch.Location = new System.Drawing.Point(12, 24);
             this.LABEL_ServerSearch.Name = "LABEL_ServerSearch";
             this.LABEL_ServerSearch.Size = new System.Drawing.Size(50, 13);
-            this.LABEL_ServerSearch.TabIndex = 10;
+            this.LABEL_ServerSearch.TabIndex = 0;
             this.LABEL_ServerSearch.Text = "<Server>";
             // 
             // ComboBox_FilterSearch
@@ -175,7 +175,7 @@
             this.LABEL_FilterSearch.Location = new System.Drawing.Point(139, 24);
             this.LABEL_FilterSearch.Name = "LABEL_FilterSearch";
             this.LABEL_FilterSearch.Size = new System.Drawing.Size(41, 13);
-            this.LABEL_FilterSearch.TabIndex = 14;
+            this.LABEL_FilterSearch.TabIndex = 0;
             this.LABEL_FilterSearch.Text = "<Filter>";
             // 
             // BUTTON_SearchRandom
@@ -194,7 +194,7 @@
             this.LABEL_IsLevelAPIWorking.Location = new System.Drawing.Point(366, 43);
             this.LABEL_IsLevelAPIWorking.Name = "LABEL_IsLevelAPIWorking";
             this.LABEL_IsLevelAPIWorking.Size = new System.Drawing.Size(92, 13);
-            this.LABEL_IsLevelAPIWorking.TabIndex = 18;
+            this.LABEL_IsLevelAPIWorking.TabIndex = 0;
             this.LABEL_IsLevelAPIWorking.Text = "<API WORKING>";
             // 
             // BUTTON_DownloadLevel
@@ -245,28 +245,28 @@
             this.CHECK_DecompressASH0.Enabled = false;
             this.CHECK_DecompressASH0.Location = new System.Drawing.Point(12, 88);
             this.CHECK_DecompressASH0.Name = "CHECK_DecompressASH0";
-            this.CHECK_DecompressASH0.Size = new System.Drawing.Size(116, 17);
+            this.CHECK_DecompressASH0.Size = new System.Drawing.Size(134, 17);
             this.CHECK_DecompressASH0.TabIndex = 9;
-            this.CHECK_DecompressASH0.Text = "Decompress ASH0";
+            this.CHECK_DecompressASH0.Text = "< Decompress ASH0 >";
             this.CHECK_DecompressASH0.UseVisualStyleBackColor = true;
             // 
             // CHECK_DownloadMii
             // 
             this.CHECK_DownloadMii.AutoSize = true;
-            this.CHECK_DownloadMii.Location = new System.Drawing.Point(134, 88);
+            this.CHECK_DownloadMii.Location = new System.Drawing.Point(152, 88);
             this.CHECK_DownloadMii.Name = "CHECK_DownloadMii";
-            this.CHECK_DownloadMii.Size = new System.Drawing.Size(90, 17);
+            this.CHECK_DownloadMii.Size = new System.Drawing.Size(108, 17);
             this.CHECK_DownloadMii.TabIndex = 10;
-            this.CHECK_DownloadMii.Text = "Download Mii";
+            this.CHECK_DownloadMii.Text = "< Download Mii >";
             this.CHECK_DownloadMii.UseVisualStyleBackColor = true;
             // 
             // LABEL_IsMiiAPIWorking
             // 
             this.LABEL_IsMiiAPIWorking.AutoSize = true;
-            this.LABEL_IsMiiAPIWorking.Location = new System.Drawing.Point(230, 89);
+            this.LABEL_IsMiiAPIWorking.Location = new System.Drawing.Point(260, 89);
             this.LABEL_IsMiiAPIWorking.Name = "LABEL_IsMiiAPIWorking";
             this.LABEL_IsMiiAPIWorking.Size = new System.Drawing.Size(92, 13);
-            this.LABEL_IsMiiAPIWorking.TabIndex = 25;
+            this.LABEL_IsMiiAPIWorking.TabIndex = 0;
             this.LABEL_IsMiiAPIWorking.Text = "<API WORKING>";
             // 
             // FORM_SMM1_DownloadLevel

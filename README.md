@@ -1,14 +1,22 @@
-**CREDITS**
+# Requirements
+- Windows: [.NET Framework 4.8](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net48)
+
+# Download
+To download the latest version check [GitHub Release page](https://github.com/NobleD4/MARIO-MAKER-D4TA-EDITOR/releases/latest)
+
+# Credits
 - exelix11 - [TheFourthDimension (BYML Converter)](https://github.com/exelix11/TheFourthDimension)
 - RoadrunnerWMC  - [(Python script in which TNL Converter was based)](https://gist.github.com/RoadrunnerWMC/33c28d6d13b411f1e55471936d36c990)
 - MammaMiaTeam & Dirbaio - [NSMB-Editor (Language settings)](https://github.com/MammaMiaTeam/NSMB-Editor)
 - just_add_a_3 - [SMM1 Uploading Errors](https://pastebin.com/y3Xnsm6S)
 - HerobrineTV - [SMM1-Level-Downloader](https://github.com/HerobrineTV/SMM1-Level-Downloader)
-- aboood40091 - [PointlessMaker (SMM1 Level Editor)](https://github.com/aboood40091/PointlessMaker)
+- Aboood40091 - [PointlessMaker (SMM1 Level Editor)](https://github.com/aboood40091/PointlessMaker)
 - RoadrunnerWMC - [MetaMaker (SMM1 Level Editor)](https://github.com/RoadrunnerWMC/Metamaker)
 - kinnay - [NintendoClients (SMM1 Access Key)](https://github.com/kinnay/NintendoClients/wiki/Data-Store-Codes#super-mario-maker)
+- crediar - [ASH Extractor](http://wiibrew.org/wiki/ASH_Extractor)
+- ArianKordi - [Mii Renderer](https://mii-unsecure.ariankordi.net)
 
-## Country flag
+# Country flag
 Allows you to visually know which value represents any flag in Mario Maker.
 <details>
   <summary>Click to open</summary>

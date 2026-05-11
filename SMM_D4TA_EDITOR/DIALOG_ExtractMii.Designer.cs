@@ -74,7 +74,7 @@
             this.LABEL_MiiName.Location = new System.Drawing.Point(12, 9);
             this.LABEL_MiiName.Name = "LABEL_MiiName";
             this.LABEL_MiiName.Size = new System.Drawing.Size(47, 13);
-            this.LABEL_MiiName.TabIndex = 3;
+            this.LABEL_MiiName.TabIndex = 0;
             this.LABEL_MiiName.Text = "<Name>";
             // 
             // CHECK_SaveMiiAsFFSD
@@ -106,7 +106,7 @@
             this.LABEL_Country.Location = new System.Drawing.Point(12, 48);
             this.LABEL_Country.Name = "LABEL_Country";
             this.LABEL_Country.Size = new System.Drawing.Size(55, 13);
-            this.LABEL_Country.TabIndex = 8;
+            this.LABEL_Country.TabIndex = 0;
             this.LABEL_Country.Text = "<Country>";
             // 
             // SaveFileDialog_ffsdFile

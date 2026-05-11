@@ -3,7 +3,7 @@
     public static class VersionControl
     {
         public const int MajorUpdate = 0;
-        public const int MinorUpdate = 2;
+        public const int MinorUpdate = 3;
         public const int PatchUpdate = 0;
 
         public static string GetString()
