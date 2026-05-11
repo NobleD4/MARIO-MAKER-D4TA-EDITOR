@@ -193,9 +193,9 @@
             this.LABEL_IsLevelAPIWorking.AutoSize = true;
             this.LABEL_IsLevelAPIWorking.Location = new System.Drawing.Point(366, 43);
             this.LABEL_IsLevelAPIWorking.Name = "LABEL_IsLevelAPIWorking";
-            this.LABEL_IsLevelAPIWorking.Size = new System.Drawing.Size(92, 13);
+            this.LABEL_IsLevelAPIWorking.Size = new System.Drawing.Size(24, 13);
             this.LABEL_IsLevelAPIWorking.TabIndex = 0;
-            this.LABEL_IsLevelAPIWorking.Text = "<API WORKING>";
+            this.LABEL_IsLevelAPIWorking.Text = "API";
             // 
             // BUTTON_DownloadLevel
             // 
@@ -265,9 +265,9 @@
             this.LABEL_IsMiiAPIWorking.AutoSize = true;
             this.LABEL_IsMiiAPIWorking.Location = new System.Drawing.Point(260, 89);
             this.LABEL_IsMiiAPIWorking.Name = "LABEL_IsMiiAPIWorking";
-            this.LABEL_IsMiiAPIWorking.Size = new System.Drawing.Size(92, 13);
+            this.LABEL_IsMiiAPIWorking.Size = new System.Drawing.Size(24, 13);
             this.LABEL_IsMiiAPIWorking.TabIndex = 0;
-            this.LABEL_IsMiiAPIWorking.Text = "<API WORKING>";
+            this.LABEL_IsMiiAPIWorking.Text = "API";
             // 
             // FORM_SMM1_DownloadLevel
             // 

@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
@@ -400,12 +399,19 @@ namespace SMM_D4TA_EDITOR
                 lastItemOffset = GetLastPlacedOffset(tmpfileBytes, CourseFirstItemOffset, CourseLastItemOffset, Jump0x20, 0x00, true);
                 itemID = GetLastPlacedOffset(tmpfileBytes, CourseFirstItemOffset, CourseLastItemOffset, Jump0x20, 0x00, false);
 
-                if (lastItemOffset >= -1)
+                string lastItemPlacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
+                string lastItemOffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
+
+                if (itemID != -1)
                 {
-                    string lastItemPlacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
-                    string lastItemOffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
                     LABEL_LastItemPlaced.Text = $"{lastItemPlacedLang} {itemID:000} (0x{itemID:X2})    "
                     + $"{lastItemOffsetLang} 0x{lastItemOffset:X2}";
+                }
+                else
+                {
+                    string textNoData = LanguageManager.Get("FORM_Main", "msgNoData");
+                    LABEL_LastItemPlaced.Text = $"{lastItemPlacedLang} {textNoData}    "
+                    + $"{lastItemOffsetLang} {textNoData}";
                 }
 
                 const int Jump0x08 = 0x08;  //Basically because there's a 0x08 sized space between each sound placed
@@ -415,12 +421,19 @@ namespace SMM_D4TA_EDITOR
                 lastSFXoffset = GetLastPlacedOffset(tmpfileBytes, CourseFirstSoundOffset, CourseLastSoundOffset, Jump0x08, 0xFF, true);
                 SoundID = GetLastPlacedOffset(tmpfileBytes, CourseFirstSoundOffset, CourseLastSoundOffset, Jump0x08, 0xFF, false);
 
-                if (lastSFXoffset >= -1)
+                string lastSFXplacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastSFXplaced");
+                string lastSFXoffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastSFXoffset");
+
+                if (SoundID != -1)
                 {
-                    string lastSFXplacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastSFXplaced");
-                    string lastSFXoffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastSFXoffset");
                     LABEL_LastSFXplaced.Text = $"{lastSFXplacedLang} {SoundID:000} (0x{SoundID:X2})    "
                     + $"{lastSFXoffsetLang} 0x{lastSFXoffset:X2}";
+                }
+                else
+                {
+                    string textNoData = LanguageManager.Get("FORM_Main", "msgNoData");
+                    LABEL_LastSFXplaced.Text = $"{lastSFXplacedLang} {textNoData}    "
+                    + $"{lastSFXoffsetLang} {textNoData}";
                 }
 
                 UIstate(true);
@@ -680,6 +693,7 @@ namespace SMM_D4TA_EDITOR
         {
             TB_CourseName.Enabled = state;
             TB_CourseCreator.Enabled = state;
+            TB_CourseIDprefix.Enabled = state;
             TB_CourseIDsuffix1.Enabled = state;
             TB_CourseIDsuffix2.Enabled = state;
             TB_CourseIDsuffix3.Enabled = state;

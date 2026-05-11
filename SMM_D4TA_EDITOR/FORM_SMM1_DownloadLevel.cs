@@ -6,12 +6,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.IO.Ports;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection.Emit;
-using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -287,7 +285,43 @@ namespace SMM_D4TA_EDITOR
                 //7. Create sound.bwv
                 CreateSoundbwvFile(Path.Combine(folderPath, "sound.bwv"));
 
-                //8. Delete original ASH0
+                //8. Clear status to uncleared
+                string file1 = Path.Combine(folderPath, "course_data.cdt");
+                string file2 = Path.Combine(folderPath, "course_data_sub.cdt");
+
+                if (!File.Exists(file1) || !File.Exists(file2))
+                {
+                    MessageBox.Show("course_data.cdt or course_data_sub.cdt doesn't exist");
+                    return;
+                }
+
+                byte[] fileBytes1 = File.ReadAllBytes(file1);
+                byte[] fileBytes2 = File.ReadAllBytes(file2);
+
+                    //Not uploaded
+                fileBytes1[0x6E] = 0x00;
+                fileBytes2[0x6E] = 0x00;
+
+                    //Uncleared
+                fileBytes1[0x6F] = 0x00;
+                fileBytes2[0x6F] = 0x00;
+
+                    //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
+                Crc32 crc32 = new Crc32();
+                byte[] checksum = crc32.ComputeChecksumBytes(fileBytes1, 0x10, fileBytes1.Length - 0x10);
+                Array.Reverse(checksum); //Parse to big-endian order
+                Array.Copy(checksum, 0, fileBytes1, 0x08, 4);
+
+                Crc32 crc32_2 = new Crc32();
+                byte[] checksum_2 = crc32_2.ComputeChecksumBytes(fileBytes2, 0x10, fileBytes2.Length - 0x10);
+                Array.Reverse(checksum_2); //Parse to big-endian order
+                Array.Copy(checksum_2, 0, fileBytes2, 0x08, 4);
+
+                    //Save and overwrites .cdt file
+                File.WriteAllBytes(file1, fileBytes1);
+                File.WriteAllBytes(file2, fileBytes2);
+
+                //9. Delete original ASH0
                 File.Delete(outputPath);
 
                 MessageBox.Show("Level downloaded successfully");
@@ -360,6 +394,7 @@ namespace SMM_D4TA_EDITOR
             if (!File.Exists(file1) || !File.Exists(file2))
             {
                 MessageBox.Show("course_data.cdt or course_data_sub.cdt doesn't exist");
+                return;
             }
 
             byte[] fileBytes = File.ReadAllBytes(file1);
@@ -418,12 +453,40 @@ namespace SMM_D4TA_EDITOR
             {
                 DataGridView_LevelResults.Rows.Add(
                     level.name,
-                    level.levelid,
+                    FormatCourseID(level.levelid),
                     level.creator,
                     level.creatorid,
-                    level.clearrate * 100
+                    (level.clearrate * 100).ToString("F4") + "%"
                 );
             }
+        }
+
+        public static string FormatCourseID(int levelId)
+        {
+            string prefix = GenerateCourseIdPrefix((ulong)levelId);
+
+            string suffixHex = levelId.ToString("X12");
+
+            string fullHex = prefix + suffixHex;
+
+            return $"{fullHex.Substring(0, 4)}-" + $"{fullHex.Substring(4, 4)}-" + $"{fullHex.Substring(8, 4)}-" + $"{fullHex.Substring(12, 4)}";
+        }
+
+        static string GenerateCourseIdPrefix(ulong suffix) //This needs to be a global function
+        {
+            byte[] baseKey = Encoding.ASCII.GetBytes("9f2b4678"); //Yeah, I'm going to make key access a flobal variable and also all constants
+            using (var md5 = MD5.Create())
+            {
+                baseKey = md5.ComputeHash(baseKey);
+            }
+            byte[] data = BitConverter.GetBytes(suffix);
+            byte[] checksum;
+            using (var hmac = new HMACMD5(baseKey))
+            {
+                checksum = hmac.ComputeHash(data);
+            }
+            string prefix = checksum[3].ToString("X2") + checksum[2].ToString("X2");
+            return prefix;
         }
 
         private async void SMM1_GetLvlsSearch(string SMM1_LvlTxtSearch, byte pageNUM, byte coursename, byte courseid, byte creatorname, byte creatorid, byte searchexact)
@@ -453,10 +516,10 @@ namespace SMM_D4TA_EDITOR
             {
                 int rowIndex = DataGridView_LevelResults.Rows.Add(
                     level.name,
-                    level.levelid,
+                    FormatCourseID(level.levelid),
                     level.creator,
                     level.creatorid,
-                    level.clearrate * 100
+                    (level.clearrate * 100).ToString("F4") + "%"
                 );
 
                 DataGridView_LevelResults.Rows[rowIndex].Tag = level;
@@ -471,17 +534,20 @@ namespace SMM_D4TA_EDITOR
         private void BUTTON_PreviousPage_Click(object sender, EventArgs e)
         {
             SearchPageNUM--;
+            SearchSMM1Levels();
             TB_DisplayPage.Text = SearchPageNUM.ToString();
         }
 
         private void BUTTON_NextPage_Click(object sender, EventArgs e)
         {
             SearchPageNUM++;
+            SearchSMM1Levels();
             TB_DisplayPage.Text = SearchPageNUM.ToString();
         }
 
-        private void BUTTON_Search_Click(object sender, EventArgs e)
+        public void SearchSMM1Levels()
         {
+
             DataGridView_LevelResults.Rows.Clear();
 
             if (ComboBox_ServerSearch.SelectedIndex == 0)
@@ -512,6 +578,13 @@ namespace SMM_D4TA_EDITOR
             }
         }
 
+        private void BUTTON_Search_Click(object sender, EventArgs e)
+        {
+            SearchPageNUM = 1;
+            TB_DisplayPage.Text = SearchPageNUM.ToString();
+            SearchSMM1Levels();
+        }
+
         private async void BUTTON_DownloadLevel_Click(object sender, EventArgs e)
         {
             var row = DataGridView_LevelResults.CurrentRow;
@@ -536,7 +609,7 @@ namespace SMM_D4TA_EDITOR
                 //I added an extension to avoid errors at the part of the code which creates a folder with exactly the same name
                 await ControllerLevelDownloaderSMM1.DownloadLevel(level, SaveFileDialog_SMM1Level.FileName + ".tmp");
 
-                if (CHECK_DownloadMii.Checked == true) {
+                if (CHECK_DownloadMii.Checked) {
                     var MiiData = await ControllerMiiData.GetMiiDataFromLevel(level.creator);
                     await DownloadMiiForLevel(level.levelid, MiiData.data, SaveFileDialog_SMM1Level.FileName);
                 }
