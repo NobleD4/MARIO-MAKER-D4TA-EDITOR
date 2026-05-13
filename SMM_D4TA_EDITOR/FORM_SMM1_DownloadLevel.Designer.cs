@@ -30,11 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FORM_SMM1_DownloadLevel));
             this.DataGridView_LevelResults = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.PICTURE_thumbnail0 = new System.Windows.Forms.PictureBox();
             this.PICTURE_thumbnail1 = new System.Windows.Forms.PictureBox();
             this.TB_LevelSearch = new System.Windows.Forms.TextBox();
@@ -53,6 +48,7 @@
             this.CHECK_DecompressASH0 = new System.Windows.Forms.CheckBox();
             this.CHECK_DownloadMii = new System.Windows.Forms.CheckBox();
             this.LABEL_IsMiiAPIWorking = new System.Windows.Forms.Label();
+            this.BUTTON_CopyID = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_LevelResults)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail0)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail1)).BeginInit();
@@ -62,49 +58,18 @@
             // 
             this.DataGridView_LevelResults.AllowUserToAddRows = false;
             this.DataGridView_LevelResults.AllowUserToDeleteRows = false;
+            this.DataGridView_LevelResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.DataGridView_LevelResults.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.DataGridView_LevelResults.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.DataGridView_LevelResults.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridView_LevelResults.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4,
-            this.Column5});
             this.DataGridView_LevelResults.Location = new System.Drawing.Point(12, 107);
             this.DataGridView_LevelResults.Name = "DataGridView_LevelResults";
             this.DataGridView_LevelResults.ReadOnly = true;
             this.DataGridView_LevelResults.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DataGridView_LevelResults.Size = new System.Drawing.Size(500, 186);
             this.DataGridView_LevelResults.TabIndex = 11;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Name";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "ID";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Creator";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "Creator ID";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "Clear rate";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
             // 
             // PICTURE_thumbnail0
             // 
@@ -130,7 +95,7 @@
             this.TB_LevelSearch.MaxLength = 32;
             this.TB_LevelSearch.Name = "TB_LevelSearch";
             this.TB_LevelSearch.Size = new System.Drawing.Size(210, 20);
-            this.TB_LevelSearch.TabIndex = 3;
+            this.TB_LevelSearch.TabIndex = 4;
             // 
             // ComboBox_ServerSearch
             // 
@@ -146,7 +111,7 @@
             this.BUTTON_Search.Location = new System.Drawing.Point(228, 65);
             this.BUTTON_Search.Name = "BUTTON_Search";
             this.BUTTON_Search.Size = new System.Drawing.Size(75, 23);
-            this.BUTTON_Search.TabIndex = 4;
+            this.BUTTON_Search.TabIndex = 5;
             this.BUTTON_Search.Text = "<Search>";
             this.BUTTON_Search.UseVisualStyleBackColor = true;
             this.BUTTON_Search.Click += new System.EventHandler(this.BUTTON_Search_Click);
@@ -191,7 +156,7 @@
             // LABEL_IsLevelAPIWorking
             // 
             this.LABEL_IsLevelAPIWorking.AutoSize = true;
-            this.LABEL_IsLevelAPIWorking.Location = new System.Drawing.Point(366, 43);
+            this.LABEL_IsLevelAPIWorking.Location = new System.Drawing.Point(437, 43);
             this.LABEL_IsLevelAPIWorking.Name = "LABEL_IsLevelAPIWorking";
             this.LABEL_IsLevelAPIWorking.Size = new System.Drawing.Size(24, 13);
             this.LABEL_IsLevelAPIWorking.TabIndex = 0;
@@ -202,7 +167,7 @@
             this.BUTTON_DownloadLevel.Location = new System.Drawing.Point(309, 65);
             this.BUTTON_DownloadLevel.Name = "BUTTON_DownloadLevel";
             this.BUTTON_DownloadLevel.Size = new System.Drawing.Size(110, 23);
-            this.BUTTON_DownloadLevel.TabIndex = 5;
+            this.BUTTON_DownloadLevel.TabIndex = 6;
             this.BUTTON_DownloadLevel.Text = "<Download level>";
             this.BUTTON_DownloadLevel.UseVisualStyleBackColor = true;
             this.BUTTON_DownloadLevel.Click += new System.EventHandler(this.BUTTON_DownloadLevel_Click);
@@ -212,7 +177,7 @@
             this.BUTTON_PreviousPage.Location = new System.Drawing.Point(425, 65);
             this.BUTTON_PreviousPage.Name = "BUTTON_PreviousPage";
             this.BUTTON_PreviousPage.Size = new System.Drawing.Size(20, 23);
-            this.BUTTON_PreviousPage.TabIndex = 6;
+            this.BUTTON_PreviousPage.TabIndex = 7;
             this.BUTTON_PreviousPage.Text = "<";
             this.BUTTON_PreviousPage.UseVisualStyleBackColor = true;
             this.BUTTON_PreviousPage.Click += new System.EventHandler(this.BUTTON_PreviousPage_Click);
@@ -222,7 +187,7 @@
             this.BUTTON_NextPage.Location = new System.Drawing.Point(482, 65);
             this.BUTTON_NextPage.Name = "BUTTON_NextPage";
             this.BUTTON_NextPage.Size = new System.Drawing.Size(20, 23);
-            this.BUTTON_NextPage.TabIndex = 8;
+            this.BUTTON_NextPage.TabIndex = 9;
             this.BUTTON_NextPage.Text = ">";
             this.BUTTON_NextPage.UseVisualStyleBackColor = true;
             this.BUTTON_NextPage.Click += new System.EventHandler(this.BUTTON_NextPage_Click);
@@ -233,7 +198,7 @@
             this.TB_DisplayPage.Name = "TB_DisplayPage";
             this.TB_DisplayPage.ReadOnly = true;
             this.TB_DisplayPage.Size = new System.Drawing.Size(25, 20);
-            this.TB_DisplayPage.TabIndex = 7;
+            this.TB_DisplayPage.TabIndex = 8;
             // 
             // SaveFileDialog_SMM1Level
             // 
@@ -269,11 +234,22 @@
             this.LABEL_IsMiiAPIWorking.TabIndex = 0;
             this.LABEL_IsMiiAPIWorking.Text = "API";
             // 
+            // BUTTON_CopyID
+            // 
+            this.BUTTON_CopyID.Location = new System.Drawing.Point(366, 38);
+            this.BUTTON_CopyID.Name = "BUTTON_CopyID";
+            this.BUTTON_CopyID.Size = new System.Drawing.Size(70, 23);
+            this.BUTTON_CopyID.TabIndex = 3;
+            this.BUTTON_CopyID.Text = "<Copy ID>";
+            this.BUTTON_CopyID.UseVisualStyleBackColor = true;
+            this.BUTTON_CopyID.Click += new System.EventHandler(this.BUTTON_CopyID_Click);
+            // 
             // FORM_SMM1_DownloadLevel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(524, 361);
+            this.Controls.Add(this.BUTTON_CopyID);
             this.Controls.Add(this.LABEL_IsMiiAPIWorking);
             this.Controls.Add(this.CHECK_DownloadMii);
             this.Controls.Add(this.CHECK_DecompressASH0);
@@ -317,6 +293,7 @@
             this.Controls.SetChildIndex(this.CHECK_DecompressASH0, 0);
             this.Controls.SetChildIndex(this.CHECK_DownloadMii, 0);
             this.Controls.SetChildIndex(this.LABEL_IsMiiAPIWorking, 0);
+            this.Controls.SetChildIndex(this.BUTTON_CopyID, 0);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView_LevelResults)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail0)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PICTURE_thumbnail1)).EndInit();
@@ -338,11 +315,6 @@
         private System.Windows.Forms.Label LABEL_FilterSearch;
         private System.Windows.Forms.Button BUTTON_SearchRandom;
         private System.Windows.Forms.Label LABEL_IsLevelAPIWorking;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.Button BUTTON_DownloadLevel;
         private System.Windows.Forms.Button BUTTON_PreviousPage;
         private System.Windows.Forms.Button BUTTON_NextPage;
@@ -351,5 +323,6 @@
         private System.Windows.Forms.CheckBox CHECK_DecompressASH0;
         private System.Windows.Forms.CheckBox CHECK_DownloadMii;
         private System.Windows.Forms.Label LABEL_IsMiiAPIWorking;
+        private System.Windows.Forms.Button BUTTON_CopyID;
     }
 }

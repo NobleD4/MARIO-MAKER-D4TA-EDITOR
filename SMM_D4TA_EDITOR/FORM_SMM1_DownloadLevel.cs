@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -291,7 +292,8 @@ namespace SMM_D4TA_EDITOR
 
                 if (!File.Exists(file1) || !File.Exists(file2))
                 {
-                    MessageBox.Show("course_data.cdt or course_data_sub.cdt doesn't exist");
+                    string text = LanguageManager.Get("FORM_LevelDownloader", "msgCourseDataFileNotFound");
+                    MessageBox.Show(text);
                     return;
                 }
 
@@ -324,7 +326,8 @@ namespace SMM_D4TA_EDITOR
                 //9. Delete original ASH0
                 File.Delete(outputPath);
 
-                MessageBox.Show("Level downloaded successfully");
+                string caption = LanguageManager.Get("FORM_LevelDownloader", "msgLvlDownloadedSuccess");
+                MessageBox.Show(caption);
             }
 
             //A "sound.bwv" file halways as only the first 4 bytes filled with the same thing, so I don't need a whole "sound.bwv" file to copy and paste to downloaded level
@@ -393,7 +396,8 @@ namespace SMM_D4TA_EDITOR
 
             if (!File.Exists(file1) || !File.Exists(file2))
             {
-                MessageBox.Show("course_data.cdt or course_data_sub.cdt doesn't exist");
+                string text = LanguageManager.Get("FORM_LevelDownloader", "msgCourseDataFileNotFound");
+                MessageBox.Show(text);
                 return;
             }
 
@@ -449,15 +453,41 @@ namespace SMM_D4TA_EDITOR
                 return;
             }
 
+            if(DataGridView_LevelResults.Rows.Count <= 0)
+            InitializeLevelResultsGrid();
+
             foreach (var level in levels)
             {
                 DataGridView_LevelResults.Rows.Add(
+                    isNBD4Profile(level.creator),
                     level.name,
+                    level.stars,
+                    isNBD4Profile(level.world_record_holder_nnid) + " " + ConvertMillisecondsToMinutes(level.world_record_ms),
+                    (level.clearrate * 100).ToString("F4") + "%" + " " + level.clears + "/" + level.total_attempts,
                     FormatCourseID(level.levelid),
-                    level.creator,
-                    level.creatorid,
-                    (level.clearrate * 100).ToString("F4") + "%"
+                    level.creatorid
                 );
+            }
+        }
+
+        public static string isNBD4Profile(string creator) //Extremely important function, one of the main reasons I made my own level downloader
+        {
+            if (creator == "D4Pro10") return "NobleD4";
+            else return creator;
+        }
+
+        public static string ConvertMillisecondsToMinutes(string milliseconds)
+        {
+            if (milliseconds == null || !milliseconds.All(char.IsDigit))
+            {
+                return "--:--.---";
+            }
+            else
+            {
+                TimeSpan t = TimeSpan.FromMilliseconds(Convert.ToInt32(milliseconds));
+                string answer = string.Format("{0:D2}:{1:D2}:{2:D3}", (t.Hours * 60) + t.Minutes, t.Seconds, t.Milliseconds);
+
+                return answer;
             }
         }
 
@@ -489,6 +519,20 @@ namespace SMM_D4TA_EDITOR
             return prefix;
         }
 
+        public void CopyID()
+        {
+            if (DataGridView_LevelResults.SelectedRows.Count > 0)
+            {
+                var selectedRow = DataGridView_LevelResults.SelectedRows[0];
+                string textToCopy = selectedRow.Cells["LevelID"].Value.ToString();
+
+                Thread thread = new Thread(() => Clipboard.SetText(textToCopy));
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+                thread.Join();
+            }
+        }
+
         private async void SMM1_GetLvlsSearch(string SMM1_LvlTxtSearch, byte pageNUM, byte coursename, byte courseid, byte creatorname, byte creatorid, byte searchexact)
         {
             if (courseid == 1 && !SMM1_LvlTxtSearch.All(char.IsDigit))
@@ -511,15 +555,17 @@ namespace SMM_D4TA_EDITOR
                 MessageBox.Show(text);
                 return;
             }
-
+            
             foreach (var level in levels)
             {
                 int rowIndex = DataGridView_LevelResults.Rows.Add(
+                    isNBD4Profile(level.creator),
                     level.name,
+                    level.stars,
+                    isNBD4Profile(level.world_record_holder_nnid) + " " + ConvertMillisecondsToMinutes(level.world_record_ms),
+                    (level.clearrate * 100).ToString("F4") + "%" + " " + level.clears + "/" + level.total_attempts,
                     FormatCourseID(level.levelid),
-                    level.creator,
-                    level.creatorid,
-                    (level.clearrate * 100).ToString("F4") + "%"
+                    level.creatorid
                 );
 
                 DataGridView_LevelResults.Rows[rowIndex].Tag = level;
@@ -547,7 +593,7 @@ namespace SMM_D4TA_EDITOR
 
         public void SearchSMM1Levels()
         {
-
+            InitializeLevelResultsGrid();
             DataGridView_LevelResults.Rows.Clear();
 
             if (ComboBox_ServerSearch.SelectedIndex == 0)
@@ -578,6 +624,53 @@ namespace SMM_D4TA_EDITOR
             }
         }
 
+        private void InitializeLevelResultsGrid()
+        {
+            DataGridView_LevelResults.Columns.Clear();
+
+            DataGridView_LevelResults.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "CreatorName",
+                HeaderText = LanguageManager.Get("FORM_LevelDownloader", "DGV_LevelResultsCreatorName"),
+            });
+
+            DataGridView_LevelResults.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "LevelName",
+                HeaderText = LanguageManager.Get("FORM_LevelDownloader", "DGV_LevelResultsLevelName"),
+            });
+
+            DataGridView_LevelResults.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "LevelStars",
+                HeaderText = LanguageManager.Get("FORM_LevelDownloader", "DGV_LevelResultsLevelStars"),
+            });
+
+            DataGridView_LevelResults.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "WorldRecordHolder",
+                HeaderText = LanguageManager.Get("FORM_LevelDownloader", "DGV_LevelResultsWorldRecordHolder"),
+            });
+
+            DataGridView_LevelResults.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "ClearRate",
+                HeaderText = LanguageManager.Get("FORM_LevelDownloader", "DGV_LevelResultsClearRate"),
+            });
+
+            DataGridView_LevelResults.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "LevelID",
+                HeaderText = LanguageManager.Get("FORM_LevelDownloader", "DGV_LevelResultsLevelID"),
+            });
+
+            DataGridView_LevelResults.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                Name = "CreatorID",
+                HeaderText = LanguageManager.Get("FORM_LevelDownloader", "DGV_LevelResultsCreatorID"),
+            });
+        }
+
         private void BUTTON_Search_Click(object sender, EventArgs e)
         {
             SearchPageNUM = 1;
@@ -591,7 +684,8 @@ namespace SMM_D4TA_EDITOR
 
             if (row == null || row.Tag == null)
             {
-                MessageBox.Show("There's no selected row");
+                string caption = LanguageManager.Get("FORM_LevelDownloader", "msgNoSelectedRow");
+                MessageBox.Show(caption);
                 return;
             }
 
@@ -614,6 +708,11 @@ namespace SMM_D4TA_EDITOR
                     await DownloadMiiForLevel(level.levelid, MiiData.data, SaveFileDialog_SMM1Level.FileName);
                 }
             }
+        }
+
+        private void BUTTON_CopyID_Click(object sender, EventArgs e)
+        {
+            CopyID();
         }
     }
 }
