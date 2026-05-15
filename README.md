@@ -15,6 +15,7 @@ To download the latest version check [GitHub Release page](https://github.com/No
 - kinnay - [NintendoClients (SMM1 Access Key)](https://github.com/kinnay/NintendoClients/wiki/Data-Store-Codes#super-mario-maker)
 - crediar - [ASH Extractor](http://wiibrew.org/wiki/ASH_Extractor)
 - ArianKordi - [Mii Renderer](https://mii-unsecure.ariankordi.net)
+- Chen Tian - Thank you for correcting chinese translation! 
 
 # Country flag
 Allows you to visually know which value represents any flag in Mario Maker.
