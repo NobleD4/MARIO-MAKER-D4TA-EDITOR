@@ -626,10 +626,10 @@ namespace SMM_D4TA_EDITOR
             fileBytes[CourseUpdatePhysicsOffset] = physicsValue;
 
             byte scrollValue = 0;
-            if (ComboBox_Physics_Settings.SelectedIndex == 1) scrollValue = 1;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 2) scrollValue = 2;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 3) scrollValue = 3;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 4) scrollValue = 4;
+            if (ComboBox_Scroll_Settings.SelectedIndex == 1) scrollValue = 1;
+            else if (ComboBox_Scroll_Settings.SelectedIndex == 2) scrollValue = 2;
+            else if (ComboBox_Scroll_Settings.SelectedIndex == 3) scrollValue = 3;
+            else if (ComboBox_Scroll_Settings.SelectedIndex == 4) scrollValue = 4;
             else scrollValue = 0;
             //Insert scroll byte value to the file
             fileBytes[CourseScrollSettingsOffset] = scrollValue;
