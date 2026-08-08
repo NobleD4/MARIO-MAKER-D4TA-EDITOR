@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SMM_D4TA_EDITOR.SMM1FileFormats;
 
 namespace SMM_D4TA_EDITOR
 {
@@ -176,7 +177,7 @@ namespace SMM_D4TA_EDITOR
 
                     lastIndex = nextIndex;
                 }
-
+                
                 return parts;
             }
 
@@ -202,7 +203,7 @@ namespace SMM_D4TA_EDITOR
                 return -1;
             }
 
-            public async Task DownloadLevel(MODEL_LevelDownloaderSMM1 level, string outputPath)
+            public async Task DownloadLevel(MODEL_LevelDownloaderSMM1 level, string outputPath, bool DecompressASH0)
             {
                 string timestamp = await GetArchiveTimestamp(level.url);
 
@@ -223,108 +224,103 @@ namespace SMM_D4TA_EDITOR
                 //1. Download ASH0
                 byte[] fileBytes = await response.Content.ReadAsByteArrayAsync();
 
-                //2. Create a new directory with the same name without extension
-                string folderPath = Path.Combine(
-                    Path.GetDirectoryName(outputPath),
-                    Path.GetFileNameWithoutExtension(outputPath)
-                );
-
-                Directory.CreateDirectory(folderPath);
-
-                //3. Save
+                //2. Save
                 File.WriteAllBytes(outputPath, fileBytes);
 
-                //4. SPLIT
-                var parts = SplitAshFile(fileBytes);
+                if (DecompressASH0)
+                {
+                    //3. Create a new directory with the same name without extension
+                    string folderPath = Path.Combine(
+                        Path.GetDirectoryName(outputPath),
+                        Path.GetFileNameWithoutExtension(outputPath)
+                    );
 
-                string[] partNamesFirst = {
+                    Directory.CreateDirectory(folderPath);
+
+                    //4. SPLIT
+                    var parts = SplitAshFile(fileBytes);
+
+                    string[] partNamesFirst = {
                     "thumbnail0",
                     "course_data",
                     "course_data_sub",
                     "thumbnail1"
                 };
 
-                string[] finalNames = {
+                    string[] finalNames = {
                     "thumbnail0.tnl",
                     "course_data.cdt",
                     "course_data_sub.cdt",
                     "thumbnail1.tnl"
                 };
 
-                //5. Save parts
-                for (int i = 0; i < parts.Count && i < partNamesFirst.Length; i++)
-                {
-                    string path = Path.Combine(folderPath, partNamesFirst[i]);
-                    File.WriteAllBytes(path, parts[i]);
-                }
-
-                //6. Execute ASH Extractor
-                for (int i = 0; i < partNamesFirst.Length; i++)
-                {
-                    string inputPath = Path.Combine(folderPath, partNamesFirst[i]);
-
-                    var process = new Process();
-                    process.StartInfo.FileName = "ASH.exe";
-                    process.StartInfo.Arguments = $"\"{inputPath}\"";
-                    process.StartInfo.CreateNoWindow = true;
-                    process.StartInfo.UseShellExecute = false;
-
-                    process.Start();
-                    process.WaitForExit();
-
-                    string arcFile = inputPath + ".arc";
-
-                    if (File.Exists(arcFile))
+                    //5. Save parts
+                    for (int i = 0; i < parts.Count && i < partNamesFirst.Length; i++)
                     {
-                        string finalPath = Path.Combine(folderPath, finalNames[i]);
-                        File.Move(arcFile, finalPath);
-
-                        File.Delete(inputPath);
+                        string path = Path.Combine(folderPath, partNamesFirst[i]);
+                        File.WriteAllBytes(path, parts[i]);
                     }
-                }
 
-                //7. Create sound.bwv
-                CreateSoundbwvFile(Path.Combine(folderPath, "sound.bwv"));
+                    //6. Execute ASH Extractor
+                    for (int i = 0; i < partNamesFirst.Length; i++)
+                    {
+                        string inputPath = Path.Combine(folderPath, partNamesFirst[i]);
 
-                //8. Clear status to uncleared
-                string file1 = Path.Combine(folderPath, "course_data.cdt");
-                string file2 = Path.Combine(folderPath, "course_data_sub.cdt");
+                        var process = new Process();
+                        process.StartInfo.FileName = "ASH.exe";
+                        process.StartInfo.Arguments = $"\"{inputPath}\"";
+                        process.StartInfo.CreateNoWindow = true;
+                        process.StartInfo.UseShellExecute = false;
 
-                if (!File.Exists(file1) || !File.Exists(file2))
-                {
-                    string text = LanguageManager.Get("FORM_LevelDownloader", "msgCourseDataFileNotFound");
-                    MessageBox.Show(text);
-                    return;
-                }
+                        process.Start();
+                        process.WaitForExit();
 
-                byte[] fileBytes1 = File.ReadAllBytes(file1);
-                byte[] fileBytes2 = File.ReadAllBytes(file2);
+                        string arcFile = inputPath + ".arc";
+
+                        if (File.Exists(arcFile))
+                        {
+                            string finalPath = Path.Combine(folderPath, finalNames[i]);
+                            File.Move(arcFile, finalPath);
+
+                            File.Delete(inputPath);
+                        }
+                    }
+
+                    //7. Create sound.bwv
+                    CreateSoundbwvFile(Path.Combine(folderPath, "sound.bwv"));
+
+                    //8. Clear status to uncleared
+                    string file1 = Path.Combine(folderPath, "course_data.cdt");
+                    string file2 = Path.Combine(folderPath, "course_data_sub.cdt");
+
+                    if (!File.Exists(file1) || !File.Exists(file2))
+                    {
+                        string text = LanguageManager.Get("FORM_LevelDownloader", "msgCourseDataFileNotFound");
+                        MessageBox.Show(text);
+                        return;
+                    }
+
+                    byte[] fileBytes1 = File.ReadAllBytes(file1);
+                    byte[] fileBytes2 = File.ReadAllBytes(file2);
 
                     //Not uploaded
-                fileBytes1[0x6E] = 0x00;
-                fileBytes2[0x6E] = 0x00;
+                    fileBytes1[UploadedCourseOffset] = 0x00;
+                    fileBytes2[UploadedCourseOffset] = 0x00;
 
                     //Uncleared
-                fileBytes1[0x6F] = 0x00;
-                fileBytes2[0x6F] = 0x00;
+                    fileBytes1[ClearCheckOffset] = 0x00;
+                    fileBytes2[ClearCheckOffset] = 0x00;
 
-                    //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
-                Crc32 crc32 = new Crc32();
-                byte[] checksum = crc32.ComputeChecksumBytes(fileBytes1, 0x10, fileBytes1.Length - 0x10);
-                Array.Reverse(checksum); //Parse to big-endian order
-                Array.Copy(checksum, 0, fileBytes1, 0x08, 4);
-
-                Crc32 crc32_2 = new Crc32();
-                byte[] checksum_2 = crc32_2.ComputeChecksumBytes(fileBytes2, 0x10, fileBytes2.Length - 0x10);
-                Array.Reverse(checksum_2); //Parse to big-endian order
-                Array.Copy(checksum_2, 0, fileBytes2, 0x08, 4);
+                    WriteChecksumCRC32(fileBytes1);
+                    WriteChecksumCRC32(fileBytes2);
 
                     //Save and overwrites .cdt file
-                File.WriteAllBytes(file1, fileBytes1);
-                File.WriteAllBytes(file2, fileBytes2);
+                    File.WriteAllBytes(file1, fileBytes1);
+                    File.WriteAllBytes(file2, fileBytes2);
 
-                //9. Delete original ASH0
-                File.Delete(outputPath);
+                    //9. Delete original ASH0
+                    File.Delete(outputPath);
+                }
 
                 string caption = LanguageManager.Get("FORM_LevelDownloader", "msgLvlDownloadedSuccess");
                 MessageBox.Show(caption);
@@ -404,14 +400,14 @@ namespace SMM_D4TA_EDITOR
             byte[] fileBytes = File.ReadAllBytes(file1);
             byte[] fileBytes2 = File.ReadAllBytes(file2);
 
-            fileBytes[0x1A] = levelidBytes[0];
+            fileBytes[CourseIDsuffixStartOffset] = levelidBytes[0];
             fileBytes[0x1B] = levelidBytes[1];
             fileBytes[0x1C] = levelidBytes[2];
             fileBytes[0x1D] = levelidBytes[3];
             fileBytes[0x1E] = levelidBytes[4];
             fileBytes[0x1F] = levelidBytes[5];
 
-            fileBytes2[0x1A] = levelidBytes[0];
+            fileBytes2[CourseIDsuffixStartOffset] = levelidBytes[0];
             fileBytes2[0x1B] = levelidBytes[1];
             fileBytes2[0x1C] = levelidBytes[2];
             fileBytes2[0x1D] = levelidBytes[3];
@@ -419,23 +415,15 @@ namespace SMM_D4TA_EDITOR
             fileBytes2[0x1F] = levelidBytes[5];
 
             //Downloaded status 01
-            fileBytes[0x20] = 0x01;
-            fileBytes2[0x20] = 0x01;
+            fileBytes[DownloadedCourseOffset] = 0x01;
+            fileBytes2[DownloadedCourseOffset] = 0x01;
 
             //Add Mii bytes to the file
-            Array.Copy(MiiBytes, 0, fileBytes, 0x78, 96);
-            Array.Copy(MiiBytes, 0, fileBytes2, 0x78, 96);
+            Array.Copy(MiiBytes, 0, fileBytes, CourseMiiOffset, CourseMiiSize);
+            Array.Copy(MiiBytes, 0, fileBytes2, CourseMiiOffset, CourseMiiSize);
 
-            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
-            Crc32 crc32 = new Crc32();
-            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
-            Array.Reverse(checksum); //Parse to big-endian order
-            Array.Copy(checksum, 0, fileBytes, 0x08, 4);
-
-            Crc32 crc32_2 = new Crc32();
-            byte[] checksum_2 = crc32_2.ComputeChecksumBytes(fileBytes2, 0x10, fileBytes2.Length - 0x10);
-            Array.Reverse(checksum_2); //Parse to big-endian order
-            Array.Copy(checksum_2, 0, fileBytes2, 0x08, 4);
+            WriteChecksumCRC32(fileBytes);
+            WriteChecksumCRC32(fileBytes2);
 
             //Save and overwrites .cdt file
             File.WriteAllBytes(file1, fileBytes);
@@ -504,7 +492,7 @@ namespace SMM_D4TA_EDITOR
 
         static string GenerateCourseIdPrefix(ulong suffix) //This needs to be a global function
         {
-            byte[] baseKey = Encoding.ASCII.GetBytes("9f2b4678"); //Yeah, I'm going to make key access a flobal variable and also all constants
+            byte[] baseKey = Encoding.ASCII.GetBytes(KeyAccessSMM1); //Yeah, I'm going to make key access a flobal variable and also all constants //Aug 8th 2026: Done
             using (var md5 = MD5.Create())
             {
                 baseKey = md5.ComputeHash(baseKey);
@@ -701,7 +689,7 @@ namespace SMM_D4TA_EDITOR
             if (SaveFileDialog_SMM1Level.ShowDialog() == DialogResult.OK)
             {
                 //I added an extension to avoid errors at the part of the code which creates a folder with exactly the same name
-                await ControllerLevelDownloaderSMM1.DownloadLevel(level, SaveFileDialog_SMM1Level.FileName + ".tmp");
+                await ControllerLevelDownloaderSMM1.DownloadLevel(level, SaveFileDialog_SMM1Level.FileName + ".tmp", CHECK_DecompressASH0.Checked);
 
                 if (CHECK_DownloadMii.Checked) {
                     var MiiData = await ControllerMiiData.GetMiiDataFromLevel(level.creator);

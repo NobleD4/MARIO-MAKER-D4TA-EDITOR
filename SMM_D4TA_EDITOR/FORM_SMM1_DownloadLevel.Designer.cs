@@ -207,11 +207,10 @@
             // CHECK_DecompressASH0
             // 
             this.CHECK_DecompressASH0.AutoSize = true;
-            this.CHECK_DecompressASH0.Enabled = false;
             this.CHECK_DecompressASH0.Location = new System.Drawing.Point(12, 88);
             this.CHECK_DecompressASH0.Name = "CHECK_DecompressASH0";
             this.CHECK_DecompressASH0.Size = new System.Drawing.Size(134, 17);
-            this.CHECK_DecompressASH0.TabIndex = 9;
+            this.CHECK_DecompressASH0.TabIndex = 10;
             this.CHECK_DecompressASH0.Text = "< Decompress ASH0 >";
             this.CHECK_DecompressASH0.UseVisualStyleBackColor = true;
             // 
@@ -221,7 +220,7 @@
             this.CHECK_DownloadMii.Location = new System.Drawing.Point(152, 88);
             this.CHECK_DownloadMii.Name = "CHECK_DownloadMii";
             this.CHECK_DownloadMii.Size = new System.Drawing.Size(108, 17);
-            this.CHECK_DownloadMii.TabIndex = 10;
+            this.CHECK_DownloadMii.TabIndex = 11;
             this.CHECK_DownloadMii.Text = "< Download Mii >";
             this.CHECK_DownloadMii.UseVisualStyleBackColor = true;
             // 

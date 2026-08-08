@@ -13,48 +13,51 @@ namespace SMM_D4TA_EDITOR
     {
         public const string KeyAccessSMM1 = "9f2b4678";
 
-        public const ushort CourseDateYearStartOffset = 0x10;
-        public const ushort CourseDateYearEndOffset = 0x11;
-        public const ushort CourseDateMonthOffset = 0x12; //01 to 0C
-        public const ushort CourseDateDayOffset = 0x13; //01 to 1F
-        public const ushort CourseDateHourOffset = 0x14; //00 to 17
-        public const ushort CourseDateMinuteOffset = 0x15; //00 to 3B
+        public const byte CRC32FileOffset = 0x08;
+        public const byte CRC32FileSize = 4;
 
-        //ID: PRFX-SFX1-SFX2-SFX3 (PREFIX-SUBFFIX)
-        public const ushort CourseIDsuffixStartOffset = 0x1A;
-        public const ushort CourseIDsuffixEndOffset = 0x1F;
+        public const byte CourseDateYearStartOffset = 0x10;
+        public const byte CourseDateYearEndOffset = 0x11;
+        public const byte CourseDateMonthOffset = 0x12; //01 to 0C
+        public const byte CourseDateDayOffset = 0x13; //01 to 1F
+        public const byte CourseDateHourOffset = 0x14; //00 to 17
+        public const byte CourseDateMinuteOffset = 0x15; //00 to 3B
 
-        public const ushort CourseUpdatePhysicsOffset = 0x27; //There are physics from 00 to 07
+        //ID: PRFX-SFX1-SFX2-SFX3
+        public const byte CourseIDsuffixStartOffset = 0x1A;
+        public const byte CourseIDsuffixEndOffset = 0x1F;
 
-        public const ushort CourseNameStartOffset = 0x28;
-        public const ushort CourseNameEndOffset = 0x67;
+        public const byte CourseUpdatePhysicsOffset = 0x27; //There are physics from 00 to 07
 
-        public const ushort CourseMiiOffset = 0x78;
-        public const ushort CourseMiiSize = 96;
-        public const ushort CourseCreatorStartOffset = 0x92;
+        public const byte CourseNameStartOffset = 0x28;
+        public const byte CourseNameEndOffset = 0x67;
+
+        public const byte CourseMiiOffset = 0x78;
+        public const byte CourseMiiSize = 96;
+        public const byte CourseCreatorStartOffset = 0x92;
 
         //VALUES: [4D 31 = M1] [4D 33 = M3] [4D 57 = MW] [57 55 = WU]
-        public const ushort CourseStyleStartOffset = 0x6A;
-        public const ushort CourseStyleEndOffset = 0x6B;
+        public const byte CourseStyleStartOffset = 0x6A;
+        public const byte CourseStyleEndOffset = 0x6B;
 
-        public const ushort CourseTimerStartOffset = 0x70;
-        public const ushort CourseTimerEndOffset = 0x71;
+        public const byte CourseTimerStartOffset = 0x70;
+        public const byte CourseTimerEndOffset = 0x71;
 
-        public const ushort CourseScrollSettingsOffset = 0x72;
+        public const byte CourseScrollSettingsOffset = 0x72;
 
-        public const ushort CourseLengthStartOffset = 0x76;
-        public const ushort CourseLengthEndOffset = 0x77;
+        public const byte CourseLengthStartOffset = 0x76;
+        public const byte CourseLengthEndOffset = 0x77;
 
-        public const ushort OfficialCourseStatusOffset = 0x17; //00 to 08 or 0x1D
-        public const ushort DownloadedCourseOffset = 0x20;
-        public const ushort RemovedCourseOffset = 0x21;
-        public const ushort UploadedCourseOffset = 0x6E;
-        public const ushort ClearCheckOffset = 0x6F;
+        public const byte OfficialCourseStatusOffset = 0x17; //00 to 08 or 0x1D
+        public const byte DownloadedCourseOffset = 0x20;
+        public const byte RemovedCourseOffset = 0x21;
+        public const byte UploadedCourseOffset = 0x6E;
+        public const byte ClearCheckOffset = 0x6F;
 
         //VALUES: 00 = Ground, 01 Underground, 02 Castle, 03 Airship, 04 Underwater, 05 Ghost house
-        public const ushort CourseThemeOffset = 0x6D;
+        public const byte CourseThemeOffset = 0x6D;
 
-        public const ushort CourseCountryOffset = 0xDB; //From 000 to 195 represents a country
+        public const byte CourseCountryOffset = 0xDB; //From 000 to 195 represents a country
 
         public const ushort CourseFirstItemOffset = 0x108;
         public const int CourseLastItemOffset = 0x145EF;
@@ -65,6 +68,7 @@ namespace SMM_D4TA_EDITOR
         static public void ReadSMM1Course(ref byte[] tmpfileBytes,
             ref NumericUpDown CourseDateYear, ref NumericUpDown CourseDateMonth, ref NumericUpDown CourseDateDay,
             ref NumericUpDown CourseDateHour, ref NumericUpDown CourseDateMinute,
+            ref CheckBox SetDateTimeNow,
             ref ComboBox CourseUpdatePhysics,
             ref TextBox CourseIDprefix, ref TextBox CourseIDsuffix1, ref TextBox CourseIDsuffix2, ref TextBox CourseIDsuffix3,
             ref TextBox CourseName, ref ComboBox CourseStyleSettings,
@@ -396,17 +400,22 @@ namespace SMM_D4TA_EDITOR
             }
             else tmpfileBytes[ClearCheckOffset] = 0x00;
 
-            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
-            Crc32 crc32 = new Crc32();
-            byte[] checksum = crc32.ComputeChecksumBytes(tmpfileBytes, 0x10, tmpfileBytes.Length - 0x10);
-            Array.Reverse(checksum); //Parse to big-endian order
-            Array.Copy(checksum, 0, tmpfileBytes, 0x08, 4);
+            WriteChecksumCRC32(tmpfileBytes);
 
             //Save and overwrites .cdt file
             File.WriteAllBytes(currentFilePath, tmpfileBytes);
             string caption = LanguageManager.Get("FORM_Main", "cdtFileSaveTitle");
             string text = LanguageManager.Get("FORM_Main", "cdtFileSave");
             MessageBox.Show(text + currentFilePath, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        static public void WriteChecksumCRC32(byte[] fileBytes)
+        {
+            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
+            Crc32 crc32 = new Crc32();
+            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
+            Array.Reverse(checksum); //Parse to big-endian order
+            Array.Copy(checksum, 0, fileBytes, CRC32FileOffset, CRC32FileSize);
         }
 
         static public byte ExctractBytesFromOffset(byte[] fileBytes, int Offset) //I'll improve this function later

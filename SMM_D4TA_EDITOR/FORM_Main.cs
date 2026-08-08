@@ -216,6 +216,7 @@ namespace SMM_D4TA_EDITOR
                 ReadSMM1Course(ref tmpfileBytes,
                     ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay,
                     ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
+                    ref CHECK_SetDateTimeNow,
                     ref ComboBox_Physics_Settings,
                     ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
                     ref TB_CourseName, ref ComboBox_Style_Settings,
@@ -320,6 +321,11 @@ namespace SMM_D4TA_EDITOR
                 //ComboBox_OfficialCourse.Text = "";
                 //ComboBox_SelectMii.Text = "";
                 CHECK_SetDateTimeNow.Checked = state;
+                NUMERIC_CourseYear.Enabled = state;
+                NUMERIC_CourseMonth.Enabled = state;
+                NUMERIC_CourseDay.Enabled = state;
+                NUMERIC_CourseHour.Enabled = state;
+                NUMERIC_CourseMinute.Enabled = state;
                 CHECK_UploadReady.Checked = state;
                 CHECK_CourseStatusDownloaded.Checked = state;
                 CHECK_CourseStatusUploaded.Checked = state;
