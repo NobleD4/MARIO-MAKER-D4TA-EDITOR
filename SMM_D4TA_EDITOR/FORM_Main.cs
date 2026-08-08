@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static SMM_D4TA_EDITOR.SMM1FileFormats;
 
 namespace SMM_D4TA_EDITOR
 {
@@ -23,6 +24,8 @@ namespace SMM_D4TA_EDITOR
 
         DataTable MiiData_XML;
         string tmpMiiBase64;
+
+        private string currentFilePath = "";
 
         private void FORM_Main_Load(object sender, EventArgs e)
         {
@@ -53,67 +56,13 @@ namespace SMM_D4TA_EDITOR
             ComboBox_SelectMii.Items.Add(MiiData_XML.Rows[i][0]);
         }
 
-        public static Encoding DefEnc = Encoding.GetEncoding("Shift-JIS");
-        private string currentFilePath = "";
-
-        const string KeyAccessSMM1 = "9f2b4678";
-
-        const int CourseDateYearStartOffset = 0x10;
-        const int CourseDateYearEndOffset = 0x11;
-        const int CourseDateMonthOffset = 0x12; //01 to 0C
-        const int CourseDateDayOffset = 0x13; //01 to 1F
-        const int CourseDateHourOffset = 0x14; //00 to 17
-        const int CourseDateMinuteOffset = 0x15; //00 to 3B
-
-        //ID: PRFX-SFX1-SFX2-SFX3 (PREFIX-SUBFFIX)
-        const int CourseIDsuffixStartOffset = 0x1A;
-        const int CourseIDsuffixEndOffset = 0x1F;
-
-        const int CourseUpdatePhysicsOffset = 0x27; //There are physics from 00 to 07
-
-        const int CourseNameStartOffset = 0x28;
-        const int CourseNameEndOffset = 0x67;
-
-        const int CourseMiiOffset = 0x78;
-        const int CourseMiiSize = 96;
-        const int CourseCreatorStartOffset = 0x92;
-
-        //VALUES: [4D 31 = M1] [4D 33 = M3] [4D 57 = MW] [57 55 = WU]
-        const int CourseStyleStartOffset = 0x6A;
-        const int CourseStyleEndOffset = 0x6B;
-
-        const int CourseTimerStartOffset = 0x70;
-        const int CourseTimerEndOffset = 0x71;
-
-        const int CourseScrollSettingsOffset = 0x72;
-
-        const int CourseLengthStartOffset = 0x76;
-        const int CourseLengthEndOffset = 0x77;
-
-        const int OfficialCourseStatusOffset = 0x17; //00 to 08 or 0x1D
-        const int DownloadedCourseOffset = 0x20;
-        const int RemovedCourseOffset = 0x21;
-        const int UploadedCourseOffset = 0x6E;
-        const int ClearCheckOffset = 0x6F;
-
-        //VALUES: 00 = Ground, 01 Underground, 02 Castle, 03 Airship, 04 Underwater, 05 Ghost house
-        const int CourseThemeOffset = 0x6D;
-
-        const int CourseCountryOffset = 0xDB; //From 000 to 195 represents a country
-
-        const int CourseFirstItemOffset = 0x108;
-        const int CourseLastItemOffset = 0x145EF;
-
-        const int CourseFirstSoundOffset = 0x145F0;
-        const int CourseLastSoundOffset = 0x14F4F;
-
         private void ToolStripMenuItem_BYML_To_XML_Click(object sender, EventArgs e)
         {
             if (OpenFileDialog_BYML_To_XML.ShowDialog() == DialogResult.OK
             && SaveFileDialog_BYML_To_XML.ShowDialog() == DialogResult.OK)
             {
                 File.WriteAllText(SaveFileDialog_BYML_To_XML.FileName,
-                BymlConverter.GetXml(File.ReadAllBytes(OpenFileDialog_BYML_To_XML.FileName)), DefEnc);
+                BymlConverter.GetXml(File.ReadAllBytes(OpenFileDialog_BYML_To_XML.FileName)), Encoding.GetEncoding("Shift-JIS"));
             }
         }
 
@@ -123,7 +72,7 @@ namespace SMM_D4TA_EDITOR
             && SaveFileDialog_XML_To_BYML.ShowDialog() == DialogResult.OK)
             {
                 File.WriteAllBytes(SaveFileDialog_XML_To_BYML.FileName,
-                BymlConverter.GetByml(File.ReadAllText(OpenFileDialog_XML_To_BYML.FileName, DefEnc)));
+                BymlConverter.GetByml(File.ReadAllText(OpenFileDialog_XML_To_BYML.FileName, Encoding.GetEncoding("Shift-JIS"))));
             }
         }
 
@@ -252,191 +201,50 @@ namespace SMM_D4TA_EDITOR
         {
             NUMERIC_CourseTimer.Value = 65535;
         }
-
-        //Is now a function because Items and Sounds are separated inside .cdt but both works very similar
-        //I used to have to do only once the for loop to get both values returned at the end
-        //But after adding SFX section I have to call this function 4 times and would be epic to reduce it to 2 calls
-        private int GetLastPlacedOffset(byte[] fileBytes, int FirstOffset, int LastOffset, int JumpToNextOffsetValue, int NullValueCompare, bool ReturnOffsetOrID)
-        {
-            int lastObjectOffset = -1; //Will throw a -1 if this value doesn't change
-            int objectID = -1;
-
-            for (int j = FirstOffset; FirstOffset < LastOffset; FirstOffset += JumpToNextOffsetValue) //Feels like use glue and tape because I don't see any "j" increment, but I made it work
-            {
-                bool isEmpty = true;
-
-                //Check only a couple of times if current offset value equals entirely NullValueCompare
-                for (int i = 0; i < 2; i++)
-                {
-                    if (fileBytes[FirstOffset + i] != NullValueCompare)
-                    {
-                        isEmpty = false;
-                        break;
-                    }
-                }
-
-                //Stop if there's an empty block
-                if (isEmpty) break;
-
-                //Update if isn't empty
-                objectID = fileBytes[FirstOffset];
-                lastObjectOffset = FirstOffset;
-            }
-
-            if (ReturnOffsetOrID)
-            {
-                return lastObjectOffset;
-            }
-            else
-            {
-                return objectID;
-            }
-        }
         
         //I'm going to use this in ComboBox value changed function, so for now will be global
         byte[] tmpfileBytes;
 
         private void ToolStripMenuItem_SelectFile_Click(object sender, EventArgs e)
         {
+            ushort CourseScroll = 0;
+            ushort CourseUpdatePhysics = 0;
+            ushort CourseTheme = 0;
+            string CourseStyle = "";
+
+            string CourseName = "";
+            string CourseCreator = "";
+            string CourseID = "";
+            ushort CourseCountry = 0;
+            ushort CourseTimer = 0;
+            ushort CourseLength = 0;
+
+            ushort CourseDateYear = 0;
+            ushort CourseDateMonth = 0;
+            ushort CourseDateDay = 0;
+            ushort CourseDateHour = 0;
+            ushort CourseDateMinute = 0;
+
+            string LastItemPlaced = "";
+            string LastSFXplaced = "";
+
             if (OpenFileDialog_cdtFile.ShowDialog() == DialogResult.OK)
             {
-                LoadComboSelectMii();
-                //Set file path and read data
                 currentFilePath = OpenFileDialog_cdtFile.FileName;
                 tmpfileBytes = File.ReadAllBytes(currentFilePath);
 
-                //Extract date year bytes (from offset 0x10 to 0x11)
-                int CourseDateYearBytesLength = CourseDateYearEndOffset - CourseDateYearStartOffset + 1;
-                byte[] CourseDateYearBytes = new byte[CourseDateYearBytesLength];
-                Array.Copy(tmpfileBytes, CourseDateYearStartOffset, CourseDateYearBytes, 0, CourseDateYearBytesLength);
-                ushort CourseDateYear = (ushort)((CourseDateYearBytes[0] << 8) | CourseDateYearBytes[1]);
-
-                //Extract date month bytes offset 0x12)
-                ushort CourseDateMonth = ExctractBytesFromOffset(tmpfileBytes, CourseDateMonthOffset);
-
-                //Extract date day bytes offset 0x13)
-                ushort CourseDateDay = ExctractBytesFromOffset(tmpfileBytes, CourseDateDayOffset);
-
-                //Extract date hour bytes offset 0x14)
-                ushort CourseDateHour = ExctractBytesFromOffset(tmpfileBytes, CourseDateHourOffset);
-
-                //Extract date minute bytes offset 0x15)
-                ushort CourseDateMinute = ExctractBytesFromOffset(tmpfileBytes, CourseDateMinuteOffset); //This one used to have bytes from month for some reason before making function
-
-                //Extract course physics setting byte (offset 0x27)
-                ushort CourseUpdatePhysics = ExctractBytesFromOffset(tmpfileBytes, CourseUpdatePhysicsOffset);
-
-                //Extract course ID suffix byte (from offset 0x1A to 0x1F)
-                int CourseIDsuffixbytesLength = CourseIDsuffixEndOffset - CourseIDsuffixStartOffset + 1;
-                byte[] CourseIDsuffixBytes = new byte[CourseIDsuffixbytesLength];
-                Array.Copy(tmpfileBytes, CourseIDsuffixStartOffset, CourseIDsuffixBytes, 0, CourseIDsuffixbytesLength);
-                //Fill to 8 bytes
-                byte[] paddedBytes = new byte[8];
-                Array.Reverse(CourseIDsuffixBytes);
-                Array.Copy(CourseIDsuffixBytes, paddedBytes, CourseIDsuffixbytesLength);
-                ulong CourseIDsuffix = BitConverter.ToUInt64(paddedBytes, 0);
-                string prefix = GenerateCourseIdPrefix(CourseIDsuffix);
-                string CourseID = $"{prefix}{CourseIDsuffix:X12}";
-
-                //Extract course name bytes (from offset 0x28 to 0x67)
-                int CourseNameBytesLength = CourseNameEndOffset - CourseNameStartOffset + 1;
-                byte[] CourseNameBytes = new byte[CourseNameBytesLength];
-                Array.Copy(tmpfileBytes, CourseNameStartOffset, CourseNameBytes, 0, CourseNameBytesLength);
-                Array.Reverse(CourseNameBytes); //For some reason reversing this displays correctly chars
-                //Convert bytes to a char array using UTF-16LE encode
-                char[] charArray = Encoding.Unicode.GetString(CourseNameBytes).TrimEnd('\0').ToArray();
-                Array.Reverse(charArray); //To make sure the course name is not reversed
-                string CourseName = new string(charArray); //CourseName works!
-
-                //Extract course style bytes (from offset 0x6A to 0x6B)
-                int CourseStyleBytesLength = CourseStyleEndOffset - CourseStyleStartOffset + 1;
-                byte[] CourseStyleBytes = new byte[CourseStyleBytesLength];
-                Array.Copy(tmpfileBytes, CourseStyleStartOffset, CourseStyleBytes, 0, CourseStyleBytesLength);
-                //Convert bytes to string using ASCII encode
-                string CourseStyle = Encoding.ASCII.GetString(CourseStyleBytes);
-
-                //Extract course theme setting byte (offset 0x6D)
-                ushort CourseTheme = ExctractBytesFromOffset(tmpfileBytes, CourseThemeOffset);
-
-                //Extract course timer bytes (from offset 0x70 to 0x71)
-                int CourseTimerBytesLength = CourseTimerEndOffset - CourseTimerStartOffset + 1;
-                byte[] CourseTimerBytes = new byte[CourseTimerBytesLength];
-                Array.Copy(tmpfileBytes, CourseTimerStartOffset, CourseTimerBytes, 0, CourseTimerBytesLength);
-                ushort CourseTimer = (ushort)((CourseTimerBytes[0] << 8) | CourseTimerBytes[1]);
-
-                //Extract course length bytes (from offset 0x76 to 0x77)
-                int CourseLengthBytesLENGTH = CourseLengthEndOffset - CourseLengthStartOffset + 1;
-                byte[] CourseLengthBytes = new byte[CourseLengthBytesLENGTH];
-                Array.Copy(tmpfileBytes, CourseLengthStartOffset, CourseLengthBytes, 0, CourseLengthBytesLENGTH);
-                ushort CourseLength = (ushort)((CourseLengthBytes[0] << 8) | CourseLengthBytes[1]);
-
-                //Extract course autoscroll setting byte (offset 0x72)
-                ushort CourseScroll = ExctractBytesFromOffset(tmpfileBytes, CourseScrollSettingsOffset);
-
-                //Extract course creator bytes (from offset 0x92 to ...)
-
-                //TRUST ME, IF THE "+ 1" IS IN THIS LINE INSTEAD OF NEXT ONE CRASHES THANKS TO WHATEVER I DID, BUT HOPEFULLY WORKS RIGHT NOW    (May 8th 2026: I'm finally changing this part and understanding whatever I tried to did here when I had less experience)
-                //Epic hardcode to add an extra index to array, because for some that previously mentioned "+ 1" works here                     (May 8th 2026: Which "+1"? I've just deleted)
-                //Number 1 here because I want starts the copy on index 1 of array instead of index 0 comparing it with other chunk reads       (May 8th 2026: Bad decision, it needs to be a 0 because it's were index starts to copy bytes from "OpenFileDialog_cdtFile.FileName")
-                //Right now that empty extra index is at the end of array because I need last index as 0
-                //So extra index allows to have a properly encoding of first char because game reads first the char code number and then a zero, but if this zero doesn't exists encodes a totally different char
-                //What if actually there's an easier way to read these little endian and big endian things and I'm complicating myself?
-                //I did exactly the same thing as course name  //I was also thinking these parts could be a function because do almost the same thing with different values, but nahhhh, it works right now so I shouldn't change this
-
-                //May 8th 2026: I completely re-wrote the creator bytes extraction, but the previous comments are still funny
-                byte[] CourseCreatorBytes = new byte[20];
-                Array.Copy(tmpfileBytes, CourseCreatorStartOffset, CourseCreatorBytes, 0, CourseCreatorBytes.Length);
-                char[] charCreatorArray = Encoding.Unicode.GetString(CourseCreatorBytes).TrimEnd('\0').ToArray();
-                string CourseCreator = new string(charCreatorArray);
-
-                //Extract creator country bytes (offset 0xDB)
-                ushort CourseCountry = ExctractBytesFromOffset(tmpfileBytes, CourseCountryOffset);
-
-                const int Jump0x20 = 0x20;  //Basically because there's a 0x20 sized space between each item placed
-                int lastItemOffset = -1; //Will throw a -1 if this value doesn't change
-                int itemID = -1;
-
-                lastItemOffset = GetLastPlacedOffset(tmpfileBytes, CourseFirstItemOffset, CourseLastItemOffset, Jump0x20, 0x00, true);
-                itemID = GetLastPlacedOffset(tmpfileBytes, CourseFirstItemOffset, CourseLastItemOffset, Jump0x20, 0x00, false);
-
-                string lastItemPlacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemPlaced");
-                string lastItemOffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastItemOffset");
-
-                if (itemID != -1)
-                {
-                    LABEL_LastItemPlaced.Text = $"{lastItemPlacedLang} {itemID:000} (0x{itemID:X2})    "
-                    + $"{lastItemOffsetLang} 0x{lastItemOffset:X2}";
-                }
-                else
-                {
-                    string textNoData = LanguageManager.Get("FORM_Main", "msgNoData");
-                    LABEL_LastItemPlaced.Text = $"{lastItemPlacedLang} {textNoData}    "
-                    + $"{lastItemOffsetLang} {textNoData}";
-                }
-
-                const int Jump0x08 = 0x08;  //Basically because there's a 0x08 sized space between each sound placed
-                int lastSFXoffset = -1; //Will throw a -1 if this value doesn't change
-                int SoundID = -1;
-
-                lastSFXoffset = GetLastPlacedOffset(tmpfileBytes, CourseFirstSoundOffset, CourseLastSoundOffset, Jump0x08, 0xFF, true);
-                SoundID = GetLastPlacedOffset(tmpfileBytes, CourseFirstSoundOffset, CourseLastSoundOffset, Jump0x08, 0xFF, false);
-
-                string lastSFXplacedLang = LanguageManager.Get("FORM_Main", "LABEL_LastSFXplaced");
-                string lastSFXoffsetLang = LanguageManager.Get("FORM_Main", "LABEL_LastSFXoffset");
-
-                if (SoundID != -1)
-                {
-                    LABEL_LastSFXplaced.Text = $"{lastSFXplacedLang} {SoundID:000} (0x{SoundID:X2})    "
-                    + $"{lastSFXoffsetLang} 0x{lastSFXoffset:X2}";
-                }
-                else
-                {
-                    string textNoData = LanguageManager.Get("FORM_Main", "msgNoData");
-                    LABEL_LastSFXplaced.Text = $"{lastSFXplacedLang} {textNoData}    "
-                    + $"{lastSFXoffsetLang} {textNoData}";
-                }
-
+                LoadComboSelectMii();
+                ReadSMM1Course(ref tmpfileBytes,
+                ref CourseDateYear, ref CourseDateMonth, ref CourseDateDay, ref CourseDateHour, ref CourseDateMinute,
+                ref CourseUpdatePhysics,
+                ref CourseID, ref CourseName, ref CourseStyle,
+                ref CourseTheme, ref CourseTimer, ref CourseScroll, ref CourseLength,
+                ref CourseCreator, ref CourseCountry,
+                ref LastItemPlaced, ref LastSFXplaced);
                 UIstate(true);
+
+                LABEL_LastItemPlaced.Text = LastItemPlaced;
+                LABEL_LastSFXplaced.Text = LastSFXplaced;
 
                 if (CourseScroll == 0) ComboBox_Scroll_Settings.SelectedIndex = 0;
                 else if (CourseScroll == 1) ComboBox_Scroll_Settings.SelectedIndex = 1;
@@ -513,27 +321,6 @@ namespace SMM_D4TA_EDITOR
                 NUMERIC_CourseHour.Value = CourseDateHour;
                 NUMERIC_CourseMinute.Value = CourseDateMinute;
             }
-        }
-
-        static string GenerateCourseIdPrefix(ulong suffix)
-        {
-            byte[] baseKey = Encoding.ASCII.GetBytes(KeyAccessSMM1);
-            //MD5 to baseKey
-            using (var md5 = MD5.Create())
-            {
-                baseKey = md5.ComputeHash(baseKey);
-            }
-            //Little-endian suffix
-            byte[] data = BitConverter.GetBytes(suffix);
-            //HMAC-MD5
-            byte[] checksum;
-            using (var hmac = new HMACMD5(baseKey))
-            {
-                checksum = hmac.ComputeHash(data);
-            }
-            //Checksum[3:1:-1], bytes 3 & 2 reversed
-            string prefix = checksum[3].ToString("X2") + checksum[2].ToString("X2");
-            return prefix;
         }
 
         private void BUTTON_Cancel_Click(object sender, EventArgs e)
@@ -819,15 +606,6 @@ namespace SMM_D4TA_EDITOR
             }
         }
 
-        public byte ExctractBytesFromOffset(byte [] fileBytes, int Offset) //I'll improve this function later
-        {
-            byte[] EntryByte = new byte[1];
-            Array.Copy(fileBytes, Offset, EntryByte, 0, 1);
-            ushort ResultByte = (ushort)(EntryByte[0]);
-
-            return (byte)ResultByte; //Why am I creating a "Result Byte" as "ushort" type and then converting it to byte?!
-        }
-
         private void BUTTON_CopyID_Click(object sender, EventArgs e)
         {
             //You can copy only if ID is fully filled
@@ -889,8 +667,6 @@ namespace SMM_D4TA_EDITOR
                 }
             }
         }
-
-
 
         private void ComboBox_SelectMii_SelectedIndexChanged(object sender, EventArgs e)
         {
