@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -62,20 +63,21 @@ namespace SMM_D4TA_EDITOR
         public const int CourseLastSoundOffset = 0x14F4F;
 
         static public void ReadSMM1Course(ref byte[] tmpfileBytes,
-        ref NumericUpDown CourseDateYear, ref NumericUpDown CourseDateMonth, ref NumericUpDown CourseDateDay,
-        ref NumericUpDown CourseDateHour, ref NumericUpDown CourseDateMinute,
-        ref ComboBox CourseUpdatePhysics,
-        ref TextBox CourseIDprefix, ref TextBox CourseIDsuffix1, ref TextBox CourseIDsuffix2, ref TextBox CourseIDsuffix3,
-        ref TextBox CourseName, ref ComboBox CourseStyleSettings,
-        ref ComboBox CourseTheme, ref NumericUpDown CourseTimer, ref ComboBox CourseScroll,
-        ref NumericUpDown CourseLength,
-        ref TextBox CourseCreator, ref NumericUpDown CourseCountry,
-        ref Label LastItemPlaced, ref Label LastSFXplaced,
-        ref ComboBox OfficialCourse,
-        ref CheckBox CourseStatusDownloaded,
-        ref CheckBox CourseStatusUploaded,
-        ref CheckBox CourseStatusRemoved,
-        ref Label ClearCheckStatus)
+            ref NumericUpDown CourseDateYear, ref NumericUpDown CourseDateMonth, ref NumericUpDown CourseDateDay,
+            ref NumericUpDown CourseDateHour, ref NumericUpDown CourseDateMinute,
+            ref ComboBox CourseUpdatePhysics,
+            ref TextBox CourseIDprefix, ref TextBox CourseIDsuffix1, ref TextBox CourseIDsuffix2, ref TextBox CourseIDsuffix3,
+            ref TextBox CourseName, ref ComboBox CourseStyleSettings,
+            ref ComboBox CourseTheme, ref NumericUpDown CourseTimer, ref ComboBox CourseScroll,
+            ref NumericUpDown CourseLength,
+            ref TextBox CourseCreator, ref NumericUpDown CourseCountry,
+            ref Label LastItemPlaced, ref Label LastSFXplaced,
+            ref ComboBox OfficialCourse,
+            ref CheckBox CourseStatusDownloaded,
+            ref CheckBox CourseStatusUploaded,
+            ref CheckBox CourseStatusRemoved,
+            ref Label ClearCheckStatus
+        )
         {
             //Set file path and read data
             //currentFilePath = OpenFileDialog_cdtFile.FileName;
@@ -247,6 +249,164 @@ namespace SMM_D4TA_EDITOR
             else CourseStatusUploaded.Checked = false;
             if (tmpfileBytes[RemovedCourseOffset] == 0x01) CourseStatusRemoved.Checked = true;
             else CourseStatusRemoved.Checked = false;
+        }
+
+        static public void WriteSMM1Course(ref string currentFilePath,
+            ref NumericUpDown CourseDateYear, ref NumericUpDown CourseDateMonth, ref NumericUpDown CourseDateDay,
+            ref NumericUpDown CourseDateHour, ref NumericUpDown CourseDateMinute,
+            ref ComboBox CourseUpdatePhysics,
+            ref TextBox CourseIDprefix, ref TextBox CourseIDsuffix1, ref TextBox CourseIDsuffix2, ref TextBox CourseIDsuffix3,
+            ref TextBox CourseName, ref ComboBox CourseStyleSettings,
+            ref ComboBox CourseTheme, ref NumericUpDown CourseTimer, ref ComboBox CourseScroll,
+            ref NumericUpDown CourseLength,
+            ref string CourseCreator, ref NumericUpDown CourseCountry,
+            ref ComboBox OfficialCourse,
+            ref CheckBox CourseStatusDownloaded,
+            ref CheckBox CourseStatusUploaded,
+            ref CheckBox CourseStatusRemoved,
+            ref CheckBox ClearCheckStatus
+        )
+        {
+            //Set file path and read data
+            byte[] tmpfileBytes = File.ReadAllBytes(currentFilePath);
+
+            ushort NewCourseDateYear = (ushort)CourseDateYear.Value;
+            tmpfileBytes[CourseDateYearStartOffset] = (byte)(NewCourseDateYear >> 8);
+            tmpfileBytes[CourseDateYearEndOffset] = (byte)(NewCourseDateYear & 0xFF);
+
+            ushort NewCourseDateMonth = (ushort)CourseDateMonth.Value;
+            tmpfileBytes[CourseDateMonthOffset] = (byte)(NewCourseDateMonth);
+
+            ushort NewCourseDateDay = (ushort)CourseDateDay.Value;
+            tmpfileBytes[CourseDateDayOffset] = (byte)(NewCourseDateDay);
+
+            ushort NewCourseDateHour = (ushort)CourseDateHour.Value;
+            tmpfileBytes[CourseDateHourOffset] = (byte)(NewCourseDateHour);
+
+            ushort NewCourseDateMinute = (ushort)CourseDateMinute.Value;
+            tmpfileBytes[CourseDateMinuteOffset] = (byte)(NewCourseDateMinute);
+
+            byte physicsValue = 0;
+            if (CourseUpdatePhysics.SelectedIndex == 1) physicsValue = 1;
+            else if (CourseUpdatePhysics.SelectedIndex == 2) physicsValue = 2;
+            else if (CourseUpdatePhysics.SelectedIndex == 3) physicsValue = 3;
+            else if (CourseUpdatePhysics.SelectedIndex == 4) physicsValue = 4;
+            else if (CourseUpdatePhysics.SelectedIndex == 5) physicsValue = 5;
+            else if (CourseUpdatePhysics.SelectedIndex == 6) physicsValue = 6;
+            else if (CourseUpdatePhysics.SelectedIndex == 7) physicsValue = 7;
+            else physicsValue = 0;
+            //Insert physics byte value to the file
+            tmpfileBytes[CourseUpdatePhysicsOffset] = physicsValue;
+
+            //This writes the 6 suffix bytes for course ID
+            byte[] NewIDsuffix1Bytes = new byte[2];
+            byte[] NewIDsuffix2Bytes = new byte[2];
+            byte[] NewIDsuffix3Bytes = new byte[2];
+            int.TryParse(CourseIDsuffix1.Text, System.Globalization.NumberStyles.HexNumber, null, out int _CourseIDsuffix1);
+            int.TryParse(CourseIDsuffix2.Text, System.Globalization.NumberStyles.HexNumber, null, out int _CourseIDsuffix2);
+            int.TryParse(CourseIDsuffix3.Text, System.Globalization.NumberStyles.HexNumber, null, out int _CourseIDsuffix3);
+            //I think is easier right now to add the offsets manually for this specifically
+            tmpfileBytes[CourseIDsuffixStartOffset] = (byte)(_CourseIDsuffix1 >> 8);
+            tmpfileBytes[0x1B] = (byte)(_CourseIDsuffix1 & 0xFF);
+            tmpfileBytes[0x1C] = (byte)(_CourseIDsuffix2 >> 8);
+            tmpfileBytes[0x1D] = (byte)(_CourseIDsuffix2 & 0xFF);
+            tmpfileBytes[0x1E] = (byte)(_CourseIDsuffix3 >> 8);
+            tmpfileBytes[CourseIDsuffixEndOffset] = (byte)(_CourseIDsuffix3 & 0xFF);
+
+            //To write a new course name correctly, I'm doing in reverse whatever I did to read
+            int NewCourseNameBytesLength = CourseNameEndOffset - CourseNameStartOffset + 1;
+            char[] charArray = CourseName.Text.ToArray();
+            Array.Reverse(charArray);
+            byte[] NewCourseNameBytes = new byte[NewCourseNameBytesLength];
+            NewCourseNameBytes = Encoding.Unicode.GetBytes(charArray);
+            Array.Reverse(NewCourseNameBytes);
+            //Create a 64 bytes array filled with zeros
+            byte[] paddedNameBytes = new byte[64]; //64 bytes (32 * 2)
+            Array.Clear(paddedNameBytes, 0, 64);
+            //Copy course name bytes to beginning of array
+            Array.Copy(NewCourseNameBytes, paddedNameBytes, NewCourseNameBytes.Length);
+            //Insert those bytes to the file
+            Array.Copy(paddedNameBytes, 0, tmpfileBytes, CourseNameStartOffset, 64);
+
+            string styleValue;
+            if (CourseStyleSettings.SelectedIndex == 0) styleValue = "M1";
+            else if (CourseStyleSettings.SelectedIndex == 1) styleValue = "M3";
+            else if (CourseStyleSettings.SelectedIndex == 2) styleValue = "MW";
+            else if (CourseStyleSettings.SelectedIndex == 3) styleValue = "WU";
+            else styleValue = "M1";
+            //Insert style byte value to the file
+            byte[] styleBytes = Encoding.ASCII.GetBytes(styleValue);
+            tmpfileBytes[CourseStyleStartOffset] = styleBytes[0];
+            tmpfileBytes[CourseStyleEndOffset] = styleBytes[1];
+
+            byte themeValue = 0;
+            if (CourseTheme.SelectedIndex == 1) themeValue = 1;
+            else if (CourseTheme.SelectedIndex == 2) themeValue = 2;
+            else if (CourseTheme.SelectedIndex == 3) themeValue = 3;
+            else if (CourseTheme.SelectedIndex == 4) themeValue = 4;
+            else if (CourseTheme.SelectedIndex == 5) themeValue = 5;
+            else themeValue = 0;
+            //Insert theme byte value to the file
+            tmpfileBytes[CourseThemeOffset] = themeValue;
+
+            ushort NewCourseTimer = (ushort)CourseTimer.Value;
+            tmpfileBytes[CourseTimerStartOffset] = (byte)(NewCourseTimer >> 8);
+            tmpfileBytes[CourseTimerEndOffset] = (byte)(NewCourseTimer & 0xFF);
+
+            byte scrollValue = 0;
+            if (CourseScroll.SelectedIndex == 1) scrollValue = 1;
+            else if (CourseScroll.SelectedIndex == 2) scrollValue = 2;
+            else if (CourseScroll.SelectedIndex == 3) scrollValue = 3;
+            else if (CourseScroll.SelectedIndex == 4) scrollValue = 4;
+            else scrollValue = 0;
+            //Insert scroll byte value to the file
+            tmpfileBytes[CourseScrollSettingsOffset] = scrollValue;
+
+            ushort NewCourseLength = (ushort)CourseLength.Value;
+            tmpfileBytes[CourseLengthStartOffset] = (byte)(NewCourseLength >> 8);
+            tmpfileBytes[CourseLengthEndOffset] = (byte)(NewCourseLength & 0xFF);
+
+            byte[] MiiFileBytes = Convert.FromBase64String(CourseCreator);
+            Array.Copy(MiiFileBytes, 0, tmpfileBytes, CourseMiiOffset, CourseMiiSize); //Creator Mii writing instead of creator name
+
+            ushort NewCourseCountry = (ushort)CourseCountry.Value;
+            tmpfileBytes[CourseCountryOffset] = (byte)(NewCourseCountry);
+
+            if (OfficialCourse.SelectedIndex == 1) tmpfileBytes[OfficialCourseStatusOffset] = 1;
+            else if (OfficialCourse.SelectedIndex == 2) tmpfileBytes[OfficialCourseStatusOffset] = 2;
+            else if (OfficialCourse.SelectedIndex == 3) tmpfileBytes[OfficialCourseStatusOffset] = 3;
+            else if (OfficialCourse.SelectedIndex == 4) tmpfileBytes[OfficialCourseStatusOffset] = 4;
+            else if (OfficialCourse.SelectedIndex == 5) tmpfileBytes[OfficialCourseStatusOffset] = 5;
+            else if (OfficialCourse.SelectedIndex == 6) tmpfileBytes[OfficialCourseStatusOffset] = 6;
+            else if (OfficialCourse.SelectedIndex == 7) tmpfileBytes[OfficialCourseStatusOffset] = 7;
+            else if (OfficialCourse.SelectedIndex == 8) tmpfileBytes[OfficialCourseStatusOffset] = 8;
+            else if (OfficialCourse.SelectedIndex == 9) tmpfileBytes[OfficialCourseStatusOffset] = 0x1D;
+            else tmpfileBytes[OfficialCourseStatusOffset] = 0x0;
+
+            if (CourseStatusDownloaded.Checked) tmpfileBytes[DownloadedCourseOffset] = 0x01;
+            else tmpfileBytes[DownloadedCourseOffset] = 0x00;
+            if (CourseStatusUploaded.Checked) tmpfileBytes[UploadedCourseOffset] = 0x01;
+            else tmpfileBytes[UploadedCourseOffset] = 0x00;
+            if (CourseStatusRemoved.Checked) tmpfileBytes[RemovedCourseOffset] = 0x01; //Here used to be an "UploadedCourseOffset" instead of "RemovedCourseOffset", hopefully I'm testing it to see if there's any bug
+            else tmpfileBytes[RemovedCourseOffset] = 0x00;
+
+            if (ClearCheckStatus.Checked)
+            {
+                tmpfileBytes[ClearCheckOffset] = 0x01;
+            }
+            else tmpfileBytes[ClearCheckOffset] = 0x00;
+
+            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
+            Crc32 crc32 = new Crc32();
+            byte[] checksum = crc32.ComputeChecksumBytes(tmpfileBytes, 0x10, tmpfileBytes.Length - 0x10);
+            Array.Reverse(checksum); //Parse to big-endian order
+            Array.Copy(checksum, 0, tmpfileBytes, 0x08, 4);
+
+            //Save and overwrites .cdt file
+            File.WriteAllBytes(currentFilePath, tmpfileBytes);
+            string caption = LanguageManager.Get("FORM_Main", "cdtFileSaveTitle");
+            string text = LanguageManager.Get("FORM_Main", "cdtFileSave");
+            MessageBox.Show(text + currentFilePath, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         static public byte ExctractBytesFromOffset(byte[] fileBytes, int Offset) //I'll improve this function later

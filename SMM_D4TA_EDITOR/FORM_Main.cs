@@ -214,19 +214,21 @@ namespace SMM_D4TA_EDITOR
 
                 LoadComboSelectMii();
                 ReadSMM1Course(ref tmpfileBytes,
-                ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay, ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
-                ref ComboBox_Physics_Settings,
-                ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
-                ref TB_CourseName, ref ComboBox_Style_Settings,
-                ref ComboBox_Theme_Settings, ref NUMERIC_CourseTimer, ref ComboBox_Scroll_Settings,
-                ref NUMERIC_Length,
-                ref TB_CourseCreator, ref NUMERIC_CountryCode,
-                ref LABEL_LastItemPlaced, ref LABEL_LastSFXplaced,
-                ref ComboBox_OfficialCourse,
-                ref CHECK_CourseStatusDownloaded,
-                ref CHECK_CourseStatusUploaded,
-                ref CHECK_CourseStatusRemoved,
-                ref LABEL_ClearCheckStatus);
+                    ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay,
+                    ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
+                    ref ComboBox_Physics_Settings,
+                    ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
+                    ref TB_CourseName, ref ComboBox_Style_Settings,
+                    ref ComboBox_Theme_Settings, ref NUMERIC_CourseTimer, ref ComboBox_Scroll_Settings,
+                    ref NUMERIC_Length,
+                    ref TB_CourseCreator, ref NUMERIC_CountryCode,
+                    ref LABEL_LastItemPlaced, ref LABEL_LastSFXplaced,
+                    ref ComboBox_OfficialCourse,
+                    ref CHECK_CourseStatusDownloaded,
+                    ref CHECK_CourseStatusUploaded,
+                    ref CHECK_CourseStatusRemoved,
+                    ref LABEL_ClearCheckStatus
+                );
                 UIstate(true);
             }
         }
@@ -239,148 +241,21 @@ namespace SMM_D4TA_EDITOR
         private void BUTTON_SaveFile_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(currentFilePath)) return;
-
-            //Set file path and read data
-            byte[] fileBytes = File.ReadAllBytes(currentFilePath);
-
-            //This writes the 6 suffix bytes for course ID
-            byte[] NewIDsuffix1Bytes = new byte[2];
-            byte[] NewIDsuffix2Bytes = new byte[2];
-            byte[] NewIDsuffix3Bytes = new byte[2];
-            int.TryParse(TB_CourseIDsuffix1.Text, System.Globalization.NumberStyles.HexNumber, null, out int CourseIDsuffix1);
-            int.TryParse(TB_CourseIDsuffix2.Text, System.Globalization.NumberStyles.HexNumber, null, out int CourseIDsuffix2);
-            int.TryParse(TB_CourseIDsuffix3.Text, System.Globalization.NumberStyles.HexNumber, null, out int CourseIDsuffix3);
-            //I think is easier right now to add the offsets manually for this specifically
-            fileBytes[CourseIDsuffixStartOffset] = (byte)(CourseIDsuffix1 >> 8);
-            fileBytes[0x1B] = (byte)(CourseIDsuffix1 & 0xFF);
-            fileBytes[0x1C] = (byte)(CourseIDsuffix2 >> 8);
-            fileBytes[0x1D] = (byte)(CourseIDsuffix2 & 0xFF);
-            fileBytes[0x1E] = (byte)(CourseIDsuffix3 >> 8);
-            fileBytes[CourseIDsuffixEndOffset] = (byte)(CourseIDsuffix3 & 0xFF);
-
-            //To write a new course name correctly, I'm doing in reverse whatever I did to read
-            int NewCourseNameBytesLength = CourseNameEndOffset - CourseNameStartOffset + 1;
-            char[] charArray = TB_CourseName.Text.ToArray();
-            Array.Reverse(charArray);
-            byte[] NewCourseNameBytes = new byte[NewCourseNameBytesLength];
-            NewCourseNameBytes = Encoding.Unicode.GetBytes(charArray);
-            Array.Reverse(NewCourseNameBytes);
-            //Create a 64 bytes array filled with zeros
-            byte[] paddedNameBytes = new byte[64]; //64 bytes (32 * 2)
-            Array.Clear(paddedNameBytes, 0, 64);
-            //Copy course name bytes to beginning of array
-            Array.Copy(NewCourseNameBytes, paddedNameBytes, NewCourseNameBytes.Length);
-            //Insert those bytes to the file
-            Array.Copy(paddedNameBytes, 0, fileBytes, CourseNameStartOffset, 64);
-
-            byte[] MiiFileBytes = Convert.FromBase64String(tmpMiiBase64);
-            Array.Copy(MiiFileBytes, 0, fileBytes, CourseMiiOffset, CourseMiiSize); //Creator Mii writing instead of creator name
-
-            ushort NewCourseTimer = (ushort)NUMERIC_CourseTimer.Value;
-            fileBytes[CourseTimerStartOffset] = (byte)(NewCourseTimer >> 8); //MSB
-            fileBytes[CourseTimerEndOffset] = (byte)(NewCourseTimer & 0xFF); //LSB
-
-            ushort NewCourseLength = (ushort)NUMERIC_Length.Value;
-            fileBytes[CourseLengthStartOffset] = (byte)(NewCourseLength >> 8); //MSB
-            fileBytes[CourseLengthEndOffset] = (byte)(NewCourseLength & 0xFF); //LSB
-
-            ushort NewCourseCountry = (ushort)NUMERIC_CountryCode.Value;
-            fileBytes[CourseCountryOffset] = (byte)(NewCourseCountry);
-
-            ushort NewCourseDateYear = (ushort)NUMERIC_CourseYear.Value;
-            fileBytes[CourseDateYearStartOffset] = (byte)(NewCourseDateYear >> 8);
-            fileBytes[CourseDateYearEndOffset] = (byte)(NewCourseDateYear & 0xFF);
-
-            ushort NewCourseDateMonth = (ushort)NUMERIC_CourseMonth.Value;
-            fileBytes[CourseDateMonthOffset] = (byte)(NewCourseDateMonth);
-
-            ushort NewCourseDateDay = (ushort)NUMERIC_CourseDay.Value;
-            fileBytes[CourseDateDayOffset] = (byte)(NewCourseDateDay);
-
-            ushort NewCourseDateHour = (ushort)NUMERIC_CourseHour.Value;
-            fileBytes[CourseDateHourOffset] = (byte)(NewCourseDateHour);
-
-            ushort NewCourseDateMinute = (ushort)NUMERIC_CourseMinute.Value;
-            fileBytes[CourseDateMinuteOffset] = (byte)(NewCourseDateMinute);
-
-            if (CHECK_UploadReady.Checked)
-            {
-                fileBytes[ClearCheckOffset] = 0x01;
-            }
-
-            byte physicsValue = 0;
-            if (ComboBox_Physics_Settings.SelectedIndex == 1) physicsValue = 1;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 2) physicsValue = 2;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 3) physicsValue = 3;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 4) physicsValue = 4;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 5) physicsValue = 5;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 6) physicsValue = 6;
-            else if (ComboBox_Physics_Settings.SelectedIndex == 7) physicsValue = 7;
-            else physicsValue = 0;
-            //Insert physics byte value to the file
-            fileBytes[CourseUpdatePhysicsOffset] = physicsValue;
-
-            byte scrollValue = 0;
-            if (ComboBox_Scroll_Settings.SelectedIndex == 1) scrollValue = 1;
-            else if (ComboBox_Scroll_Settings.SelectedIndex == 2) scrollValue = 2;
-            else if (ComboBox_Scroll_Settings.SelectedIndex == 3) scrollValue = 3;
-            else if (ComboBox_Scroll_Settings.SelectedIndex == 4) scrollValue = 4;
-            else scrollValue = 0;
-            //Insert scroll byte value to the file
-            fileBytes[CourseScrollSettingsOffset] = scrollValue;
-
-            byte themeValue = 0;
-            if (ComboBox_Theme_Settings.SelectedIndex == 1) themeValue = 1;
-            else if (ComboBox_Theme_Settings.SelectedIndex == 2) themeValue = 2;
-            else if (ComboBox_Theme_Settings.SelectedIndex == 3) themeValue = 3;
-            else if (ComboBox_Theme_Settings.SelectedIndex == 4) themeValue = 4;
-            else if (ComboBox_Theme_Settings.SelectedIndex == 5) themeValue = 5;
-            else themeValue = 0;
-            //Insert theme byte value to the file
-            fileBytes[CourseThemeOffset] = themeValue;
-
-            string styleValue;
-
-            if (ComboBox_Style_Settings.SelectedIndex == 0) styleValue = "M1";
-            else if (ComboBox_Style_Settings.SelectedIndex == 1) styleValue = "M3";
-            else if (ComboBox_Style_Settings.SelectedIndex == 2) styleValue = "MW";
-            else if (ComboBox_Style_Settings.SelectedIndex == 3) styleValue = "WU";
-            else styleValue = "M1";
-            //Insert style byte value to the file
-            byte[] styleBytes = Encoding.ASCII.GetBytes(styleValue);
-            fileBytes[CourseStyleStartOffset] = styleBytes[0];
-            fileBytes[CourseStyleEndOffset] = styleBytes[1];
-
-            if (ComboBox_OfficialCourse.SelectedIndex == 1) fileBytes[OfficialCourseStatusOffset] = 1;
-            else if (ComboBox_OfficialCourse.SelectedIndex == 2) fileBytes[OfficialCourseStatusOffset] = 2;
-            else if(ComboBox_OfficialCourse.SelectedIndex == 3) fileBytes[OfficialCourseStatusOffset] = 3;
-            else if(ComboBox_OfficialCourse.SelectedIndex == 4) fileBytes[OfficialCourseStatusOffset] = 4;
-            else if(ComboBox_OfficialCourse.SelectedIndex == 5) fileBytes[OfficialCourseStatusOffset] = 5;
-            else if(ComboBox_OfficialCourse.SelectedIndex == 6) fileBytes[OfficialCourseStatusOffset] = 6;
-            else if(ComboBox_OfficialCourse.SelectedIndex == 7) fileBytes[OfficialCourseStatusOffset] = 7;
-            else if(ComboBox_OfficialCourse.SelectedIndex == 8) fileBytes[OfficialCourseStatusOffset] = 8;
-            else if(ComboBox_OfficialCourse.SelectedIndex == 9) fileBytes[OfficialCourseStatusOffset] = 0x1D;
-            else fileBytes[OfficialCourseStatusOffset] = 0x0;
-
-            if (CHECK_CourseStatusDownloaded.Checked) fileBytes[DownloadedCourseOffset] = 0x01;
-            else fileBytes[DownloadedCourseOffset] = 0x00;
-            if (CHECK_CourseStatusUploaded.Checked) fileBytes[UploadedCourseOffset] = 0x01;
-            else fileBytes[UploadedCourseOffset] = 0x00;
-            if (CHECK_CourseStatusRemoved.Checked) fileBytes[RemovedCourseOffset] = 0x01; //Here used to be an "UploadedCourseOffset" instead of "RemovedCourseOffset", hopefully I'm testing it to see if there's any bug
-            else fileBytes[RemovedCourseOffset] = 0x00;
-
-            //Calculate and write the 4 bytes CRC-32 checksum on offsets from 0x08 to 0x0B
-            Crc32 crc32 = new Crc32();
-            byte[] checksum = crc32.ComputeChecksumBytes(fileBytes, 0x10, fileBytes.Length - 0x10);
-            Array.Reverse(checksum); //Parse to big-endian order
-            Array.Copy(checksum, 0, fileBytes, 0x08, 4);
-
-            //Save and overwrites .cdt file
-            File.WriteAllBytes(currentFilePath, fileBytes);
-            string caption = LanguageManager.Get("FORM_Main", "cdtFileSaveTitle");
-            string text = LanguageManager.Get("FORM_Main", "cdtFileSave");
-            MessageBox.Show(text + currentFilePath, caption, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+            WriteSMM1Course(ref currentFilePath,
+                ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay,
+                ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
+                ref ComboBox_Physics_Settings,
+                ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
+                ref TB_CourseName, ref ComboBox_Style_Settings,
+                ref ComboBox_Theme_Settings, ref NUMERIC_CourseTimer, ref ComboBox_Scroll_Settings,
+                ref NUMERIC_Length,
+                ref tmpMiiBase64, ref NUMERIC_CountryCode,
+                ref ComboBox_OfficialCourse,
+                ref CHECK_CourseStatusDownloaded,
+                ref CHECK_CourseStatusUploaded,
+                ref CHECK_CourseStatusRemoved,
+                ref CHECK_UploadReady
+            );
             UIstate(false);
         }
 
@@ -470,11 +345,13 @@ namespace SMM_D4TA_EDITOR
         {
             if (CHECK_SetDateTimeNow.Checked)
             {
+                NUMERIC_CourseYear.Enabled = false;
                 NUMERIC_CourseMonth.Enabled = false;
                 NUMERIC_CourseDay.Enabled = false;
                 NUMERIC_CourseHour.Enabled = false;
                 NUMERIC_CourseMinute.Enabled = false;
 
+                NUMERIC_CourseYear.Value = DateTime.Now.Year;
                 NUMERIC_CourseMonth.Value = DateTime.Now.Month;
                 NUMERIC_CourseDay.Value = DateTime.Now.Day;
                 NUMERIC_CourseHour.Value = DateTime.Now.Hour;
@@ -490,23 +367,31 @@ namespace SMM_D4TA_EDITOR
                 currentFilePath = OpenFileDialog_cdtFile.FileName;
                 byte[] fileBytes = File.ReadAllBytes(currentFilePath);
 
-                //Extract date month bytes offset 0x12)
+                //Extract date year bytes (from offset 0x10 to 0x11)
+                int CourseDateYearBytesLength = CourseDateYearEndOffset - CourseDateYearStartOffset + 1;
+                byte[] CourseDateYearBytes = new byte[CourseDateYearBytesLength];
+                Array.Copy(tmpfileBytes, CourseDateYearStartOffset, CourseDateYearBytes, 0, CourseDateYearBytesLength);
+                ushort CourseDateYear = (ushort)((CourseDateYearBytes[0] << 8) | CourseDateYearBytes[1]);
+
+                //Extract date month bytes (offset 0x12)
                 ushort CourseDateMonth = ExctractBytesFromOffset(fileBytes, CourseDateMonthOffset);
 
-                //Extract date day bytes offset 0x13)
+                //Extract date day bytes (offset 0x13)
                 ushort CourseDateDay = ExctractBytesFromOffset(fileBytes, CourseDateDayOffset);
 
-                //Extract date hour bytes offset 0x14)
+                //Extract date hour bytes (offset 0x14)
                 ushort CourseDateHour = ExctractBytesFromOffset(fileBytes, CourseDateHourOffset);
 
-                //Extract date minute bytes offset 0x15)
+                //Extract date minute bytes (offset 0x15)
                 ushort CourseDateMinute = ExctractBytesFromOffset(fileBytes, CourseDateMinuteOffset);
 
+                NUMERIC_CourseYear.Enabled = true;
                 NUMERIC_CourseMonth.Enabled = true;
                 NUMERIC_CourseDay.Enabled = true;
                 NUMERIC_CourseHour.Enabled = true;
                 NUMERIC_CourseMinute.Enabled = true;
 
+                NUMERIC_CourseYear.Value = CourseDateYear;
                 NUMERIC_CourseMonth.Value = CourseDateMonth;
                 NUMERIC_CourseDay.Value = CourseDateDay;
                 NUMERIC_CourseHour.Value = CourseDateHour;
