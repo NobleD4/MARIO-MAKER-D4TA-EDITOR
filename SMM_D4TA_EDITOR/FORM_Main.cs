@@ -207,27 +207,6 @@ namespace SMM_D4TA_EDITOR
 
         private void ToolStripMenuItem_SelectFile_Click(object sender, EventArgs e)
         {
-            ushort CourseScroll = 0;
-            ushort CourseUpdatePhysics = 0;
-            ushort CourseTheme = 0;
-            string CourseStyle = "";
-
-            string CourseName = "";
-            string CourseCreator = "";
-            string CourseID = "";
-            ushort CourseCountry = 0;
-            ushort CourseTimer = 0;
-            ushort CourseLength = 0;
-
-            ushort CourseDateYear = 0;
-            ushort CourseDateMonth = 0;
-            ushort CourseDateDay = 0;
-            ushort CourseDateHour = 0;
-            ushort CourseDateMinute = 0;
-
-            string LastItemPlaced = "";
-            string LastSFXplaced = "";
-
             if (OpenFileDialog_cdtFile.ShowDialog() == DialogResult.OK)
             {
                 currentFilePath = OpenFileDialog_cdtFile.FileName;
@@ -235,91 +214,20 @@ namespace SMM_D4TA_EDITOR
 
                 LoadComboSelectMii();
                 ReadSMM1Course(ref tmpfileBytes,
-                ref CourseDateYear, ref CourseDateMonth, ref CourseDateDay, ref CourseDateHour, ref CourseDateMinute,
-                ref CourseUpdatePhysics,
-                ref CourseID, ref CourseName, ref CourseStyle,
-                ref CourseTheme, ref CourseTimer, ref CourseScroll, ref CourseLength,
-                ref CourseCreator, ref CourseCountry,
-                ref LastItemPlaced, ref LastSFXplaced);
+                ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay, ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
+                ref ComboBox_Physics_Settings,
+                ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
+                ref TB_CourseName, ref ComboBox_Style_Settings,
+                ref ComboBox_Theme_Settings, ref NUMERIC_CourseTimer, ref ComboBox_Scroll_Settings,
+                ref NUMERIC_Length,
+                ref TB_CourseCreator, ref NUMERIC_CountryCode,
+                ref LABEL_LastItemPlaced, ref LABEL_LastSFXplaced,
+                ref ComboBox_OfficialCourse,
+                ref CHECK_CourseStatusDownloaded,
+                ref CHECK_CourseStatusUploaded,
+                ref CHECK_CourseStatusRemoved,
+                ref LABEL_ClearCheckStatus);
                 UIstate(true);
-
-                LABEL_LastItemPlaced.Text = LastItemPlaced;
-                LABEL_LastSFXplaced.Text = LastSFXplaced;
-
-                if (CourseScroll == 0) ComboBox_Scroll_Settings.SelectedIndex = 0;
-                else if (CourseScroll == 1) ComboBox_Scroll_Settings.SelectedIndex = 1;
-                else if (CourseScroll == 2) ComboBox_Scroll_Settings.SelectedIndex = 2;
-                else if (CourseScroll == 3) ComboBox_Scroll_Settings.SelectedIndex = 3;
-                else if (CourseScroll == 4) ComboBox_Scroll_Settings.SelectedIndex = 4;
-                else CourseScroll = 0;
-
-                if (CourseUpdatePhysics == 0) ComboBox_Physics_Settings.SelectedIndex = 0;
-                else if (CourseUpdatePhysics == 1) ComboBox_Physics_Settings.SelectedIndex = 1;
-                else if (CourseUpdatePhysics == 2) ComboBox_Physics_Settings.SelectedIndex = 2;
-                else if (CourseUpdatePhysics == 3) ComboBox_Physics_Settings.SelectedIndex = 3;
-                else if (CourseUpdatePhysics == 4) ComboBox_Physics_Settings.SelectedIndex = 4;
-                else if (CourseUpdatePhysics == 5) ComboBox_Physics_Settings.SelectedIndex = 5;
-                else if (CourseUpdatePhysics == 6) ComboBox_Physics_Settings.SelectedIndex = 6;
-                else if (CourseUpdatePhysics == 7) ComboBox_Physics_Settings.SelectedIndex = 7;
-                else CourseUpdatePhysics = 0;
-
-                if (CourseTheme == 0) ComboBox_Theme_Settings.SelectedIndex = 0;
-                else if (CourseTheme == 1) ComboBox_Theme_Settings.SelectedIndex = 1;
-                else if (CourseTheme == 2) ComboBox_Theme_Settings.SelectedIndex = 2;
-                else if (CourseTheme == 3) ComboBox_Theme_Settings.SelectedIndex = 3;
-                else if (CourseTheme == 4) ComboBox_Theme_Settings.SelectedIndex = 4;
-                else if (CourseTheme == 5) ComboBox_Theme_Settings.SelectedIndex = 5;
-                else CourseTheme = 0;
-
-                if (CourseStyle == "M1") ComboBox_Style_Settings.SelectedIndex = 0; 
-                else if (CourseStyle == "M3") ComboBox_Style_Settings.SelectedIndex = 1; 
-                else if (CourseStyle == "MW") ComboBox_Style_Settings.SelectedIndex = 2; 
-                else if (CourseStyle == "WU") ComboBox_Style_Settings.SelectedIndex = 3; 
-                else CourseStyle = "M1";
-
-                string clearCheckStatus0 = LanguageManager.Get("FORM_Main", "ClearCheckStatus0");
-                string clearCheckStatus1 = LanguageManager.Get("FORM_Main", "ClearCheckStatus1");
-                if (tmpfileBytes[ClearCheckOffset] == 0x01) LABEL_ClearCheckStatus.Text = clearCheckStatus1;
-                else LABEL_ClearCheckStatus.Text = clearCheckStatus0;
-
-                //This course status section used to be for only read, but not for write at all
-                //The problem was basically every status is a completely different byte offset
-                //Every of them from 00 to 01 to set status (except OfficialCourse), probably not very efficient but works in the game
-                //I don't know yet what would happen if I set all of these bytes offsets to 01 at the same time
-                //EDIT: You can overlap every status and works in the game
-                if (tmpfileBytes[OfficialCourseStatusOffset] == 1) ComboBox_OfficialCourse.SelectedIndex = 1;
-                else if (tmpfileBytes[OfficialCourseStatusOffset] == 2) ComboBox_OfficialCourse.SelectedIndex = 2;
-                else if (tmpfileBytes[OfficialCourseStatusOffset] == 3) ComboBox_OfficialCourse.SelectedIndex = 3;
-                else if (tmpfileBytes[OfficialCourseStatusOffset] == 4) ComboBox_OfficialCourse.SelectedIndex = 4;
-                else if (tmpfileBytes[OfficialCourseStatusOffset] == 5) ComboBox_OfficialCourse.SelectedIndex = 5;
-                else if (tmpfileBytes[OfficialCourseStatusOffset] == 6) ComboBox_OfficialCourse.SelectedIndex = 6;
-                else if (tmpfileBytes[OfficialCourseStatusOffset] == 7) ComboBox_OfficialCourse.SelectedIndex = 7;
-                else if (tmpfileBytes[OfficialCourseStatusOffset] == 8) ComboBox_OfficialCourse.SelectedIndex = 8;
-                else if (tmpfileBytes[OfficialCourseStatusOffset] == 0x1D) ComboBox_OfficialCourse.SelectedIndex = 9;
-                else ComboBox_OfficialCourse.SelectedIndex = 0;
-
-                if (tmpfileBytes[DownloadedCourseOffset] == 0x01) CHECK_CourseStatusDownloaded.Checked = true;
-                else CHECK_CourseStatusDownloaded.Checked = false;
-                if (tmpfileBytes[UploadedCourseOffset] == 0x01) CHECK_CourseStatusUploaded.Checked = true;
-                else CHECK_CourseStatusUploaded.Checked = false;
-                if (tmpfileBytes[RemovedCourseOffset] == 0x01) CHECK_CourseStatusRemoved.Checked = true;
-                else CHECK_CourseStatusRemoved.Checked = false;
-
-                TB_CourseName.Text = CourseName;
-                TB_CourseCreator.Text = CourseCreator;
-                TB_CourseIDprefix.Text = CourseID.Substring(0, 4);
-                TB_CourseIDsuffix1.Text = CourseID.Substring(4, 4);
-                TB_CourseIDsuffix2.Text = CourseID.Substring(8, 4);
-                TB_CourseIDsuffix3.Text = CourseID.Substring(12, 4);
-                NUMERIC_CountryCode.Value = CourseCountry;
-                NUMERIC_CourseTimer.Value = CourseTimer;
-                NUMERIC_Length.Value = CourseLength;
-                LABEL_CourseLengthDisplay.Text = $"0x{CourseLength:X3}";
-                NUMERIC_CourseYear.Value = CourseDateYear;
-                NUMERIC_CourseMonth.Value = CourseDateMonth;
-                NUMERIC_CourseDay.Value = CourseDateDay;
-                NUMERIC_CourseHour.Value = CourseDateHour;
-                NUMERIC_CourseMinute.Value = CourseDateMinute;
             }
         }
 
