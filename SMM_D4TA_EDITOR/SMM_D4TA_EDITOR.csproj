@@ -116,6 +116,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMM1FileFormats.cs" />
+    <Compile Include="SMM2FileFormats.cs" />
     <Compile Include="VersionControl.cs" />
     <EmbeddedResource Include="DIALOG_ExtractMii.resx">
       <DependentUpon>DIALOG_ExtractMii.cs</DependentUpon>

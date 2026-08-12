@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static SMM_D4TA_EDITOR.SMM1FileFormats;
+using static SMM_D4TA_EDITOR.SMM2FileFormats;
 
 namespace SMM_D4TA_EDITOR
 {
@@ -30,8 +31,6 @@ namespace SMM_D4TA_EDITOR
         private void FORM_Main_Load(object sender, EventArgs e)
         {
             LanguageManager.ApplyToContainer(this, "FORM_Main");
-            ComboBox_Physics_Settings.Items.Clear();
-            ComboBox_Physics_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Physics").ToArray());
             ComboBox_Theme_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Theme").ToArray());
             ComboBox_Scroll_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Scroll").ToArray());
             ComboBox_OfficialCourse.Items.AddRange(LanguageManager.GetList("ComboBox_OfficialCourse").ToArray());
@@ -207,30 +206,60 @@ namespace SMM_D4TA_EDITOR
 
         private void ToolStripMenuItem_SelectFile_Click(object sender, EventArgs e)
         {
-            if (OpenFileDialog_cdtFile.ShowDialog() == DialogResult.OK)
+            if (OpenFileDialog_CourseFile.ShowDialog() == DialogResult.OK)
             {
-                currentFilePath = OpenFileDialog_cdtFile.FileName;
+                currentFilePath = OpenFileDialog_CourseFile.FileName;
                 tmpfileBytes = File.ReadAllBytes(currentFilePath);
 
-                LoadComboSelectMii();
-                ReadSMM1Course(ref tmpfileBytes,
-                    ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay,
-                    ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
-                    ref CHECK_SetDateTimeNow,
-                    ref ComboBox_Physics_Settings,
-                    ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
-                    ref TB_CourseName, ref ComboBox_Style_Settings,
-                    ref ComboBox_Theme_Settings, ref NUMERIC_CourseTimer, ref ComboBox_Scroll_Settings,
-                    ref NUMERIC_Length,
-                    ref TB_CourseCreator, ref NUMERIC_CountryCode,
-                    ref LABEL_LastItemPlaced, ref LABEL_LastSFXplaced,
-                    ref ComboBox_OfficialCourse,
-                    ref CHECK_CourseStatusDownloaded,
-                    ref CHECK_CourseStatusUploaded,
-                    ref CHECK_CourseStatusRemoved,
-                    ref LABEL_ClearCheckStatus
-                );
-                UIstate(true);
+                if (Path.GetExtension(currentFilePath) == ".cdt")
+                {
+                    ComboBox_Physics_Settings.Items.Clear();
+                    ComboBox_Physics_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_Physics").ToArray());
+                    LoadComboSelectMii();
+                    ReadSMM1Course(ref tmpfileBytes,
+                        ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay,
+                        ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
+                        ref CHECK_SetDateTimeNow,
+                        ref ComboBox_Physics_Settings,
+                        ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
+                        ref TB_CourseName, ref ComboBox_Style_Settings,
+                        ref ComboBox_Theme_Settings, ref NUMERIC_CourseTimer, ref ComboBox_Scroll_Settings,
+                        ref NUMERIC_Length,
+                        ref TB_CourseCreator, ref NUMERIC_CountryCode,
+                        ref LABEL_LastItemPlaced, ref LABEL_LastSFXplaced,
+                        ref ComboBox_OfficialCourse,
+                        ref CHECK_CourseStatusDownloaded,
+                        ref CHECK_CourseStatusUploaded,
+                        ref CHECK_CourseStatusRemoved,
+                        ref LABEL_ClearCheckStatus
+                    );
+                    UIstate(true);
+                }
+                else if (Path.GetExtension(currentFilePath) == ".bcd")
+                {
+                    ComboBox_Physics_Settings.Items.Clear();
+                    ComboBox_Physics_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_GameVersionSMM2").ToArray());
+
+                    ComboBox_GameVersion_ClearCheck.Items.Clear();
+                    ComboBox_GameVersion_ClearCheck.Items.AddRange(LanguageManager.GetList("ComboBox_GameVersionSMM2").ToArray());
+
+                    ReadSMM2Course(ref tmpfileBytes,
+                        ref NUMERIC_CourseTimer,
+                        ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay,
+                        ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
+                        ref NUMERIC_ClearCheckAttempts,
+                        ref NUMERIC_ClearCheckTime,
+                        ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
+                        ref ComboBox_GameVersion_ClearCheck,
+                        ref ComboBox_Style_Settings,
+                        ref TB_CourseName,
+                        ref TB_CourseDescription
+                    );
+                }
+                else
+                {
+                    MessageBox.Show("<Invalid file> " + Path.GetExtension(currentFilePath));
+                }
             }
         }
 
@@ -370,7 +399,7 @@ namespace SMM_D4TA_EDITOR
                 //May 5th 2026: What is this??? I'm not going to optimize this right now
 
                 //Set file path and read data
-                currentFilePath = OpenFileDialog_cdtFile.FileName;
+                currentFilePath = OpenFileDialog_CourseFile.FileName;
                 byte[] fileBytes = File.ReadAllBytes(currentFilePath);
 
                 //Extract date year bytes (from offset 0x10 to 0x11)
@@ -431,7 +460,7 @@ namespace SMM_D4TA_EDITOR
 
         private void BUTTON_ExtractMii_Click(object sender, EventArgs e)
         {
-            byte[] fileBytes = File.ReadAllBytes(OpenFileDialog_cdtFile.FileName);
+            byte[] fileBytes = File.ReadAllBytes(OpenFileDialog_CourseFile.FileName);
             byte[] MiiFileBytes = new byte[CourseMiiSize];
             Array.Copy(fileBytes, CourseMiiOffset, MiiFileBytes, 0, CourseMiiSize);
 
@@ -494,8 +523,8 @@ namespace SMM_D4TA_EDITOR
             else
             {
                 //Also the next block is a temp solution
-                if (File.Exists(OpenFileDialog_cdtFile.FileName)) {
-                    tmpfileBytes = File.ReadAllBytes(OpenFileDialog_cdtFile.FileName);
+                if (File.Exists(OpenFileDialog_CourseFile.FileName)) {
+                    tmpfileBytes = File.ReadAllBytes(OpenFileDialog_CourseFile.FileName);
 
                     byte[] CourseCreatorBytes = new byte[20];
                     Array.Copy(tmpfileBytes, CourseCreatorStartOffset, CourseCreatorBytes, 0, CourseCreatorBytes.Length);
