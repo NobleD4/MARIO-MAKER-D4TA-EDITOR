@@ -65,6 +65,9 @@
             this.GroupBox_SortCoursebot = new System.Windows.Forms.GroupBox();
             this.RADIO_SortBySlot = new System.Windows.Forms.RadioButton();
             this.RADIO_SortByCourseNumber = new System.Windows.Forms.RadioButton();
+            this.ToolStripMenuItem_CompareSaveFiles = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenFileDialog_Save1 = new System.Windows.Forms.OpenFileDialog();
+            this.OpenFileDialog_Save2 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.GroupBox_Controls.SuspendLayout();
             this.GroupBox_GamePad3DAudio.SuspendLayout();
@@ -110,7 +113,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItem_SelectFile});
+            this.ToolStripMenuItem_SelectFile,
+            this.ToolStripMenuItem_CompareSaveFiles});
             this.menuStrip1.Location = new System.Drawing.Point(0, 24);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(524, 24);
@@ -463,6 +467,21 @@
             this.RADIO_SortByCourseNumber.Text = "<Course number>";
             this.RADIO_SortByCourseNumber.UseVisualStyleBackColor = true;
             // 
+            // ToolStripMenuItem_CompareSaveFiles
+            // 
+            this.ToolStripMenuItem_CompareSaveFiles.Name = "ToolStripMenuItem_CompareSaveFiles";
+            this.ToolStripMenuItem_CompareSaveFiles.Size = new System.Drawing.Size(135, 20);
+            this.ToolStripMenuItem_CompareSaveFiles.Text = "<Compare Save files>";
+            this.ToolStripMenuItem_CompareSaveFiles.Click += new System.EventHandler(this.ToolStripMenuItem_CompareSaveFiles_Click);
+            // 
+            // OpenFileDialog_Save1
+            // 
+            this.OpenFileDialog_Save1.Filter = "File|*.dat";
+            // 
+            // OpenFileDialog_Save2
+            // 
+            this.OpenFileDialog_Save2.Filter = "File|*.dat";
+            // 
             // FORM_SMM1_SaveFile
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -578,5 +597,8 @@
         private System.Windows.Forms.GroupBox GroupBox_SortCoursebot;
         private System.Windows.Forms.RadioButton RADIO_SortBySlot;
         private System.Windows.Forms.RadioButton RADIO_SortByCourseNumber;
+        private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItem_CompareSaveFiles;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog_Save1;
+        private System.Windows.Forms.OpenFileDialog OpenFileDialog_Save2;
     }
 }

@@ -435,5 +435,55 @@ namespace SMM_D4TA_EDITOR
                 return itemText1;
             }
         }
+
+        private void ToolStripMenuItem_CompareSaveFiles_Click(object sender, EventArgs e)
+        {
+            if (OpenFileDialog_Save1.ShowDialog() == DialogResult.OK
+            && OpenFileDialog_Save2.ShowDialog() == DialogResult.OK)
+            {
+                string path1 = OpenFileDialog_Save1.FileName;
+                byte[] bytes1 = File.ReadAllBytes(path1);
+
+                string path2 = OpenFileDialog_Save2.FileName;
+                byte[] bytes2 = File.ReadAllBytes(path2);
+
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"Comparing {Path.GetFileName(path1)} & {Path.GetFileName(path2)}");
+
+                for (int i = 0; i < Math.Max(bytes1.Length, bytes2.Length); i++)
+                {
+                    byte b1;
+                    if (i < bytes1.Length) b1 = bytes1[i];
+                    else b1 = 0;
+
+
+                    byte b2;
+                    if (i < bytes2.Length) b2 = bytes2[i];
+                    else b2 = 0;
+
+                    if (b1 != b2)
+                        sb.AppendLine($"0x{i:X4}   {b1:X2}   {b2:X2}");
+                }
+
+                if (!File.Exists("OUTPUT.txt")) // If file does not exists
+                {
+                    File.Create("OUTPUT.txt").Close(); // Create file
+                    using (StreamWriter sw = File.AppendText("OUTPUT.txt"))
+                    {
+                        sw.WriteLine(sb.ToString()); // Write text to .txt file
+                    }
+                }
+                else // If file already exists
+                {
+                    File.WriteAllText("OUTPUT.txt", String.Empty); // Clear file
+                    using (StreamWriter sw = File.AppendText("OUTPUT.txt"))
+                    {
+                        sw.WriteLine(sb.ToString()); // Write text to .txt file
+                    }
+                }
+
+                MessageBox.Show("Output file successfully created", "File comparison", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
     }
 }
