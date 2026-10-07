@@ -113,6 +113,12 @@
             this.NUMERIC_ClearCheckTimeMilliseconds = new System.Windows.Forms.NumericUpDown();
             this.LABEL_ClearCheckAttempts = new System.Windows.Forms.Label();
             this.NUMERIC_ClearCheckAttempts = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_Physics_Settings = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_Style_Settings = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_Scroll_Settings = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_OfficialCourse = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_GameVersion_ClearCheck = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_Theme_Settings = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseMonth)).BeginInit();
@@ -127,6 +133,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckTimeMinutes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckTimeMilliseconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckAttempts)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Physics_Settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Style_Settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Scroll_Settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_OfficialCourse)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_GameVersion_ClearCheck)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Theme_Settings)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -225,7 +237,7 @@
             // TB_CourseName
             // 
             this.TB_CourseName.Enabled = false;
-            this.TB_CourseName.Location = new System.Drawing.Point(464, 113);
+            this.TB_CourseName.Location = new System.Drawing.Point(207, 71);
             this.TB_CourseName.MaxLength = 32;
             this.TB_CourseName.Name = "TB_CourseName";
             this.TB_CourseName.Size = new System.Drawing.Size(210, 20);
@@ -234,7 +246,7 @@
             // LABEL_CourseName
             // 
             this.LABEL_CourseName.AutoSize = true;
-            this.LABEL_CourseName.Location = new System.Drawing.Point(461, 97);
+            this.LABEL_CourseName.Location = new System.Drawing.Point(204, 55);
             this.LABEL_CourseName.Name = "LABEL_CourseName";
             this.LABEL_CourseName.Size = new System.Drawing.Size(81, 13);
             this.LABEL_CourseName.TabIndex = 0;
@@ -266,7 +278,7 @@
             // 
             this.CHECK_UploadReady.AutoSize = true;
             this.CHECK_UploadReady.Enabled = false;
-            this.CHECK_UploadReady.Location = new System.Drawing.Point(10, 316);
+            this.CHECK_UploadReady.Location = new System.Drawing.Point(10, 351);
             this.CHECK_UploadReady.Name = "CHECK_UploadReady";
             this.CHECK_UploadReady.Size = new System.Drawing.Size(101, 17);
             this.CHECK_UploadReady.TabIndex = 28;
@@ -282,7 +294,7 @@
             0,
             0,
             0});
-            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(288, 112);
+            this.NUMERIC_CourseTimer.Location = new System.Drawing.Point(424, 112);
             this.NUMERIC_CourseTimer.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -295,7 +307,7 @@
             // LABEL_Timer
             // 
             this.LABEL_Timer.AutoSize = true;
-            this.LABEL_Timer.Location = new System.Drawing.Point(285, 96);
+            this.LABEL_Timer.Location = new System.Drawing.Point(421, 96);
             this.LABEL_Timer.Name = "LABEL_Timer";
             this.LABEL_Timer.Size = new System.Drawing.Size(45, 13);
             this.LABEL_Timer.TabIndex = 0;
@@ -313,7 +325,7 @@
             // LABEL_ClearCheckStatus
             // 
             this.LABEL_ClearCheckStatus.AutoSize = true;
-            this.LABEL_ClearCheckStatus.Location = new System.Drawing.Point(678, 116);
+            this.LABEL_ClearCheckStatus.Location = new System.Drawing.Point(421, 74);
             this.LABEL_ClearCheckStatus.Name = "LABEL_ClearCheckStatus";
             this.LABEL_ClearCheckStatus.Size = new System.Drawing.Size(76, 13);
             this.LABEL_ClearCheckStatus.TabIndex = 0;
@@ -322,7 +334,7 @@
             // BUTTON_TimerMaximum
             // 
             this.BUTTON_TimerMaximum.Enabled = false;
-            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(410, 110);
+            this.BUTTON_TimerMaximum.Location = new System.Drawing.Point(546, 110);
             this.BUTTON_TimerMaximum.Name = "BUTTON_TimerMaximum";
             this.BUTTON_TimerMaximum.Size = new System.Drawing.Size(50, 23);
             this.BUTTON_TimerMaximum.TabIndex = 17;
@@ -333,7 +345,7 @@
             // BUTTON_TimerMinimum
             // 
             this.BUTTON_TimerMinimum.Enabled = false;
-            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(354, 110);
+            this.BUTTON_TimerMinimum.Location = new System.Drawing.Point(490, 110);
             this.BUTTON_TimerMinimum.Name = "BUTTON_TimerMinimum";
             this.BUTTON_TimerMinimum.Size = new System.Drawing.Size(50, 23);
             this.BUTTON_TimerMinimum.TabIndex = 16;
@@ -368,7 +380,7 @@
             "SMW",
             "NSMBU",
             "3DW"});
-            this.ComboBox_Style_Settings.Location = new System.Drawing.Point(10, 111);
+            this.ComboBox_Style_Settings.Location = new System.Drawing.Point(10, 149);
             this.ComboBox_Style_Settings.Name = "ComboBox_Style_Settings";
             this.ComboBox_Style_Settings.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_Style_Settings.TabIndex = 2;
@@ -395,7 +407,7 @@
             // LABEL_Style
             // 
             this.LABEL_Style.AutoSize = true;
-            this.LABEL_Style.Location = new System.Drawing.Point(10, 95);
+            this.LABEL_Style.Location = new System.Drawing.Point(10, 133);
             this.LABEL_Style.Name = "LABEL_Style";
             this.LABEL_Style.Size = new System.Drawing.Size(42, 13);
             this.LABEL_Style.TabIndex = 0;
@@ -406,7 +418,7 @@
             this.ComboBox_Theme_Settings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_Theme_Settings.Enabled = false;
             this.ComboBox_Theme_Settings.FormattingEnabled = true;
-            this.ComboBox_Theme_Settings.Location = new System.Drawing.Point(148, 111);
+            this.ComboBox_Theme_Settings.Location = new System.Drawing.Point(10, 188);
             this.ComboBox_Theme_Settings.Name = "ComboBox_Theme_Settings";
             this.ComboBox_Theme_Settings.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_Theme_Settings.TabIndex = 8;
@@ -414,7 +426,7 @@
             // LABEL_Theme
             // 
             this.LABEL_Theme.AutoSize = true;
-            this.LABEL_Theme.Location = new System.Drawing.Point(148, 95);
+            this.LABEL_Theme.Location = new System.Drawing.Point(10, 172);
             this.LABEL_Theme.Name = "LABEL_Theme";
             this.LABEL_Theme.Size = new System.Drawing.Size(52, 13);
             this.LABEL_Theme.TabIndex = 0;
@@ -423,7 +435,7 @@
             // LABEL_CourseCreator
             // 
             this.LABEL_CourseCreator.AutoSize = true;
-            this.LABEL_CourseCreator.Location = new System.Drawing.Point(148, 215);
+            this.LABEL_CourseCreator.Location = new System.Drawing.Point(204, 249);
             this.LABEL_CourseCreator.Name = "LABEL_CourseCreator";
             this.LABEL_CourseCreator.Size = new System.Drawing.Size(53, 13);
             this.LABEL_CourseCreator.TabIndex = 0;
@@ -432,7 +444,7 @@
             // TB_CourseCreator
             // 
             this.TB_CourseCreator.Enabled = false;
-            this.TB_CourseCreator.Location = new System.Drawing.Point(151, 231);
+            this.TB_CourseCreator.Location = new System.Drawing.Point(207, 265);
             this.TB_CourseCreator.MaxLength = 10;
             this.TB_CourseCreator.Name = "TB_CourseCreator";
             this.TB_CourseCreator.ReadOnly = true;
@@ -442,7 +454,7 @@
             // NUMERIC_CourseMonth
             // 
             this.NUMERIC_CourseMonth.Enabled = false;
-            this.NUMERIC_CourseMonth.Location = new System.Drawing.Point(354, 71);
+            this.NUMERIC_CourseMonth.Location = new System.Drawing.Point(217, 316);
             this.NUMERIC_CourseMonth.Maximum = new decimal(new int[] {
             255,
             0,
@@ -455,7 +467,7 @@
             // NUMERIC_CourseDay
             // 
             this.NUMERIC_CourseDay.Enabled = false;
-            this.NUMERIC_CourseDay.Location = new System.Drawing.Point(409, 71);
+            this.NUMERIC_CourseDay.Location = new System.Drawing.Point(272, 316);
             this.NUMERIC_CourseDay.Maximum = new decimal(new int[] {
             255,
             0,
@@ -468,7 +480,7 @@
             // NUMERIC_CourseHour
             // 
             this.NUMERIC_CourseHour.Enabled = false;
-            this.NUMERIC_CourseHour.Location = new System.Drawing.Point(464, 71);
+            this.NUMERIC_CourseHour.Location = new System.Drawing.Point(327, 316);
             this.NUMERIC_CourseHour.Maximum = new decimal(new int[] {
             255,
             0,
@@ -481,7 +493,7 @@
             // NUMERIC_CourseMinute
             // 
             this.NUMERIC_CourseMinute.Enabled = false;
-            this.NUMERIC_CourseMinute.Location = new System.Drawing.Point(530, 71);
+            this.NUMERIC_CourseMinute.Location = new System.Drawing.Point(393, 316);
             this.NUMERIC_CourseMinute.Maximum = new decimal(new int[] {
             255,
             0,
@@ -495,7 +507,7 @@
             // 
             this.CHECK_SetDateTimeNow.AutoSize = true;
             this.CHECK_SetDateTimeNow.Enabled = false;
-            this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(588, 74);
+            this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(451, 319);
             this.CHECK_SetDateTimeNow.Name = "CHECK_SetDateTimeNow";
             this.CHECK_SetDateTimeNow.Size = new System.Drawing.Size(120, 17);
             this.CHECK_SetDateTimeNow.TabIndex = 23;
@@ -506,7 +518,7 @@
             // LABEL_CourseMonth
             // 
             this.LABEL_CourseMonth.AutoSize = true;
-            this.LABEL_CourseMonth.Location = new System.Drawing.Point(355, 55);
+            this.LABEL_CourseMonth.Location = new System.Drawing.Point(218, 300);
             this.LABEL_CourseMonth.Name = "LABEL_CourseMonth";
             this.LABEL_CourseMonth.Size = new System.Drawing.Size(49, 13);
             this.LABEL_CourseMonth.TabIndex = 0;
@@ -515,7 +527,7 @@
             // LABEL_CourseDay
             // 
             this.LABEL_CourseDay.AutoSize = true;
-            this.LABEL_CourseDay.Location = new System.Drawing.Point(411, 55);
+            this.LABEL_CourseDay.Location = new System.Drawing.Point(274, 300);
             this.LABEL_CourseDay.Name = "LABEL_CourseDay";
             this.LABEL_CourseDay.Size = new System.Drawing.Size(38, 13);
             this.LABEL_CourseDay.TabIndex = 0;
@@ -524,7 +536,7 @@
             // TwoDots
             // 
             this.TwoDots.AutoSize = true;
-            this.TwoDots.Location = new System.Drawing.Point(517, 74);
+            this.TwoDots.Location = new System.Drawing.Point(380, 319);
             this.TwoDots.Name = "TwoDots";
             this.TwoDots.Size = new System.Drawing.Size(10, 13);
             this.TwoDots.TabIndex = 31;
@@ -533,7 +545,7 @@
             // LABEL_CourseHour
             // 
             this.LABEL_CourseHour.AutoSize = true;
-            this.LABEL_CourseHour.Location = new System.Drawing.Point(465, 55);
+            this.LABEL_CourseHour.Location = new System.Drawing.Point(328, 300);
             this.LABEL_CourseHour.Name = "LABEL_CourseHour";
             this.LABEL_CourseHour.Size = new System.Drawing.Size(42, 13);
             this.LABEL_CourseHour.TabIndex = 0;
@@ -542,7 +554,7 @@
             // LABEL_CourseMinute
             // 
             this.LABEL_CourseMinute.AutoSize = true;
-            this.LABEL_CourseMinute.Location = new System.Drawing.Point(533, 55);
+            this.LABEL_CourseMinute.Location = new System.Drawing.Point(396, 300);
             this.LABEL_CourseMinute.Name = "LABEL_CourseMinute";
             this.LABEL_CourseMinute.Size = new System.Drawing.Size(51, 13);
             this.LABEL_CourseMinute.TabIndex = 0;
@@ -551,7 +563,7 @@
             // NUMERIC_CourseYear
             // 
             this.NUMERIC_CourseYear.Enabled = false;
-            this.NUMERIC_CourseYear.Location = new System.Drawing.Point(288, 71);
+            this.NUMERIC_CourseYear.Location = new System.Drawing.Point(151, 316);
             this.NUMERIC_CourseYear.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -564,7 +576,7 @@
             // LABEL_CourseYear
             // 
             this.LABEL_CourseYear.AutoSize = true;
-            this.LABEL_CourseYear.Location = new System.Drawing.Point(289, 55);
+            this.LABEL_CourseYear.Location = new System.Drawing.Point(152, 300);
             this.LABEL_CourseYear.Name = "LABEL_CourseYear";
             this.LABEL_CourseYear.Size = new System.Drawing.Size(41, 13);
             this.LABEL_CourseYear.TabIndex = 0;
@@ -573,7 +585,7 @@
             // TB_CourseIDprefix
             // 
             this.TB_CourseIDprefix.Enabled = false;
-            this.TB_CourseIDprefix.Location = new System.Drawing.Point(151, 151);
+            this.TB_CourseIDprefix.Location = new System.Drawing.Point(207, 189);
             this.TB_CourseIDprefix.MaxLength = 4;
             this.TB_CourseIDprefix.Name = "TB_CourseIDprefix";
             this.TB_CourseIDprefix.ReadOnly = true;
@@ -583,7 +595,7 @@
             // TB_CourseIDsuffix1
             // 
             this.TB_CourseIDsuffix1.Enabled = false;
-            this.TB_CourseIDsuffix1.Location = new System.Drawing.Point(197, 151);
+            this.TB_CourseIDsuffix1.Location = new System.Drawing.Point(253, 189);
             this.TB_CourseIDsuffix1.MaxLength = 4;
             this.TB_CourseIDsuffix1.Name = "TB_CourseIDsuffix1";
             this.TB_CourseIDsuffix1.Size = new System.Drawing.Size(40, 20);
@@ -592,7 +604,7 @@
             // TB_CourseIDsuffix2
             // 
             this.TB_CourseIDsuffix2.Enabled = false;
-            this.TB_CourseIDsuffix2.Location = new System.Drawing.Point(243, 151);
+            this.TB_CourseIDsuffix2.Location = new System.Drawing.Point(299, 189);
             this.TB_CourseIDsuffix2.MaxLength = 4;
             this.TB_CourseIDsuffix2.Name = "TB_CourseIDsuffix2";
             this.TB_CourseIDsuffix2.Size = new System.Drawing.Size(40, 20);
@@ -601,7 +613,7 @@
             // TB_CourseIDsuffix3
             // 
             this.TB_CourseIDsuffix3.Enabled = false;
-            this.TB_CourseIDsuffix3.Location = new System.Drawing.Point(289, 151);
+            this.TB_CourseIDsuffix3.Location = new System.Drawing.Point(345, 189);
             this.TB_CourseIDsuffix3.MaxLength = 4;
             this.TB_CourseIDsuffix3.Name = "TB_CourseIDsuffix3";
             this.TB_CourseIDsuffix3.Size = new System.Drawing.Size(40, 20);
@@ -610,7 +622,7 @@
             // LABEL_CourseID
             // 
             this.LABEL_CourseID.AutoSize = true;
-            this.LABEL_CourseID.Location = new System.Drawing.Point(148, 135);
+            this.LABEL_CourseID.Location = new System.Drawing.Point(204, 173);
             this.LABEL_CourseID.Name = "LABEL_CourseID";
             this.LABEL_CourseID.Size = new System.Drawing.Size(66, 13);
             this.LABEL_CourseID.TabIndex = 0;
@@ -620,7 +632,7 @@
             // 
             this.CHECK_CourseStatusDownloaded.AutoSize = true;
             this.CHECK_CourseStatusDownloaded.Enabled = false;
-            this.CHECK_CourseStatusDownloaded.Location = new System.Drawing.Point(10, 268);
+            this.CHECK_CourseStatusDownloaded.Location = new System.Drawing.Point(10, 303);
             this.CHECK_CourseStatusDownloaded.Name = "CHECK_CourseStatusDownloaded";
             this.CHECK_CourseStatusDownloaded.Size = new System.Drawing.Size(98, 17);
             this.CHECK_CourseStatusDownloaded.TabIndex = 25;
@@ -631,7 +643,7 @@
             // 
             this.CHECK_CourseStatusUploaded.AutoSize = true;
             this.CHECK_CourseStatusUploaded.Enabled = false;
-            this.CHECK_CourseStatusUploaded.Location = new System.Drawing.Point(10, 284);
+            this.CHECK_CourseStatusUploaded.Location = new System.Drawing.Point(10, 319);
             this.CHECK_CourseStatusUploaded.Name = "CHECK_CourseStatusUploaded";
             this.CHECK_CourseStatusUploaded.Size = new System.Drawing.Size(84, 17);
             this.CHECK_CourseStatusUploaded.TabIndex = 26;
@@ -642,7 +654,7 @@
             // 
             this.CHECK_CourseStatusRemoved.AutoSize = true;
             this.CHECK_CourseStatusRemoved.Enabled = false;
-            this.CHECK_CourseStatusRemoved.Location = new System.Drawing.Point(10, 300);
+            this.CHECK_CourseStatusRemoved.Location = new System.Drawing.Point(10, 335);
             this.CHECK_CourseStatusRemoved.Name = "CHECK_CourseStatusRemoved";
             this.CHECK_CourseStatusRemoved.Size = new System.Drawing.Size(84, 17);
             this.CHECK_CourseStatusRemoved.TabIndex = 27;
@@ -661,7 +673,7 @@
             // BUTTON_CopyID
             // 
             this.BUTTON_CopyID.Enabled = false;
-            this.BUTTON_CopyID.Location = new System.Drawing.Point(335, 149);
+            this.BUTTON_CopyID.Location = new System.Drawing.Point(391, 187);
             this.BUTTON_CopyID.Name = "BUTTON_CopyID";
             this.BUTTON_CopyID.Size = new System.Drawing.Size(71, 23);
             this.BUTTON_CopyID.TabIndex = 7;
@@ -672,7 +684,7 @@
             // NUMERIC_CountryCode
             // 
             this.NUMERIC_CountryCode.Enabled = false;
-            this.NUMERIC_CountryCode.Location = new System.Drawing.Point(257, 231);
+            this.NUMERIC_CountryCode.Location = new System.Drawing.Point(313, 265);
             this.NUMERIC_CountryCode.Maximum = new decimal(new int[] {
             255,
             0,
@@ -685,7 +697,7 @@
             // LABEL_Country
             // 
             this.LABEL_Country.AutoSize = true;
-            this.LABEL_Country.Location = new System.Drawing.Point(254, 215);
+            this.LABEL_Country.Location = new System.Drawing.Point(310, 249);
             this.LABEL_Country.Name = "LABEL_Country";
             this.LABEL_Country.Size = new System.Drawing.Size(55, 13);
             this.LABEL_Country.TabIndex = 0;
@@ -694,7 +706,7 @@
             // LABEL_CourseLength
             // 
             this.LABEL_CourseLength.AutoSize = true;
-            this.LABEL_CourseLength.Location = new System.Drawing.Point(623, 136);
+            this.LABEL_CourseLength.Location = new System.Drawing.Point(420, 134);
             this.LABEL_CourseLength.Name = "LABEL_CourseLength";
             this.LABEL_CourseLength.Size = new System.Drawing.Size(52, 13);
             this.LABEL_CourseLength.TabIndex = 0;
@@ -708,7 +720,7 @@
             0,
             0,
             0});
-            this.NUMERIC_Length.Location = new System.Drawing.Point(626, 152);
+            this.NUMERIC_Length.Location = new System.Drawing.Point(423, 150);
             this.NUMERIC_Length.Maximum = new decimal(new int[] {
             3840,
             0,
@@ -727,7 +739,7 @@
             // LABEL_CourseLengthDisplay
             // 
             this.LABEL_CourseLengthDisplay.AutoSize = true;
-            this.LABEL_CourseLengthDisplay.Location = new System.Drawing.Point(691, 154);
+            this.LABEL_CourseLengthDisplay.Location = new System.Drawing.Point(488, 152);
             this.LABEL_CourseLengthDisplay.Name = "LABEL_CourseLengthDisplay";
             this.LABEL_CourseLengthDisplay.Size = new System.Drawing.Size(36, 13);
             this.LABEL_CourseLengthDisplay.TabIndex = 0;
@@ -736,7 +748,7 @@
             // LABEL_Scroll
             // 
             this.LABEL_Scroll.AutoSize = true;
-            this.LABEL_Scroll.Location = new System.Drawing.Point(12, 135);
+            this.LABEL_Scroll.Location = new System.Drawing.Point(12, 211);
             this.LABEL_Scroll.Name = "LABEL_Scroll";
             this.LABEL_Scroll.Size = new System.Drawing.Size(65, 13);
             this.LABEL_Scroll.TabIndex = 0;
@@ -747,7 +759,7 @@
             this.ComboBox_Scroll_Settings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_Scroll_Settings.Enabled = false;
             this.ComboBox_Scroll_Settings.FormattingEnabled = true;
-            this.ComboBox_Scroll_Settings.Location = new System.Drawing.Point(10, 150);
+            this.ComboBox_Scroll_Settings.Location = new System.Drawing.Point(10, 226);
             this.ComboBox_Scroll_Settings.Name = "ComboBox_Scroll_Settings";
             this.ComboBox_Scroll_Settings.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_Scroll_Settings.TabIndex = 13;
@@ -757,7 +769,7 @@
             this.ComboBox_SelectMii.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_SelectMii.Enabled = false;
             this.ComboBox_SelectMii.FormattingEnabled = true;
-            this.ComboBox_SelectMii.Location = new System.Drawing.Point(151, 191);
+            this.ComboBox_SelectMii.Location = new System.Drawing.Point(207, 225);
             this.ComboBox_SelectMii.Name = "ComboBox_SelectMii";
             this.ComboBox_SelectMii.Size = new System.Drawing.Size(125, 21);
             this.ComboBox_SelectMii.TabIndex = 12;
@@ -766,7 +778,7 @@
             // LABEL_SelectMii
             // 
             this.LABEL_SelectMii.AutoSize = true;
-            this.LABEL_SelectMii.Location = new System.Drawing.Point(151, 175);
+            this.LABEL_SelectMii.Location = new System.Drawing.Point(207, 209);
             this.LABEL_SelectMii.Name = "LABEL_SelectMii";
             this.LABEL_SelectMii.Size = new System.Drawing.Size(65, 13);
             this.LABEL_SelectMii.TabIndex = 0;
@@ -775,7 +787,7 @@
             // BUTTON_ExtractMii
             // 
             this.BUTTON_ExtractMii.Enabled = false;
-            this.BUTTON_ExtractMii.Location = new System.Drawing.Point(282, 191);
+            this.BUTTON_ExtractMii.Location = new System.Drawing.Point(338, 225);
             this.BUTTON_ExtractMii.Name = "BUTTON_ExtractMii";
             this.BUTTON_ExtractMii.Size = new System.Drawing.Size(82, 23);
             this.BUTTON_ExtractMii.TabIndex = 11;
@@ -788,7 +800,7 @@
             this.ComboBox_OfficialCourse.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_OfficialCourse.Enabled = false;
             this.ComboBox_OfficialCourse.FormattingEnabled = true;
-            this.ComboBox_OfficialCourse.Location = new System.Drawing.Point(10, 191);
+            this.ComboBox_OfficialCourse.Location = new System.Drawing.Point(10, 265);
             this.ComboBox_OfficialCourse.Name = "ComboBox_OfficialCourse";
             this.ComboBox_OfficialCourse.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_OfficialCourse.TabIndex = 24;
@@ -796,7 +808,7 @@
             // LABEL_OfficialCourse
             // 
             this.LABEL_OfficialCourse.AutoSize = true;
-            this.LABEL_OfficialCourse.Location = new System.Drawing.Point(12, 175);
+            this.LABEL_OfficialCourse.Location = new System.Drawing.Point(12, 249);
             this.LABEL_OfficialCourse.Name = "LABEL_OfficialCourse";
             this.LABEL_OfficialCourse.Size = new System.Drawing.Size(86, 13);
             this.LABEL_OfficialCourse.TabIndex = 58;
@@ -808,17 +820,18 @@
             // 
             // TB_CourseDescription
             // 
-            this.TB_CourseDescription.Location = new System.Drawing.Point(414, 151);
+            this.TB_CourseDescription.Enabled = false;
+            this.TB_CourseDescription.Location = new System.Drawing.Point(207, 111);
             this.TB_CourseDescription.MaxLength = 75;
             this.TB_CourseDescription.Multiline = true;
             this.TB_CourseDescription.Name = "TB_CourseDescription";
-            this.TB_CourseDescription.Size = new System.Drawing.Size(206, 62);
+            this.TB_CourseDescription.Size = new System.Drawing.Size(210, 59);
             this.TB_CourseDescription.TabIndex = 59;
             // 
             // LABEL_CourseDescription
             // 
             this.LABEL_CourseDescription.AutoSize = true;
-            this.LABEL_CourseDescription.Location = new System.Drawing.Point(415, 136);
+            this.LABEL_CourseDescription.Location = new System.Drawing.Point(208, 96);
             this.LABEL_CourseDescription.Name = "LABEL_CourseDescription";
             this.LABEL_CourseDescription.Size = new System.Drawing.Size(72, 13);
             this.LABEL_CourseDescription.TabIndex = 60;
@@ -827,7 +840,7 @@
             // LABEL_GameVersion_ClearCheck
             // 
             this.LABEL_GameVersion_ClearCheck.AutoSize = true;
-            this.LABEL_GameVersion_ClearCheck.Location = new System.Drawing.Point(148, 55);
+            this.LABEL_GameVersion_ClearCheck.Location = new System.Drawing.Point(10, 94);
             this.LABEL_GameVersion_ClearCheck.Name = "LABEL_GameVersion_ClearCheck";
             this.LABEL_GameVersion_ClearCheck.Size = new System.Drawing.Size(113, 13);
             this.LABEL_GameVersion_ClearCheck.TabIndex = 61;
@@ -838,7 +851,7 @@
             this.ComboBox_GameVersion_ClearCheck.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ComboBox_GameVersion_ClearCheck.Enabled = false;
             this.ComboBox_GameVersion_ClearCheck.FormattingEnabled = true;
-            this.ComboBox_GameVersion_ClearCheck.Location = new System.Drawing.Point(148, 71);
+            this.ComboBox_GameVersion_ClearCheck.Location = new System.Drawing.Point(10, 110);
             this.ComboBox_GameVersion_ClearCheck.Name = "ComboBox_GameVersion_ClearCheck";
             this.ComboBox_GameVersion_ClearCheck.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_GameVersion_ClearCheck.TabIndex = 62;
@@ -850,7 +863,7 @@
             0,
             0,
             0});
-            this.NUMERIC_ClearCheckTime.Location = new System.Drawing.Point(414, 232);
+            this.NUMERIC_ClearCheckTime.Location = new System.Drawing.Point(486, 199);
             this.NUMERIC_ClearCheckTime.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -868,7 +881,7 @@
             // LABEL_ClearCheckTime
             // 
             this.LABEL_ClearCheckTime.AutoSize = true;
-            this.LABEL_ClearCheckTime.Location = new System.Drawing.Point(403, 216);
+            this.LABEL_ClearCheckTime.Location = new System.Drawing.Point(475, 183);
             this.LABEL_ClearCheckTime.Name = "LABEL_ClearCheckTime";
             this.LABEL_ClearCheckTime.Size = new System.Drawing.Size(98, 13);
             this.LABEL_ClearCheckTime.TabIndex = 64;
@@ -877,7 +890,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(467, 261);
+            this.label1.Location = new System.Drawing.Point(539, 228);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(10, 13);
             this.label1.TabIndex = 67;
@@ -886,7 +899,7 @@
             // NUMERIC_ClearCheckTimeSeconds
             // 
             this.NUMERIC_ClearCheckTimeSeconds.Enabled = false;
-            this.NUMERIC_ClearCheckTimeSeconds.Location = new System.Drawing.Point(480, 258);
+            this.NUMERIC_ClearCheckTimeSeconds.Location = new System.Drawing.Point(552, 225);
             this.NUMERIC_ClearCheckTimeSeconds.Maximum = new decimal(new int[] {
             255,
             0,
@@ -899,7 +912,7 @@
             // NUMERIC_ClearCheckTimeMinutes
             // 
             this.NUMERIC_ClearCheckTimeMinutes.Enabled = false;
-            this.NUMERIC_ClearCheckTimeMinutes.Location = new System.Drawing.Point(414, 258);
+            this.NUMERIC_ClearCheckTimeMinutes.Location = new System.Drawing.Point(486, 225);
             this.NUMERIC_ClearCheckTimeMinutes.Maximum = new decimal(new int[] {
             255,
             0,
@@ -912,7 +925,7 @@
             // NUMERIC_ClearCheckTimeMilliseconds
             // 
             this.NUMERIC_ClearCheckTimeMilliseconds.Enabled = false;
-            this.NUMERIC_ClearCheckTimeMilliseconds.Location = new System.Drawing.Point(536, 258);
+            this.NUMERIC_ClearCheckTimeMilliseconds.Location = new System.Drawing.Point(608, 225);
             this.NUMERIC_ClearCheckTimeMilliseconds.Maximum = new decimal(new int[] {
             255,
             0,
@@ -925,7 +938,7 @@
             // LABEL_ClearCheckAttempts
             // 
             this.LABEL_ClearCheckAttempts.AutoSize = true;
-            this.LABEL_ClearCheckAttempts.Location = new System.Drawing.Point(407, 299);
+            this.LABEL_ClearCheckAttempts.Location = new System.Drawing.Point(479, 266);
             this.LABEL_ClearCheckAttempts.Name = "LABEL_ClearCheckAttempts";
             this.LABEL_ClearCheckAttempts.Size = new System.Drawing.Size(119, 13);
             this.LABEL_ClearCheckAttempts.TabIndex = 70;
@@ -933,7 +946,7 @@
             // 
             // NUMERIC_ClearCheckAttempts
             // 
-            this.NUMERIC_ClearCheckAttempts.Location = new System.Drawing.Point(418, 315);
+            this.NUMERIC_ClearCheckAttempts.Location = new System.Drawing.Point(490, 282);
             this.NUMERIC_ClearCheckAttempts.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -948,11 +961,89 @@
             this.NUMERIC_ClearCheckAttempts.Size = new System.Drawing.Size(66, 20);
             this.NUMERIC_ClearCheckAttempts.TabIndex = 69;
             // 
+            // NUMERIC_Physics_Settings
+            // 
+            this.NUMERIC_Physics_Settings.Location = new System.Drawing.Point(151, 72);
+            this.NUMERIC_Physics_Settings.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_Physics_Settings.Name = "NUMERIC_Physics_Settings";
+            this.NUMERIC_Physics_Settings.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_Physics_Settings.TabIndex = 71;
+            // 
+            // NUMERIC_Style_Settings
+            // 
+            this.NUMERIC_Style_Settings.Location = new System.Drawing.Point(151, 150);
+            this.NUMERIC_Style_Settings.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_Style_Settings.Name = "NUMERIC_Style_Settings";
+            this.NUMERIC_Style_Settings.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_Style_Settings.TabIndex = 72;
+            // 
+            // NUMERIC_Scroll_Settings
+            // 
+            this.NUMERIC_Scroll_Settings.Location = new System.Drawing.Point(151, 226);
+            this.NUMERIC_Scroll_Settings.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_Scroll_Settings.Name = "NUMERIC_Scroll_Settings";
+            this.NUMERIC_Scroll_Settings.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_Scroll_Settings.TabIndex = 73;
+            // 
+            // NUMERIC_OfficialCourse
+            // 
+            this.NUMERIC_OfficialCourse.Location = new System.Drawing.Point(151, 265);
+            this.NUMERIC_OfficialCourse.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_OfficialCourse.Name = "NUMERIC_OfficialCourse";
+            this.NUMERIC_OfficialCourse.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_OfficialCourse.TabIndex = 74;
+            // 
+            // NUMERIC_GameVersion_ClearCheck
+            // 
+            this.NUMERIC_GameVersion_ClearCheck.Location = new System.Drawing.Point(151, 110);
+            this.NUMERIC_GameVersion_ClearCheck.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_GameVersion_ClearCheck.Name = "NUMERIC_GameVersion_ClearCheck";
+            this.NUMERIC_GameVersion_ClearCheck.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_GameVersion_ClearCheck.TabIndex = 75;
+            // 
+            // NUMERIC_Theme_Settings
+            // 
+            this.NUMERIC_Theme_Settings.Location = new System.Drawing.Point(151, 189);
+            this.NUMERIC_Theme_Settings.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_Theme_Settings.Name = "NUMERIC_Theme_Settings";
+            this.NUMERIC_Theme_Settings.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_Theme_Settings.TabIndex = 76;
+            // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 461);
+            this.Controls.Add(this.NUMERIC_Theme_Settings);
+            this.Controls.Add(this.NUMERIC_GameVersion_ClearCheck);
+            this.Controls.Add(this.NUMERIC_OfficialCourse);
+            this.Controls.Add(this.NUMERIC_Scroll_Settings);
+            this.Controls.Add(this.NUMERIC_Style_Settings);
+            this.Controls.Add(this.NUMERIC_Physics_Settings);
             this.Controls.Add(this.LABEL_ClearCheckAttempts);
             this.Controls.Add(this.NUMERIC_ClearCheckAttempts);
             this.Controls.Add(this.NUMERIC_ClearCheckTimeMilliseconds);
@@ -1093,6 +1184,12 @@
             this.Controls.SetChildIndex(this.NUMERIC_ClearCheckTimeMilliseconds, 0);
             this.Controls.SetChildIndex(this.NUMERIC_ClearCheckAttempts, 0);
             this.Controls.SetChildIndex(this.LABEL_ClearCheckAttempts, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_Physics_Settings, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_Style_Settings, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_Scroll_Settings, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_OfficialCourse, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_GameVersion_ClearCheck, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_Theme_Settings, 0);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
@@ -1108,6 +1205,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckTimeMinutes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckTimeMilliseconds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckAttempts)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Physics_Settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Style_Settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Scroll_Settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_OfficialCourse)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_GameVersion_ClearCheck)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Theme_Settings)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1199,6 +1302,12 @@
         private System.Windows.Forms.NumericUpDown NUMERIC_ClearCheckTimeMilliseconds;
         private System.Windows.Forms.Label LABEL_ClearCheckAttempts;
         private System.Windows.Forms.NumericUpDown NUMERIC_ClearCheckAttempts;
+        private System.Windows.Forms.NumericUpDown NUMERIC_Physics_Settings;
+        private System.Windows.Forms.NumericUpDown NUMERIC_Style_Settings;
+        private System.Windows.Forms.NumericUpDown NUMERIC_Scroll_Settings;
+        private System.Windows.Forms.NumericUpDown NUMERIC_OfficialCourse;
+        private System.Windows.Forms.NumericUpDown NUMERIC_GameVersion_ClearCheck;
+        private System.Windows.Forms.NumericUpDown NUMERIC_Theme_Settings;
     }
 }
 

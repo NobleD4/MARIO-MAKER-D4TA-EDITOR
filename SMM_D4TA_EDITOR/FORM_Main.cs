@@ -237,6 +237,11 @@ namespace SMM_D4TA_EDITOR
                 }
                 else if (Path.GetExtension(currentFilePath) == ".bcd")
                 {
+                    if (tmpfileBytes.Length == 0x5C000) //If is encrypted
+                    {
+                        DecryptSMM2Course(ref tmpfileBytes);
+                    }
+
                     ComboBox_Physics_Settings.Items.Clear();
                     ComboBox_Physics_Settings.Items.AddRange(LanguageManager.GetList("ComboBox_GameVersionSMM2").ToArray());
 
@@ -258,7 +263,7 @@ namespace SMM_D4TA_EDITOR
                 }
                 else
                 {
-                    MessageBox.Show("<Invalid file> " + Path.GetExtension(currentFilePath));
+                    MessageBox.Show("Invalid file " + Path.GetExtension(currentFilePath));
                 }
             }
         }
@@ -271,27 +276,38 @@ namespace SMM_D4TA_EDITOR
         private void BUTTON_SaveFile_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(currentFilePath)) return;
-            WriteSMM1Course(ref currentFilePath,
-                ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay,
-                ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
-                ref ComboBox_Physics_Settings,
-                ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
-                ref TB_CourseName, ref ComboBox_Style_Settings,
-                ref ComboBox_Theme_Settings, ref NUMERIC_CourseTimer, ref ComboBox_Scroll_Settings,
-                ref NUMERIC_Length,
-                ref tmpMiiBase64, ref NUMERIC_CountryCode,
-                ref ComboBox_OfficialCourse,
-                ref CHECK_CourseStatusDownloaded,
-                ref CHECK_CourseStatusUploaded,
-                ref CHECK_CourseStatusRemoved,
-                ref CHECK_UploadReady
-            );
+
+            if (Path.GetExtension(currentFilePath) == ".cdt")
+            {
+                WriteSMM1Course(ref currentFilePath,
+                    ref NUMERIC_CourseYear, ref NUMERIC_CourseMonth, ref NUMERIC_CourseDay,
+                    ref NUMERIC_CourseHour, ref NUMERIC_CourseMinute,
+                    ref ComboBox_Physics_Settings,
+                    ref TB_CourseIDprefix, ref TB_CourseIDsuffix1, ref TB_CourseIDsuffix2, ref TB_CourseIDsuffix3,
+                    ref TB_CourseName, ref ComboBox_Style_Settings,
+                    ref ComboBox_Theme_Settings, ref NUMERIC_CourseTimer, ref ComboBox_Scroll_Settings,
+                    ref NUMERIC_Length,
+                    ref tmpMiiBase64, ref NUMERIC_CountryCode,
+                    ref ComboBox_OfficialCourse,
+                    ref CHECK_CourseStatusDownloaded,
+                    ref CHECK_CourseStatusUploaded,
+                    ref CHECK_CourseStatusRemoved,
+                    ref CHECK_UploadReady
+                );
+            }
+            else if (Path.GetExtension(currentFilePath) == ".bcd")
+            {
+                WriteSMM2Course(ref tmpfileBytes);
+                EncryptSMM2Course(ref tmpfileBytes);
+            }
+
             UIstate(false);
         }
 
         private void UIstate(bool state)
         {
             TB_CourseName.Enabled = state;
+            TB_CourseDescription.Enabled = state;
             TB_CourseCreator.Enabled = state;
             TB_CourseIDprefix.Enabled = state;
             TB_CourseIDsuffix1.Enabled = state;
@@ -327,6 +343,7 @@ namespace SMM_D4TA_EDITOR
             {
                 currentFilePath = "";
                 TB_CourseName.Text = "";
+                TB_CourseDescription.Text = "";
                 TB_CourseCreator.Text = "";
                 TB_CourseIDprefix.Text = "";
                 TB_CourseIDsuffix1.Text = "";
