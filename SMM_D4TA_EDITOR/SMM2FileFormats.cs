@@ -427,96 +427,75 @@ namespace SMM_D4TA_EDITOR
         {
             const int blockSize = 16;
 
-            byte[] L = AES_ECB_Encrypt(
-                new byte[blockSize],
-                key
-            );
-
-            byte[] K1 = GenerateSubkey(L);
-            byte[] K2 = GenerateSubkey(K1);
-
-            int blockCount = Math.Max(1, (data.Length + blockSize - 1) / blockSize);
-
-            bool complete =
-                data.Length != 0 &&
-                data.Length % blockSize == 0;
-
-            byte[] lastBlock = new byte[blockSize];
-
-            if (complete)
-            {
-                Buffer.BlockCopy(
-                    data,
-                    (blockCount - 1) * blockSize,
-                    lastBlock,
-                    0,
-                    blockSize
-                );
-
-                XOR(lastBlock, K1);
-            }
-            else
-            {
-                int remaining = data.Length % blockSize;
-
-                if (remaining > 0)
-                {
-                    Buffer.BlockCopy(
-                        data,
-                        (blockCount - 1) * blockSize,
-                        lastBlock,
-                        0,
-                        remaining
-                    );
-                }
-
-                lastBlock[remaining] = 0x80;
-
-                XOR(lastBlock, K2);
-            }
-
-            byte[] X = new byte[blockSize];
-
-            for (int i = 0; i < blockCount - 1; i++)
-            {
-                byte[] block = new byte[blockSize];
-
-                Buffer.BlockCopy(
-                    data,
-                    i * blockSize,
-                    block,
-                    0,
-                    blockSize
-                );
-
-                XOR(block, X);
-
-                X = AES_ECB_Encrypt(block, key);
-            }
-
-            XOR(lastBlock, X);
-
-            return AES_ECB_Encrypt(lastBlock, key);
-        }
-
-        private static byte[] AES_ECB_Encrypt(
-        byte[] data,
-        byte[] key)
-        {
             using (Aes aes = Aes.Create())
             {
                 aes.Key = key;
                 aes.Mode = CipherMode.ECB;
                 aes.Padding = PaddingMode.None;
 
-                using (ICryptoTransform encryptor =
-                    aes.CreateEncryptor())
+                byte[] L;
+                using (ICryptoTransform encryptor = aes.CreateEncryptor())
                 {
-                    return encryptor.TransformFinalBlock(
+                    L = encryptor.TransformFinalBlock(new byte[blockSize], 0, blockSize);
+                }
+
+                byte[] K1 = GenerateSubkey(L);
+                byte[] K2 = GenerateSubkey(K1);
+
+                int blockCount = Math.Max(1, (data.Length + blockSize - 1) / blockSize);
+
+                bool complete =
+                    data.Length != 0 &&
+                    data.Length % blockSize == 0;
+
+                byte[] lastBlock = new byte[blockSize];
+
+                if (complete)
+                {
+                    Buffer.BlockCopy(
                         data,
+                        (blockCount - 1) * blockSize,
+                        lastBlock,
                         0,
-                        data.Length
+                        blockSize
                     );
+
+                    XOR(lastBlock, K1);
+                }
+                else
+                {
+                    int remaining = data.Length % blockSize;
+
+                    if (remaining > 0)
+                    {
+                        Buffer.BlockCopy(
+                            data,
+                            (blockCount - 1) * blockSize,
+                            lastBlock,
+                            0,
+                            remaining
+                        );
+                    }
+
+                    lastBlock[remaining] = 0x80;
+
+                    XOR(lastBlock, K2);
+                }
+
+                byte[] X = new byte[blockSize];
+                byte[] block = new byte[blockSize];
+
+                using (ICryptoTransform encryptor = aes.CreateEncryptor())
+                {
+                    for (int i = 0; i < blockCount - 1; i++)
+                    {
+                        Buffer.BlockCopy(data, i * blockSize, block, 0, blockSize);
+                        XOR(block, X);
+                        X = encryptor.TransformFinalBlock(block, 0, block.Length); //Maybe changing this to TransformBlock instead of TransformFinalBlock
+                    }
+
+                    XOR(lastBlock, X);
+                    return encryptor.TransformFinalBlock(lastBlock, 0, lastBlock.Length);
                 }
             }
         }
