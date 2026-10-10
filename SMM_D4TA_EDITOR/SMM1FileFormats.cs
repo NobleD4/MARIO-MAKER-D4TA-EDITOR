@@ -69,18 +69,19 @@ namespace SMM_D4TA_EDITOR
             ref NumericUpDown CourseDateYear, ref NumericUpDown CourseDateMonth, ref NumericUpDown CourseDateDay,
             ref NumericUpDown CourseDateHour, ref NumericUpDown CourseDateMinute,
             ref CheckBox SetDateTimeNow,
-            ref ComboBox CourseUpdatePhysics,
+            ref NumericUpDown CourseUpdatePhysics,
             ref TextBox CourseIDprefix, ref TextBox CourseIDsuffix1, ref TextBox CourseIDsuffix2, ref TextBox CourseIDsuffix3,
-            ref TextBox CourseName, ref ComboBox CourseStyleSettings,
-            ref ComboBox CourseTheme, ref NumericUpDown CourseTimer, ref ComboBox CourseScroll,
+            ref TextBox CourseName, ref TextBox CourseStyleSettings,
+            ref NumericUpDown CourseTheme, ref NumericUpDown CourseTimer, ref NumericUpDown CourseScroll,
             ref NumericUpDown CourseLength,
             ref TextBox CourseCreator, ref NumericUpDown CourseCountry,
             ref Label LastItemPlaced, ref Label LastSFXplaced,
-            ref ComboBox OfficialCourse,
-            ref CheckBox CourseStatusDownloaded,
-            ref CheckBox CourseStatusUploaded,
-            ref CheckBox CourseStatusRemoved,
-            ref Label ClearCheckStatus
+            ref NumericUpDown OfficialCourse,
+            ref NumericUpDown CourseStatusDownloaded,
+            ref NumericUpDown CourseStatusUploaded,
+            ref NumericUpDown CourseStatusRemoved,
+            ref Label ClearCheckStatus,
+            ref NumericUpDown ClearCheckNum
         )
         {
             //Set file path and read data
@@ -106,7 +107,7 @@ namespace SMM_D4TA_EDITOR
             CourseDateMinute.Value = ExctractBytesFromOffset(tmpfileBytes, CourseDateMinuteOffset); //This one used to have bytes from month for some reason before making function
 
             //Extract course physics setting byte (offset 0x27)
-            CourseUpdatePhysics.SelectedIndex = ExctractBytesFromOffset(tmpfileBytes, CourseUpdatePhysicsOffset);
+            CourseUpdatePhysics.Value = ExctractBytesFromOffset(tmpfileBytes, CourseUpdatePhysicsOffset);
 
             //Extract course ID suffix byte (from offset 0x1A to 0x1F)
             int CourseIDsuffixbytesLength = CourseIDsuffixEndOffset - CourseIDsuffixStartOffset + 1;
@@ -135,21 +136,20 @@ namespace SMM_D4TA_EDITOR
             Array.Reverse(charArray); //To make sure the course name is not reversed
             CourseName.Text = new string(charArray); //CourseName works!
 
-            //Extract course style bytes (from offset 0x6A to 0x6B)
+            //Extract course style bytes (from offset 0x6A to 0x6B) & convert bytes to string using ASCII encode
             int CourseStyleBytesLength = CourseStyleEndOffset - CourseStyleStartOffset + 1;
             byte[] CourseStyleBytes = new byte[CourseStyleBytesLength];
             Array.Copy(tmpfileBytes, CourseStyleStartOffset, CourseStyleBytes, 0, CourseStyleBytesLength);
-            //Convert bytes to string using ASCII encode
-            string CourseStyle = Encoding.ASCII.GetString(CourseStyleBytes);
+            CourseStyleSettings.Text = Encoding.ASCII.GetString(CourseStyleBytes);
 
-            if (CourseStyle == "M1") CourseStyleSettings.SelectedIndex = 0;
-            else if (CourseStyle == "M3") CourseStyleSettings.SelectedIndex = 1;
-            else if (CourseStyle == "MW") CourseStyleSettings.SelectedIndex = 2;
-            else if (CourseStyle == "WU") CourseStyleSettings.SelectedIndex = 3;
-            else CourseStyle = "M1";
+            //if (CourseStyle == "M1") CourseStyleSettings.SelectedIndex = 0;
+            //else if (CourseStyle == "M3") CourseStyleSettings.SelectedIndex = 1;
+            //else if (CourseStyle == "MW") CourseStyleSettings.SelectedIndex = 2;
+            //else if (CourseStyle == "WU") CourseStyleSettings.SelectedIndex = 3;
+            //else CourseStyle = "M1";
 
             //Extract course theme setting byte (offset 0x6D)
-            CourseTheme.SelectedIndex = ExctractBytesFromOffset(tmpfileBytes, CourseThemeOffset);
+            CourseTheme.Value = ExctractBytesFromOffset(tmpfileBytes, CourseThemeOffset);
 
             //Extract course timer bytes (from offset 0x70 to 0x71)
             int CourseTimerBytesLength = CourseTimerEndOffset - CourseTimerStartOffset + 1;
@@ -158,7 +158,7 @@ namespace SMM_D4TA_EDITOR
             CourseTimer.Value = (ushort)((CourseTimerBytes[0] << 8) | CourseTimerBytes[1]);
 
             //Extract course autoscroll setting byte (offset 0x72)
-            CourseScroll.SelectedIndex = ExctractBytesFromOffset(tmpfileBytes, CourseScrollSettingsOffset);
+            CourseScroll.Value = ExctractBytesFromOffset(tmpfileBytes, CourseScrollSettingsOffset);
 
             //Extract course length bytes (from offset 0x76 to 0x77)
             int CourseLengthBytesLENGTH = CourseLengthEndOffset - CourseLengthStartOffset + 1;
@@ -233,42 +233,50 @@ namespace SMM_D4TA_EDITOR
 
             string clearCheckStatus0 = LanguageManager.Get("FORM_Main", "ClearCheckStatus0");
             string clearCheckStatus1 = LanguageManager.Get("FORM_Main", "ClearCheckStatus1");
-            if (tmpfileBytes[ClearCheckOffset] == 0x01) ClearCheckStatus.Text = clearCheckStatus1;
-            else ClearCheckStatus.Text = clearCheckStatus0;
+            string clearCheckOutOfRange = LanguageManager.Get("FORM_Main", "msgOutOfRange");
+            if (tmpfileBytes[ClearCheckOffset] == 0x00) ClearCheckStatus.Text = clearCheckStatus0;
+            else if (tmpfileBytes[ClearCheckOffset] == 0x01) ClearCheckStatus.Text = clearCheckStatus1;
+            else ClearCheckStatus.Text = clearCheckOutOfRange;
+            ClearCheckNum.Value = ExctractBytesFromOffset(tmpfileBytes, ClearCheckOffset);
 
-            if (tmpfileBytes[OfficialCourseStatusOffset] == 1) OfficialCourse.SelectedIndex = 1;
-            else if (tmpfileBytes[OfficialCourseStatusOffset] == 2) OfficialCourse.SelectedIndex = 2;
-            else if (tmpfileBytes[OfficialCourseStatusOffset] == 3) OfficialCourse.SelectedIndex = 3;
-            else if (tmpfileBytes[OfficialCourseStatusOffset] == 4) OfficialCourse.SelectedIndex = 4;
-            else if (tmpfileBytes[OfficialCourseStatusOffset] == 5) OfficialCourse.SelectedIndex = 5;
-            else if (tmpfileBytes[OfficialCourseStatusOffset] == 6) OfficialCourse.SelectedIndex = 6;
-            else if (tmpfileBytes[OfficialCourseStatusOffset] == 7) OfficialCourse.SelectedIndex = 7;
-            else if (tmpfileBytes[OfficialCourseStatusOffset] == 8) OfficialCourse.SelectedIndex = 8;
-            else if (tmpfileBytes[OfficialCourseStatusOffset] == 0x1D) OfficialCourse.SelectedIndex = 9;
-            else OfficialCourse.SelectedIndex = 0;
+            OfficialCourse.Value = ExctractBytesFromOffset(tmpfileBytes, OfficialCourseStatusOffset);
+            //if (tmpfileBytes[OfficialCourseStatusOffset] == 1) OfficialCourse.SelectedIndex = 1;
+            //else if (tmpfileBytes[OfficialCourseStatusOffset] == 2) OfficialCourse.SelectedIndex = 2;
+            //else if (tmpfileBytes[OfficialCourseStatusOffset] == 3) OfficialCourse.SelectedIndex = 3;
+            //else if (tmpfileBytes[OfficialCourseStatusOffset] == 4) OfficialCourse.SelectedIndex = 4;
+            //else if (tmpfileBytes[OfficialCourseStatusOffset] == 5) OfficialCourse.SelectedIndex = 5;
+            //else if (tmpfileBytes[OfficialCourseStatusOffset] == 6) OfficialCourse.SelectedIndex = 6;
+            //else if (tmpfileBytes[OfficialCourseStatusOffset] == 7) OfficialCourse.SelectedIndex = 7;
+            //else if (tmpfileBytes[OfficialCourseStatusOffset] == 8) OfficialCourse.SelectedIndex = 8;
+            //else if (tmpfileBytes[OfficialCourseStatusOffset] == 0x1D) OfficialCourse.SelectedIndex = 9; //(0x1D = 29)
+            //else OfficialCourse.SelectedIndex = 0;
 
-            if (tmpfileBytes[DownloadedCourseOffset] == 0x01) CourseStatusDownloaded.Checked = true;
-            else CourseStatusDownloaded.Checked = false;
-            if (tmpfileBytes[UploadedCourseOffset] == 0x01) CourseStatusUploaded.Checked = true;
-            else CourseStatusUploaded.Checked = false;
-            if (tmpfileBytes[RemovedCourseOffset] == 0x01) CourseStatusRemoved.Checked = true;
-            else CourseStatusRemoved.Checked = false;
+            CourseStatusDownloaded.Value = ExctractBytesFromOffset(tmpfileBytes, DownloadedCourseOffset);
+            //if (tmpfileBytes[DownloadedCourseOffset] == 0x01) CourseStatusDownloaded.Checked = true;
+            //else CourseStatusDownloaded.Checked = false;
+            CourseStatusUploaded.Value = ExctractBytesFromOffset(tmpfileBytes, UploadedCourseOffset);
+            //if (tmpfileBytes[UploadedCourseOffset] == 0x01) CourseStatusUploaded.Checked = true;
+            //else CourseStatusUploaded.Checked = false;
+            CourseStatusRemoved.Value = ExctractBytesFromOffset(tmpfileBytes, RemovedCourseOffset);
+            //if (tmpfileBytes[RemovedCourseOffset] == 0x01) CourseStatusRemoved.Checked = true;
+            //else CourseStatusRemoved.Checked = false;
         }
 
         static public void WriteSMM1Course(ref string currentFilePath,
             ref NumericUpDown CourseDateYear, ref NumericUpDown CourseDateMonth, ref NumericUpDown CourseDateDay,
             ref NumericUpDown CourseDateHour, ref NumericUpDown CourseDateMinute,
-            ref ComboBox CourseUpdatePhysics,
+            ref NumericUpDown CourseUpdatePhysics,
             ref TextBox CourseIDprefix, ref TextBox CourseIDsuffix1, ref TextBox CourseIDsuffix2, ref TextBox CourseIDsuffix3,
-            ref TextBox CourseName, ref ComboBox CourseStyleSettings,
-            ref ComboBox CourseTheme, ref NumericUpDown CourseTimer, ref ComboBox CourseScroll,
+            ref TextBox CourseName, ref TextBox CourseStyleSettings,
+            ref NumericUpDown CourseTheme, ref NumericUpDown CourseTimer, ref NumericUpDown CourseScroll,
             ref NumericUpDown CourseLength,
             ref string CourseCreator, ref NumericUpDown CourseCountry,
-            ref ComboBox OfficialCourse,
-            ref CheckBox CourseStatusDownloaded,
-            ref CheckBox CourseStatusUploaded,
-            ref CheckBox CourseStatusRemoved,
-            ref CheckBox ClearCheckStatus
+            ref NumericUpDown OfficialCourse,
+            ref NumericUpDown CourseStatusDownloaded,
+            ref NumericUpDown CourseStatusUploaded,
+            ref NumericUpDown CourseStatusRemoved,
+            ref CheckBox ClearCheckStatus,
+            ref NumericUpDown ClearCheckNum
         )
         {
             //Set file path and read data
@@ -278,29 +286,25 @@ namespace SMM_D4TA_EDITOR
             tmpfileBytes[CourseDateYearStartOffset] = (byte)(NewCourseDateYear >> 8);
             tmpfileBytes[CourseDateYearEndOffset] = (byte)(NewCourseDateYear & 0xFF);
 
-            ushort NewCourseDateMonth = (ushort)CourseDateMonth.Value;
-            tmpfileBytes[CourseDateMonthOffset] = (byte)(NewCourseDateMonth);
+            tmpfileBytes[CourseDateMonthOffset] = (byte)CourseDateMonth.Value;
 
-            ushort NewCourseDateDay = (ushort)CourseDateDay.Value;
-            tmpfileBytes[CourseDateDayOffset] = (byte)(NewCourseDateDay);
+            tmpfileBytes[CourseDateDayOffset] = (byte)CourseDateDay.Value;
 
-            ushort NewCourseDateHour = (ushort)CourseDateHour.Value;
-            tmpfileBytes[CourseDateHourOffset] = (byte)(NewCourseDateHour);
+            tmpfileBytes[CourseDateHourOffset] = (byte)CourseDateHour.Value;
 
-            ushort NewCourseDateMinute = (ushort)CourseDateMinute.Value;
-            tmpfileBytes[CourseDateMinuteOffset] = (byte)(NewCourseDateMinute);
+            tmpfileBytes[CourseDateMinuteOffset] = (byte)CourseDateMinute.Value;
 
-            byte physicsValue = 0;
-            if (CourseUpdatePhysics.SelectedIndex == 1) physicsValue = 1;
-            else if (CourseUpdatePhysics.SelectedIndex == 2) physicsValue = 2;
-            else if (CourseUpdatePhysics.SelectedIndex == 3) physicsValue = 3;
-            else if (CourseUpdatePhysics.SelectedIndex == 4) physicsValue = 4;
-            else if (CourseUpdatePhysics.SelectedIndex == 5) physicsValue = 5;
-            else if (CourseUpdatePhysics.SelectedIndex == 6) physicsValue = 6;
-            else if (CourseUpdatePhysics.SelectedIndex == 7) physicsValue = 7;
-            else physicsValue = 0;
+            //byte physicsValue = 0;
+            //if (CourseUpdatePhysics.SelectedIndex == 1) physicsValue = 1;
+            //else if (CourseUpdatePhysics.SelectedIndex == 2) physicsValue = 2;
+            //else if (CourseUpdatePhysics.SelectedIndex == 3) physicsValue = 3;
+            //else if (CourseUpdatePhysics.SelectedIndex == 4) physicsValue = 4;
+            //else if (CourseUpdatePhysics.SelectedIndex == 5) physicsValue = 5;
+            //else if (CourseUpdatePhysics.SelectedIndex == 6) physicsValue = 6;
+            //else if (CourseUpdatePhysics.SelectedIndex == 7) physicsValue = 7;
+            //else physicsValue = 0;
             //Insert physics byte value to the file
-            tmpfileBytes[CourseUpdatePhysicsOffset] = physicsValue;
+            tmpfileBytes[CourseUpdatePhysicsOffset] = (byte)CourseUpdatePhysics.Value;
 
             //This writes the 6 suffix bytes for course ID
             byte[] NewIDsuffix1Bytes = new byte[2];
@@ -332,39 +336,39 @@ namespace SMM_D4TA_EDITOR
             //Insert those bytes to the file
             Array.Copy(paddedNameBytes, 0, tmpfileBytes, CourseNameStartOffset, 64);
 
-            string styleValue;
-            if (CourseStyleSettings.SelectedIndex == 0) styleValue = "M1";
-            else if (CourseStyleSettings.SelectedIndex == 1) styleValue = "M3";
-            else if (CourseStyleSettings.SelectedIndex == 2) styleValue = "MW";
-            else if (CourseStyleSettings.SelectedIndex == 3) styleValue = "WU";
-            else styleValue = "M1";
+            //string styleValue;
+            //if (CourseStyleSettings.SelectedIndex == 0) styleValue = "M1";
+            //else if (CourseStyleSettings.SelectedIndex == 1) styleValue = "M3";
+            //else if (CourseStyleSettings.SelectedIndex == 2) styleValue = "MW";
+            //else if (CourseStyleSettings.SelectedIndex == 3) styleValue = "WU";
+            //else styleValue = "M1";
             //Insert style byte value to the file
-            byte[] styleBytes = Encoding.ASCII.GetBytes(styleValue);
+            byte[] styleBytes = Encoding.ASCII.GetBytes(CourseStyleSettings.Text);
             tmpfileBytes[CourseStyleStartOffset] = styleBytes[0];
             tmpfileBytes[CourseStyleEndOffset] = styleBytes[1];
 
-            byte themeValue = 0;
-            if (CourseTheme.SelectedIndex == 1) themeValue = 1;
-            else if (CourseTheme.SelectedIndex == 2) themeValue = 2;
-            else if (CourseTheme.SelectedIndex == 3) themeValue = 3;
-            else if (CourseTheme.SelectedIndex == 4) themeValue = 4;
-            else if (CourseTheme.SelectedIndex == 5) themeValue = 5;
-            else themeValue = 0;
+            //byte themeValue = 0;
+            //if (CourseTheme.SelectedIndex == 1) themeValue = 1;
+            //else if (CourseTheme.SelectedIndex == 2) themeValue = 2;
+            //else if (CourseTheme.SelectedIndex == 3) themeValue = 3;
+            //else if (CourseTheme.SelectedIndex == 4) themeValue = 4;
+            //else if (CourseTheme.SelectedIndex == 5) themeValue = 5;
+            //else themeValue = 0;
             //Insert theme byte value to the file
-            tmpfileBytes[CourseThemeOffset] = themeValue;
+            tmpfileBytes[CourseThemeOffset] = (byte)CourseTheme.Value;
 
             ushort NewCourseTimer = (ushort)CourseTimer.Value;
             tmpfileBytes[CourseTimerStartOffset] = (byte)(NewCourseTimer >> 8);
             tmpfileBytes[CourseTimerEndOffset] = (byte)(NewCourseTimer & 0xFF);
 
-            byte scrollValue = 0;
-            if (CourseScroll.SelectedIndex == 1) scrollValue = 1;
-            else if (CourseScroll.SelectedIndex == 2) scrollValue = 2;
-            else if (CourseScroll.SelectedIndex == 3) scrollValue = 3;
-            else if (CourseScroll.SelectedIndex == 4) scrollValue = 4;
-            else scrollValue = 0;
+            //byte scrollValue = 0;
+            //if (CourseScroll.SelectedIndex == 1) scrollValue = 1;
+            //else if (CourseScroll.SelectedIndex == 2) scrollValue = 2;
+            //else if (CourseScroll.SelectedIndex == 3) scrollValue = 3;
+            //else if (CourseScroll.SelectedIndex == 4) scrollValue = 4;
+            //else scrollValue = 0;
             //Insert scroll byte value to the file
-            tmpfileBytes[CourseScrollSettingsOffset] = scrollValue;
+            tmpfileBytes[CourseScrollSettingsOffset] = (byte)CourseScroll.Value;
 
             ushort NewCourseLength = (ushort)CourseLength.Value;
             tmpfileBytes[CourseLengthStartOffset] = (byte)(NewCourseLength >> 8);
@@ -373,32 +377,32 @@ namespace SMM_D4TA_EDITOR
             byte[] MiiFileBytes = Convert.FromBase64String(CourseCreator);
             Array.Copy(MiiFileBytes, 0, tmpfileBytes, CourseMiiOffset, CourseMiiSize); //Creator Mii writing instead of creator name
 
-            ushort NewCourseCountry = (ushort)CourseCountry.Value;
-            tmpfileBytes[CourseCountryOffset] = (byte)(NewCourseCountry);
+            tmpfileBytes[CourseCountryOffset] = (byte)CourseCountry.Value;
 
-            if (OfficialCourse.SelectedIndex == 1) tmpfileBytes[OfficialCourseStatusOffset] = 1;
-            else if (OfficialCourse.SelectedIndex == 2) tmpfileBytes[OfficialCourseStatusOffset] = 2;
-            else if (OfficialCourse.SelectedIndex == 3) tmpfileBytes[OfficialCourseStatusOffset] = 3;
-            else if (OfficialCourse.SelectedIndex == 4) tmpfileBytes[OfficialCourseStatusOffset] = 4;
-            else if (OfficialCourse.SelectedIndex == 5) tmpfileBytes[OfficialCourseStatusOffset] = 5;
-            else if (OfficialCourse.SelectedIndex == 6) tmpfileBytes[OfficialCourseStatusOffset] = 6;
-            else if (OfficialCourse.SelectedIndex == 7) tmpfileBytes[OfficialCourseStatusOffset] = 7;
-            else if (OfficialCourse.SelectedIndex == 8) tmpfileBytes[OfficialCourseStatusOffset] = 8;
-            else if (OfficialCourse.SelectedIndex == 9) tmpfileBytes[OfficialCourseStatusOffset] = 0x1D;
-            else tmpfileBytes[OfficialCourseStatusOffset] = 0x0;
-
-            if (CourseStatusDownloaded.Checked) tmpfileBytes[DownloadedCourseOffset] = 0x01;
-            else tmpfileBytes[DownloadedCourseOffset] = 0x00;
-            if (CourseStatusUploaded.Checked) tmpfileBytes[UploadedCourseOffset] = 0x01;
-            else tmpfileBytes[UploadedCourseOffset] = 0x00;
-            if (CourseStatusRemoved.Checked) tmpfileBytes[RemovedCourseOffset] = 0x01; //Here used to be an "UploadedCourseOffset" instead of "RemovedCourseOffset", hopefully I'm testing it to see if there's any bug
-            else tmpfileBytes[RemovedCourseOffset] = 0x00;
-
-            if (ClearCheckStatus.Checked)
-            {
-                tmpfileBytes[ClearCheckOffset] = 0x01;
-            }
+            if (ClearCheckStatus.Checked) tmpfileBytes[ClearCheckOffset] = (byte)(ClearCheckNum.Value);
             else tmpfileBytes[ClearCheckOffset] = 0x00;
+
+            tmpfileBytes[OfficialCourseStatusOffset] = (byte)OfficialCourse.Value;
+            //if (OfficialCourse.SelectedIndex == 1) tmpfileBytes[OfficialCourseStatusOffset] = 1;
+            //else if (OfficialCourse.SelectedIndex == 2) tmpfileBytes[OfficialCourseStatusOffset] = 2;
+            //else if (OfficialCourse.SelectedIndex == 3) tmpfileBytes[OfficialCourseStatusOffset] = 3;
+            //else if (OfficialCourse.SelectedIndex == 4) tmpfileBytes[OfficialCourseStatusOffset] = 4;
+            //else if (OfficialCourse.SelectedIndex == 5) tmpfileBytes[OfficialCourseStatusOffset] = 5;
+            //else if (OfficialCourse.SelectedIndex == 6) tmpfileBytes[OfficialCourseStatusOffset] = 6;
+            //else if (OfficialCourse.SelectedIndex == 7) tmpfileBytes[OfficialCourseStatusOffset] = 7;
+            //else if (OfficialCourse.SelectedIndex == 8) tmpfileBytes[OfficialCourseStatusOffset] = 8;
+            //else if (OfficialCourse.SelectedIndex == 9) tmpfileBytes[OfficialCourseStatusOffset] = 0x1D;
+            //else tmpfileBytes[OfficialCourseStatusOffset] = 0x0;
+
+            tmpfileBytes[DownloadedCourseOffset] = (byte)CourseStatusDownloaded.Value;
+            //if (CourseStatusDownloaded.Checked) tmpfileBytes[DownloadedCourseOffset] = 0x01;
+            //else tmpfileBytes[DownloadedCourseOffset] = 0x00;
+            tmpfileBytes[UploadedCourseOffset] = (byte)CourseStatusUploaded.Value;
+            //if (CourseStatusUploaded.Checked) tmpfileBytes[UploadedCourseOffset] = 0x01;
+            //else tmpfileBytes[UploadedCourseOffset] = 0x00;
+            tmpfileBytes[RemovedCourseOffset] = (byte)CourseStatusRemoved.Value;
+            //if (CourseStatusRemoved.Checked) tmpfileBytes[RemovedCourseOffset] = 0x01; //Here used to be an "UploadedCourseOffset" instead of "RemovedCourseOffset", hopefully I'm testing it to see if there's any bug
+            //else tmpfileBytes[RemovedCourseOffset] = 0x00;
 
             WriteChecksumCRC32(tmpfileBytes);
 

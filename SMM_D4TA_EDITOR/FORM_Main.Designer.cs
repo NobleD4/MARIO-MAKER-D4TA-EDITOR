@@ -114,11 +114,15 @@
             this.LABEL_ClearCheckAttempts = new System.Windows.Forms.Label();
             this.NUMERIC_ClearCheckAttempts = new System.Windows.Forms.NumericUpDown();
             this.NUMERIC_Physics_Settings = new System.Windows.Forms.NumericUpDown();
-            this.NUMERIC_Style_Settings = new System.Windows.Forms.NumericUpDown();
             this.NUMERIC_Scroll_Settings = new System.Windows.Forms.NumericUpDown();
             this.NUMERIC_OfficialCourse = new System.Windows.Forms.NumericUpDown();
             this.NUMERIC_GameVersion_ClearCheck = new System.Windows.Forms.NumericUpDown();
             this.NUMERIC_Theme_Settings = new System.Windows.Forms.NumericUpDown();
+            this.TB_Style_Settings = new System.Windows.Forms.TextBox();
+            this.NUMERIC_CourseStatusDownloaded = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_CourseStatusUploaded = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_CourseStatusRemoved = new System.Windows.Forms.NumericUpDown();
+            this.NUMERIC_UploadReady = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseMonth)).BeginInit();
@@ -134,11 +138,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckTimeMilliseconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckAttempts)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Physics_Settings)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Style_Settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Scroll_Settings)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_OfficialCourse)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_GameVersion_ClearCheck)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Theme_Settings)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseStatusDownloaded)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseStatusUploaded)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseStatusRemoved)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_UploadReady)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -284,7 +291,6 @@
             this.CHECK_UploadReady.TabIndex = 28;
             this.CHECK_UploadReady.Text = "<Upload ready>";
             this.CHECK_UploadReady.UseVisualStyleBackColor = true;
-            this.CHECK_UploadReady.Visible = false;
             // 
             // NUMERIC_CourseTimer
             // 
@@ -384,6 +390,7 @@
             this.ComboBox_Style_Settings.Name = "ComboBox_Style_Settings";
             this.ComboBox_Style_Settings.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_Style_Settings.TabIndex = 2;
+            this.ComboBox_Style_Settings.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Style_Settings_SelectedIndexChanged);
             // 
             // ComboBox_Physics_Settings
             // 
@@ -394,6 +401,7 @@
             this.ComboBox_Physics_Settings.Name = "ComboBox_Physics_Settings";
             this.ComboBox_Physics_Settings.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_Physics_Settings.TabIndex = 0;
+            this.ComboBox_Physics_Settings.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Physics_Settings_SelectedIndexChanged);
             // 
             // LABEL_Physics
             // 
@@ -422,6 +430,7 @@
             this.ComboBox_Theme_Settings.Name = "ComboBox_Theme_Settings";
             this.ComboBox_Theme_Settings.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_Theme_Settings.TabIndex = 8;
+            this.ComboBox_Theme_Settings.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Theme_Settings_SelectedIndexChanged);
             // 
             // LABEL_Theme
             // 
@@ -454,7 +463,7 @@
             // NUMERIC_CourseMonth
             // 
             this.NUMERIC_CourseMonth.Enabled = false;
-            this.NUMERIC_CourseMonth.Location = new System.Drawing.Point(217, 316);
+            this.NUMERIC_CourseMonth.Location = new System.Drawing.Point(257, 316);
             this.NUMERIC_CourseMonth.Maximum = new decimal(new int[] {
             255,
             0,
@@ -467,7 +476,7 @@
             // NUMERIC_CourseDay
             // 
             this.NUMERIC_CourseDay.Enabled = false;
-            this.NUMERIC_CourseDay.Location = new System.Drawing.Point(272, 316);
+            this.NUMERIC_CourseDay.Location = new System.Drawing.Point(312, 316);
             this.NUMERIC_CourseDay.Maximum = new decimal(new int[] {
             255,
             0,
@@ -480,7 +489,7 @@
             // NUMERIC_CourseHour
             // 
             this.NUMERIC_CourseHour.Enabled = false;
-            this.NUMERIC_CourseHour.Location = new System.Drawing.Point(327, 316);
+            this.NUMERIC_CourseHour.Location = new System.Drawing.Point(367, 316);
             this.NUMERIC_CourseHour.Maximum = new decimal(new int[] {
             255,
             0,
@@ -493,7 +502,7 @@
             // NUMERIC_CourseMinute
             // 
             this.NUMERIC_CourseMinute.Enabled = false;
-            this.NUMERIC_CourseMinute.Location = new System.Drawing.Point(393, 316);
+            this.NUMERIC_CourseMinute.Location = new System.Drawing.Point(433, 316);
             this.NUMERIC_CourseMinute.Maximum = new decimal(new int[] {
             255,
             0,
@@ -507,7 +516,7 @@
             // 
             this.CHECK_SetDateTimeNow.AutoSize = true;
             this.CHECK_SetDateTimeNow.Enabled = false;
-            this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(451, 319);
+            this.CHECK_SetDateTimeNow.Location = new System.Drawing.Point(491, 319);
             this.CHECK_SetDateTimeNow.Name = "CHECK_SetDateTimeNow";
             this.CHECK_SetDateTimeNow.Size = new System.Drawing.Size(120, 17);
             this.CHECK_SetDateTimeNow.TabIndex = 23;
@@ -518,7 +527,7 @@
             // LABEL_CourseMonth
             // 
             this.LABEL_CourseMonth.AutoSize = true;
-            this.LABEL_CourseMonth.Location = new System.Drawing.Point(218, 300);
+            this.LABEL_CourseMonth.Location = new System.Drawing.Point(258, 300);
             this.LABEL_CourseMonth.Name = "LABEL_CourseMonth";
             this.LABEL_CourseMonth.Size = new System.Drawing.Size(49, 13);
             this.LABEL_CourseMonth.TabIndex = 0;
@@ -527,7 +536,7 @@
             // LABEL_CourseDay
             // 
             this.LABEL_CourseDay.AutoSize = true;
-            this.LABEL_CourseDay.Location = new System.Drawing.Point(274, 300);
+            this.LABEL_CourseDay.Location = new System.Drawing.Point(314, 300);
             this.LABEL_CourseDay.Name = "LABEL_CourseDay";
             this.LABEL_CourseDay.Size = new System.Drawing.Size(38, 13);
             this.LABEL_CourseDay.TabIndex = 0;
@@ -536,7 +545,7 @@
             // TwoDots
             // 
             this.TwoDots.AutoSize = true;
-            this.TwoDots.Location = new System.Drawing.Point(380, 319);
+            this.TwoDots.Location = new System.Drawing.Point(420, 319);
             this.TwoDots.Name = "TwoDots";
             this.TwoDots.Size = new System.Drawing.Size(10, 13);
             this.TwoDots.TabIndex = 31;
@@ -545,7 +554,7 @@
             // LABEL_CourseHour
             // 
             this.LABEL_CourseHour.AutoSize = true;
-            this.LABEL_CourseHour.Location = new System.Drawing.Point(328, 300);
+            this.LABEL_CourseHour.Location = new System.Drawing.Point(368, 300);
             this.LABEL_CourseHour.Name = "LABEL_CourseHour";
             this.LABEL_CourseHour.Size = new System.Drawing.Size(42, 13);
             this.LABEL_CourseHour.TabIndex = 0;
@@ -554,7 +563,7 @@
             // LABEL_CourseMinute
             // 
             this.LABEL_CourseMinute.AutoSize = true;
-            this.LABEL_CourseMinute.Location = new System.Drawing.Point(396, 300);
+            this.LABEL_CourseMinute.Location = new System.Drawing.Point(436, 300);
             this.LABEL_CourseMinute.Name = "LABEL_CourseMinute";
             this.LABEL_CourseMinute.Size = new System.Drawing.Size(51, 13);
             this.LABEL_CourseMinute.TabIndex = 0;
@@ -563,7 +572,7 @@
             // NUMERIC_CourseYear
             // 
             this.NUMERIC_CourseYear.Enabled = false;
-            this.NUMERIC_CourseYear.Location = new System.Drawing.Point(151, 316);
+            this.NUMERIC_CourseYear.Location = new System.Drawing.Point(191, 316);
             this.NUMERIC_CourseYear.Maximum = new decimal(new int[] {
             65535,
             0,
@@ -576,7 +585,7 @@
             // LABEL_CourseYear
             // 
             this.LABEL_CourseYear.AutoSize = true;
-            this.LABEL_CourseYear.Location = new System.Drawing.Point(152, 300);
+            this.LABEL_CourseYear.Location = new System.Drawing.Point(192, 300);
             this.LABEL_CourseYear.Name = "LABEL_CourseYear";
             this.LABEL_CourseYear.Size = new System.Drawing.Size(41, 13);
             this.LABEL_CourseYear.TabIndex = 0;
@@ -638,6 +647,7 @@
             this.CHECK_CourseStatusDownloaded.TabIndex = 25;
             this.CHECK_CourseStatusDownloaded.Text = "<Downloaded>";
             this.CHECK_CourseStatusDownloaded.UseVisualStyleBackColor = true;
+            this.CHECK_CourseStatusDownloaded.CheckedChanged += new System.EventHandler(this.CHECK_CourseStatusDownloaded_CheckedChanged);
             // 
             // CHECK_CourseStatusUploaded
             // 
@@ -649,6 +659,7 @@
             this.CHECK_CourseStatusUploaded.TabIndex = 26;
             this.CHECK_CourseStatusUploaded.Text = "<Uploaded>";
             this.CHECK_CourseStatusUploaded.UseVisualStyleBackColor = true;
+            this.CHECK_CourseStatusUploaded.CheckedChanged += new System.EventHandler(this.CHECK_CourseStatusUploaded_CheckedChanged);
             // 
             // CHECK_CourseStatusRemoved
             // 
@@ -660,6 +671,7 @@
             this.CHECK_CourseStatusRemoved.TabIndex = 27;
             this.CHECK_CourseStatusRemoved.Text = "<Removed>";
             this.CHECK_CourseStatusRemoved.UseVisualStyleBackColor = true;
+            this.CHECK_CourseStatusRemoved.CheckedChanged += new System.EventHandler(this.CHECK_CourseStatusRemoved_CheckedChanged);
             // 
             // LABEL_LastSFXplaced
             // 
@@ -763,6 +775,7 @@
             this.ComboBox_Scroll_Settings.Name = "ComboBox_Scroll_Settings";
             this.ComboBox_Scroll_Settings.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_Scroll_Settings.TabIndex = 13;
+            this.ComboBox_Scroll_Settings.SelectedIndexChanged += new System.EventHandler(this.ComboBox_Scroll_Settings_SelectedIndexChanged);
             // 
             // ComboBox_SelectMii
             // 
@@ -804,6 +817,7 @@
             this.ComboBox_OfficialCourse.Name = "ComboBox_OfficialCourse";
             this.ComboBox_OfficialCourse.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_OfficialCourse.TabIndex = 24;
+            this.ComboBox_OfficialCourse.SelectedIndexChanged += new System.EventHandler(this.ComboBox_OfficialCourse_SelectedIndexChanged);
             // 
             // LABEL_OfficialCourse
             // 
@@ -855,9 +869,11 @@
             this.ComboBox_GameVersion_ClearCheck.Name = "ComboBox_GameVersion_ClearCheck";
             this.ComboBox_GameVersion_ClearCheck.Size = new System.Drawing.Size(135, 21);
             this.ComboBox_GameVersion_ClearCheck.TabIndex = 62;
+            this.ComboBox_GameVersion_ClearCheck.SelectedIndexChanged += new System.EventHandler(this.ComboBox_GameVersion_ClearCheck_SelectedIndexChanged);
             // 
             // NUMERIC_ClearCheckTime
             // 
+            this.NUMERIC_ClearCheckTime.Enabled = false;
             this.NUMERIC_ClearCheckTime.Increment = new decimal(new int[] {
             1000,
             0,
@@ -946,6 +962,7 @@
             // 
             // NUMERIC_ClearCheckAttempts
             // 
+            this.NUMERIC_ClearCheckAttempts.Enabled = false;
             this.NUMERIC_ClearCheckAttempts.Location = new System.Drawing.Point(490, 282);
             this.NUMERIC_ClearCheckAttempts.Maximum = new decimal(new int[] {
             2147483647,
@@ -963,6 +980,7 @@
             // 
             // NUMERIC_Physics_Settings
             // 
+            this.NUMERIC_Physics_Settings.Enabled = false;
             this.NUMERIC_Physics_Settings.Location = new System.Drawing.Point(151, 72);
             this.NUMERIC_Physics_Settings.Maximum = new decimal(new int[] {
             255,
@@ -972,21 +990,11 @@
             this.NUMERIC_Physics_Settings.Name = "NUMERIC_Physics_Settings";
             this.NUMERIC_Physics_Settings.Size = new System.Drawing.Size(50, 20);
             this.NUMERIC_Physics_Settings.TabIndex = 71;
-            // 
-            // NUMERIC_Style_Settings
-            // 
-            this.NUMERIC_Style_Settings.Location = new System.Drawing.Point(151, 150);
-            this.NUMERIC_Style_Settings.Maximum = new decimal(new int[] {
-            255,
-            0,
-            0,
-            0});
-            this.NUMERIC_Style_Settings.Name = "NUMERIC_Style_Settings";
-            this.NUMERIC_Style_Settings.Size = new System.Drawing.Size(50, 20);
-            this.NUMERIC_Style_Settings.TabIndex = 72;
+            this.NUMERIC_Physics_Settings.ValueChanged += new System.EventHandler(this.NUMERIC_Physics_Settings_ValueChanged);
             // 
             // NUMERIC_Scroll_Settings
             // 
+            this.NUMERIC_Scroll_Settings.Enabled = false;
             this.NUMERIC_Scroll_Settings.Location = new System.Drawing.Point(151, 226);
             this.NUMERIC_Scroll_Settings.Maximum = new decimal(new int[] {
             255,
@@ -996,9 +1004,11 @@
             this.NUMERIC_Scroll_Settings.Name = "NUMERIC_Scroll_Settings";
             this.NUMERIC_Scroll_Settings.Size = new System.Drawing.Size(50, 20);
             this.NUMERIC_Scroll_Settings.TabIndex = 73;
+            this.NUMERIC_Scroll_Settings.ValueChanged += new System.EventHandler(this.NUMERIC_Scroll_Settings_ValueChanged);
             // 
             // NUMERIC_OfficialCourse
             // 
+            this.NUMERIC_OfficialCourse.Enabled = false;
             this.NUMERIC_OfficialCourse.Location = new System.Drawing.Point(151, 265);
             this.NUMERIC_OfficialCourse.Maximum = new decimal(new int[] {
             255,
@@ -1008,9 +1018,11 @@
             this.NUMERIC_OfficialCourse.Name = "NUMERIC_OfficialCourse";
             this.NUMERIC_OfficialCourse.Size = new System.Drawing.Size(50, 20);
             this.NUMERIC_OfficialCourse.TabIndex = 74;
+            this.NUMERIC_OfficialCourse.ValueChanged += new System.EventHandler(this.NUMERIC_OfficialCourse_ValueChanged);
             // 
             // NUMERIC_GameVersion_ClearCheck
             // 
+            this.NUMERIC_GameVersion_ClearCheck.Enabled = false;
             this.NUMERIC_GameVersion_ClearCheck.Location = new System.Drawing.Point(151, 110);
             this.NUMERIC_GameVersion_ClearCheck.Maximum = new decimal(new int[] {
             255,
@@ -1020,9 +1032,11 @@
             this.NUMERIC_GameVersion_ClearCheck.Name = "NUMERIC_GameVersion_ClearCheck";
             this.NUMERIC_GameVersion_ClearCheck.Size = new System.Drawing.Size(50, 20);
             this.NUMERIC_GameVersion_ClearCheck.TabIndex = 75;
+            this.NUMERIC_GameVersion_ClearCheck.ValueChanged += new System.EventHandler(this.NUMERIC_GameVersion_ClearCheck_ValueChanged);
             // 
             // NUMERIC_Theme_Settings
             // 
+            this.NUMERIC_Theme_Settings.Enabled = false;
             this.NUMERIC_Theme_Settings.Location = new System.Drawing.Point(151, 189);
             this.NUMERIC_Theme_Settings.Maximum = new decimal(new int[] {
             255,
@@ -1032,17 +1046,88 @@
             this.NUMERIC_Theme_Settings.Name = "NUMERIC_Theme_Settings";
             this.NUMERIC_Theme_Settings.Size = new System.Drawing.Size(50, 20);
             this.NUMERIC_Theme_Settings.TabIndex = 76;
+            this.NUMERIC_Theme_Settings.ValueChanged += new System.EventHandler(this.NUMERIC_Theme_Settings_ValueChanged);
+            // 
+            // TB_Style_Settings
+            // 
+            this.TB_Style_Settings.Enabled = false;
+            this.TB_Style_Settings.Location = new System.Drawing.Point(151, 150);
+            this.TB_Style_Settings.MaxLength = 2;
+            this.TB_Style_Settings.Name = "TB_Style_Settings";
+            this.TB_Style_Settings.Size = new System.Drawing.Size(50, 20);
+            this.TB_Style_Settings.TabIndex = 77;
+            this.TB_Style_Settings.TextChanged += new System.EventHandler(this.TB_Style_Settings_TextChanged);
+            // 
+            // NUMERIC_CourseStatusDownloaded
+            // 
+            this.NUMERIC_CourseStatusDownloaded.Enabled = false;
+            this.NUMERIC_CourseStatusDownloaded.Location = new System.Drawing.Point(114, 298);
+            this.NUMERIC_CourseStatusDownloaded.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_CourseStatusDownloaded.Name = "NUMERIC_CourseStatusDownloaded";
+            this.NUMERIC_CourseStatusDownloaded.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_CourseStatusDownloaded.TabIndex = 78;
+            this.NUMERIC_CourseStatusDownloaded.ValueChanged += new System.EventHandler(this.NUMERIC_CourseStatusDownloaded_ValueChanged);
+            // 
+            // NUMERIC_CourseStatusUploaded
+            // 
+            this.NUMERIC_CourseStatusUploaded.Enabled = false;
+            this.NUMERIC_CourseStatusUploaded.Location = new System.Drawing.Point(114, 316);
+            this.NUMERIC_CourseStatusUploaded.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_CourseStatusUploaded.Name = "NUMERIC_CourseStatusUploaded";
+            this.NUMERIC_CourseStatusUploaded.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_CourseStatusUploaded.TabIndex = 79;
+            this.NUMERIC_CourseStatusUploaded.ValueChanged += new System.EventHandler(this.NUMERIC_CourseStatusUploaded_ValueChanged);
+            // 
+            // NUMERIC_CourseStatusRemoved
+            // 
+            this.NUMERIC_CourseStatusRemoved.Enabled = false;
+            this.NUMERIC_CourseStatusRemoved.Location = new System.Drawing.Point(114, 332);
+            this.NUMERIC_CourseStatusRemoved.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_CourseStatusRemoved.Name = "NUMERIC_CourseStatusRemoved";
+            this.NUMERIC_CourseStatusRemoved.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_CourseStatusRemoved.TabIndex = 80;
+            this.NUMERIC_CourseStatusRemoved.ValueChanged += new System.EventHandler(this.NUMERIC_CourseStatusRemoved_ValueChanged);
+            // 
+            // NUMERIC_UploadReady
+            // 
+            this.NUMERIC_UploadReady.Enabled = false;
+            this.NUMERIC_UploadReady.Location = new System.Drawing.Point(114, 351);
+            this.NUMERIC_UploadReady.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.NUMERIC_UploadReady.Name = "NUMERIC_UploadReady";
+            this.NUMERIC_UploadReady.Size = new System.Drawing.Size(50, 20);
+            this.NUMERIC_UploadReady.TabIndex = 81;
+            this.NUMERIC_UploadReady.ValueChanged += new System.EventHandler(this.NUMERIC_UploadReady_ValueChanged);
             // 
             // FORM_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 461);
+            this.Controls.Add(this.NUMERIC_UploadReady);
+            this.Controls.Add(this.NUMERIC_CourseStatusRemoved);
+            this.Controls.Add(this.NUMERIC_CourseStatusUploaded);
+            this.Controls.Add(this.NUMERIC_CourseStatusDownloaded);
+            this.Controls.Add(this.TB_Style_Settings);
             this.Controls.Add(this.NUMERIC_Theme_Settings);
             this.Controls.Add(this.NUMERIC_GameVersion_ClearCheck);
             this.Controls.Add(this.NUMERIC_OfficialCourse);
             this.Controls.Add(this.NUMERIC_Scroll_Settings);
-            this.Controls.Add(this.NUMERIC_Style_Settings);
             this.Controls.Add(this.NUMERIC_Physics_Settings);
             this.Controls.Add(this.LABEL_ClearCheckAttempts);
             this.Controls.Add(this.NUMERIC_ClearCheckAttempts);
@@ -1185,11 +1270,15 @@
             this.Controls.SetChildIndex(this.NUMERIC_ClearCheckAttempts, 0);
             this.Controls.SetChildIndex(this.LABEL_ClearCheckAttempts, 0);
             this.Controls.SetChildIndex(this.NUMERIC_Physics_Settings, 0);
-            this.Controls.SetChildIndex(this.NUMERIC_Style_Settings, 0);
             this.Controls.SetChildIndex(this.NUMERIC_Scroll_Settings, 0);
             this.Controls.SetChildIndex(this.NUMERIC_OfficialCourse, 0);
             this.Controls.SetChildIndex(this.NUMERIC_GameVersion_ClearCheck, 0);
             this.Controls.SetChildIndex(this.NUMERIC_Theme_Settings, 0);
+            this.Controls.SetChildIndex(this.TB_Style_Settings, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_CourseStatusDownloaded, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_CourseStatusUploaded, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_CourseStatusRemoved, 0);
+            this.Controls.SetChildIndex(this.NUMERIC_UploadReady, 0);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseTimer)).EndInit();
@@ -1206,11 +1295,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckTimeMilliseconds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_ClearCheckAttempts)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Physics_Settings)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Style_Settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Scroll_Settings)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_OfficialCourse)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_GameVersion_ClearCheck)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_Theme_Settings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseStatusDownloaded)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseStatusUploaded)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_CourseStatusRemoved)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NUMERIC_UploadReady)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1303,11 +1395,15 @@
         private System.Windows.Forms.Label LABEL_ClearCheckAttempts;
         private System.Windows.Forms.NumericUpDown NUMERIC_ClearCheckAttempts;
         private System.Windows.Forms.NumericUpDown NUMERIC_Physics_Settings;
-        private System.Windows.Forms.NumericUpDown NUMERIC_Style_Settings;
         private System.Windows.Forms.NumericUpDown NUMERIC_Scroll_Settings;
         private System.Windows.Forms.NumericUpDown NUMERIC_OfficialCourse;
         private System.Windows.Forms.NumericUpDown NUMERIC_GameVersion_ClearCheck;
         private System.Windows.Forms.NumericUpDown NUMERIC_Theme_Settings;
+        private System.Windows.Forms.TextBox TB_Style_Settings;
+        private System.Windows.Forms.NumericUpDown NUMERIC_CourseStatusDownloaded;
+        private System.Windows.Forms.NumericUpDown NUMERIC_CourseStatusUploaded;
+        private System.Windows.Forms.NumericUpDown NUMERIC_CourseStatusRemoved;
+        private System.Windows.Forms.NumericUpDown NUMERIC_UploadReady;
     }
 }
 
